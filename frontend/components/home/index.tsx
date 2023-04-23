@@ -3,6 +3,7 @@ import Head from "next/head"
 import { Header } from "./Header"
 import { QuickActions } from './QuickActions';
 import { Tiles } from './Tiles';
+import { Customize } from './Customize';
 
 export const Home = () => {
     return(
@@ -18,6 +19,7 @@ export const Home = () => {
             <Header />
             <QuickActions />
             <Tiles />
+            <Customize />
         </main>
         </>
     )
