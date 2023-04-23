@@ -5,7 +5,7 @@ import styles from './Button.module.scss';
 type ButtonProps = {
     children?: any;
     buttonType?: 'button' | 'submit';
-    type?: 'primary' | 'secondary' | 'hollow' | 'transparent';
+    type?: 'primary' | 'secondary' | 'tertiary' | 'hollow' | 'transparent';
     className?: string;
     style?: React.CSSProperties;
     onClick?: () => void;

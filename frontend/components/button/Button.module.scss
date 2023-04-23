@@ -5,7 +5,7 @@
     cursor: pointer;
     border: 1px solid transparent;
     background-color: transparent;
-    transition: background-color .2s, color .2s;
+    transition: background-color .2s, color .2s, transform .2s;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -48,6 +48,18 @@
         }
         &:hover:not(.disabled) {
             background-color: var(--background-quaternary);
+        }
+    }
+    &.tertiary {
+        color: var(--text-secondary);
+        background-color: var(--background-quaternary);
+
+        svg {
+            fill: var(--text-secondary);
+        }
+        &:hover:not(.disabled) {
+            transform: translateY(-2px);
+            color: var(--text-primary);
         }
     }
     &.hollow {
