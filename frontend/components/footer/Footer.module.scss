@@ -1,0 +1,28 @@
+.container {
+    margin: 0 auto;
+    width: var(--width-main);
+    max-width: var(--width-main-max);
+    display: flex;
+    justify-content: space-between;
+    padding: var(--spacing-secondary) 0;
+
+    img {
+        width: 32px;
+        aspect-ratio: 1;
+        border-radius: 50%;
+    }
+
+    a {
+        margin-left: 5px;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    &>div {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-quaternary);
+    }
+}
