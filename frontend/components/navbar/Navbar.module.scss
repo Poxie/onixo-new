@@ -1,0 +1,29 @@
+.container {
+    width: var(--width-main);
+    max-width: var(--width-main-max);
+    padding: var(--spacing-secondary) 0;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.left {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-secondary);
+}
+.header {
+    font-size: 22px;
+}
+.tabs {
+    display: flex;
+    gap: var(--spacing-tertiary);
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.tab {
+    &:hover {
+        color: var(--text-primary);
+    }
+}

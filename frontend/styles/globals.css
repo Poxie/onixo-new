@@ -5,8 +5,20 @@
   --background-quaternary: #272a30;
   --text-primary: #e2e4e9;
   --text-secondary: #999ca3;
-  --color-primary: #3243EF;
+  --color-primary: #dd364d;
   --color-secondary: #de4a5e;
+
+  --width-main: 1100px;
+  --width-main-max: 90%;
+
+  --spacing-primary: 50px;
+  --spacing-secondary: 30px;
+  --spacing-tertiary: 20px;
+  --spacing-quaternary: 15px;
+
+  --border-radius-primary: 12px;
+  --border-radius-secondary: 10px;
+  --border-radius-tertiary: 8px;
 }
 
 * {
