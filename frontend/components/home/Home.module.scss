@@ -132,7 +132,7 @@
 
 .tiles {
     margin: 0 auto;
-    padding: var(--spacing-primary) 0;
+    padding: 100px 0;
     width: var(--width-main);
     max-width: var(--width-main-max);
     display: grid;
@@ -169,7 +169,7 @@
 }
 
 .customize {
-    --wave-height: 160px;
+    --wave-height: 150px;
     position: relative;
     background-color: var(--background-secondary);
     margin: var(--wave-height) 0;
@@ -294,5 +294,19 @@
         p {
             font-size: 20px;
         }
+    }
+    .customize {
+        padding: var(--spacing-primary) 0;
+        margin: 0;
+        margin-bottom: var(--spacing-secondary);
+
+        h2 {
+            font-size: 36px;
+        }
+    }
+    .customize-buttons {
+        flex-direction: column;
+        width: 100%;
+        gap: var(--spacing-quinary);
     }
 }
