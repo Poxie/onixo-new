@@ -41,14 +41,13 @@
     }
     &.secondary {
         color: var(--text-secondary);
-        background-color: var(--background-secondary);
-        border-color: var(--background-tertiary);
+        background-color: var(--background-tertiary);
 
         svg {
             fill: var(--text-secondary);
         }
         &:hover:not(.disabled) {
-            background-color: var(--background-tertiary);
+            background-color: var(--background-quaternary);
         }
     }
     &.hollow {
