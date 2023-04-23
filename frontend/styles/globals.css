@@ -1,0 +1,25 @@
+:root {
+  --background-primary: #0e1015;
+  --background-secondary: #101318;
+  --background-tertiary: #13151b;
+  --background-quaternary: #272a30;
+  --text-primary: #e2e4e9;
+  --text-secondary: #999ca3;
+  --color-primary: #3243EF;
+  --color-secondary: #de4a5e;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: var(--text-primary);
+  background-color: var(--background-primary);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
