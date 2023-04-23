@@ -1,0 +1,20 @@
+[
+    {
+        "title": "The bot designed for ease",
+        "text": "Quick and easily customizable commands. Change them how you will!",
+        "icon": "tile1.svg",
+        "boldIndices": [3, 4]
+    },
+    {
+        "title": "Welcome and greet newbies",
+        "text": "Greet new members with a welcoming message, a role, or a friendly DM!",
+        "icon": "tile2.svg",
+        "boldIndices": [0, 2]
+    },
+    {
+        "title": "Optimized moderation tools",
+        "text": "Use our optimized moderation tools to protect your server. ",
+        "icon": "tile3.svg",
+        "boldIndices": [1, 2]
+    }
+]

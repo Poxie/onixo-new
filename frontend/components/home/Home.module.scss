@@ -130,6 +130,35 @@
     }
 }
 
+.tiles {
+    margin: 0 auto;
+    padding: var(--spacing-primary) 0;
+    width: var(--width-main);
+    max-width: var(--width-main-max);
+    display: grid;
+    gap: 160px;
+}
+.tile {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-secondary);
+}
+.tile-text {
+    width: 40%;
+
+    h2 {
+        font-size: 50px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--spacing-quinary);
+    }
+    p {
+        color: var(--text-secondary);
+        font-size: 22px;
+    }
+}
+
 @media (max-width: 800px) {
     .action-list {
         --row-amount: 2;

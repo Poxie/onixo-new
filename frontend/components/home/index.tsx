@@ -2,6 +2,7 @@ import styles from './Home.module.scss';
 import Head from "next/head"
 import { Header } from "./Header"
 import { QuickActions } from './QuickActions';
+import { Tiles } from './Tiles';
 
 export const Home = () => {
     return(
@@ -16,6 +17,7 @@ export const Home = () => {
         <main className={styles['main']}>
             <Header />
             <QuickActions />
+            <Tiles />
         </main>
         </>
     )
