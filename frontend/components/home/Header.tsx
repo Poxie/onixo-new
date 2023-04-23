@@ -3,7 +3,7 @@ import styles from './Home.module.scss';
 
 export const Header = () => {
     return(
-        <div className={styles['header-container']}>
+        <section className={styles['header-container']}>
             <h1 className={styles['header']}>
                 Make your server <span className={`${styles['header-highlight']} highlight`}>YOUR</span> way
             </h1>
@@ -21,6 +21,6 @@ export const Header = () => {
                     See features
                 </Button>
             </div>
-        </div>
+        </section>
     )
 }
