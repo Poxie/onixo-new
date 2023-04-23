@@ -8,11 +8,13 @@ export const Tile: React.FC<TileType & {
         if(boldIndices.includes(index)) return <span className="highlight">{part}</span>;
         return part + ' ';
     })
-    
-    return(
-        <li className={styles['tile']}>
-            {reversed && <img src={`/icons/${icon}`} alt="" />}
 
+    const className = [
+        styles['tile'],
+        reversed ? styles['reversed'] : ''
+    ].join(' ');
+    return(
+        <li className={className}>
             <div className={styles['tile-text']}>
                 <h2>
                     {newTitle}
@@ -22,7 +24,7 @@ export const Tile: React.FC<TileType & {
                 </p>
             </div>
 
-            {!reversed && <img src={`/icons/${icon}`} alt="" />}
+            <img src={`/icons/${icon}`} alt="" />
         </li>
     )
 }
