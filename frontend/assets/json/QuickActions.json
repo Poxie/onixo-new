@@ -1,0 +1,27 @@
+[
+    {
+        "title": "Moderation",
+        "content": "lorem lorem lorem this is lorem stext tetketetke",
+        "img": "tile2.svg"
+    },
+    {
+        "title": "Welcomes & Goodbyes",
+        "content": "lorem lorem lorem this is lorem stext tetketetke",
+        "img": "tile2.svg"
+    },
+    {
+        "title": "Logging",
+        "content": "lorem lorem lorem this is lorem stext tetketetke",
+        "img": "tile2.svg"
+    },
+    {
+        "title": "Todo lists",
+        "content": "lorem lorem lorem this is lorem stext tetketetke",
+        "img": "tile2.svg"
+    },
+    {
+        "title": "Settings",
+        "content": "Customize your servers settings and members the way you want to. With our highly flexible settings anything is possible.",
+        "img": "tile2.svg"
+    }
+]

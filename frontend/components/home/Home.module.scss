@@ -64,11 +64,11 @@
     }
 }
 .back-text {
+    --top: 41px;
     z-index: 0;
     position: absolute;
     left: 0;
-    top: 50%;
-    transform: translateY(-50%);
+    top: var(--top);
     font-size: 200px;
     text-transform: uppercase;
     font-weight: 700;
@@ -98,7 +98,8 @@
     padding: calc(var(--spacing-secondary) * 1.2) 0;
     transition: transform .3s, box-shadow .3s;
     cursor: pointer;
-    flex: 1;
+    width: 100%;
+    height: 100%;
 
     svg {
         width: 50px;
@@ -115,7 +116,7 @@
         transition: bottom .3s, opacity .3s, font-size .3s;
     }
 
-    &:hover {
+    &:hover, &.active {
         transform: translateY(-5px);
         box-shadow: inset 0 0 6em -5em var(--color-primary);
         
@@ -126,6 +127,114 @@
         span {
             bottom: var(--text-bottom);
             opacity: 1;
+        }
+    }
+
+    &.active {
+        box-shadow: inset 0 0 30em -2em var(--color-primary);
+
+        svg {
+            fill: var(--text-primary);
+        }
+    }
+}
+.qa-container {
+    --height: 350px;
+    height: var(--height);
+    width: var(--width-main);
+    max-width: var(--width-main-max);
+    margin: 0 auto;
+    display: flex;
+    gap: var(--spacing-primary);
+    transition: filter .7s, transform .7s, opacity .7s;
+    animation: qa-in .7s forwards;
+    overflow: hidden;
+
+    h2, p {
+        margin: 0;
+        opacity: 0;
+        animation: text-in .6s forwards;
+    }
+    h2 {
+        font-size: 40px;
+        color: var(--color-primary);
+        animation-delay: .4s;
+    }
+    p {
+        font-size: 18px;
+        margin-top: var(--spacing-quaternary);
+        color: var(--text-secondary);
+        animation-delay: .7s;
+    }
+    img {
+        animation: text-in .6s forwards;
+        animation-delay: 1s;
+        opacity: 0;
+        margin: 0 auto;
+    }
+
+    &.animate-out {
+        transform: translateY(70px);
+        filter: blur(7px);
+        opacity: 0;
+    }
+    &.expired {
+        animation: qa-out .7s forwards;
+    }
+}
+@keyframes qa-in {
+    from {
+        height: 0;
+        padding: 0;
+    }
+    to {
+        height: var(--height);
+        padding: calc(var(--spacing-primary) * 1.5) 0 0;
+    }
+}
+@keyframes qa-out {
+    from {
+        height: var(--height);
+        padding: calc(var(--spacing-primary) * 1.5) 0 0;;
+    }
+    to {
+        height: 0;
+        padding: 0;
+    }
+}
+@keyframes text-in {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.qa-text {
+    width: 50%;
+}
+.qa-buttons {
+    display: flex;
+    gap: var(--spacing-quaternary);
+    padding-top: var(--spacing-primary);
+}
+.qa-button {
+    opacity: 0;
+    animation: text-in .7s forwards;
+    transition: transform .3s;
+
+    &:nth-of-type(1) {
+        animation-delay: .8s;
+    }
+    &:nth-of-type(2) {
+        animation-delay: .9s;
+    }
+
+    button {
+        &:hover {
+            transform: translateY(-4px) !important;
         }
     }
 }

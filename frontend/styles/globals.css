@@ -36,6 +36,13 @@ a {
   color: inherit;
   text-decoration: none;
 }
+button {
+  border: none;
+  background-color: transparent;
+  font-family: inherit;
+  font-weight: inherit;
+  display: block;
+}
 
 ul {
   list-style: none;

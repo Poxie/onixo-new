@@ -2,15 +2,26 @@ import styles from './Home.module.scss';
 import { ReactElement } from "react"
 
 export const QuickAction: React.FC<{
+    active: boolean;
     icon: ReactElement;
     text: string;
-}> = ({ icon, text }) => {
+    onClick: () => void;
+}> = ({ icon, text, onClick, active }) => {
+    const className = [
+        styles['action-item'],
+        active ? styles['active'] : ''
+    ].join(' ');
     return(
-        <li className={styles['action-item']}>
-            {icon}
-            <span>
-                {text}
-            </span>
+        <li>
+            <button 
+                className={className} 
+                onClick={onClick}
+            >
+                {icon}
+                <span>
+                    {text}
+                </span>
+            </button>
         </li>
     )
 }
