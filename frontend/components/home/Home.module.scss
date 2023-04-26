@@ -405,7 +405,18 @@
         gap: var(--spacing-quinary);
     }
     .action-list {
-        --row-amount: 1;
+        --row-amount: 3;
+    }
+    .action-item {
+        aspect-ratio: 1;
+        
+        span {
+            display: none;
+        }
+        svg {
+            width: 40px;
+            transform: translateY(0) !important;
+        }
     }
     .qa-buttons {
         flex-direction: column;
