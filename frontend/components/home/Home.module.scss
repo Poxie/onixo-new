@@ -289,6 +289,7 @@
     position: relative;
     background-color: var(--background-secondary);
     margin: var(--wave-height) 0;
+    padding: var(--spacing-primary) 0;
 
     &>svg {
         fill: var(--background-secondary);
