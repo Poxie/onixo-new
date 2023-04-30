@@ -15,6 +15,7 @@ export const useWithinView = (ref: RefObject<HTMLElement>, offset: number=DEFAUL
             
             if(visible) setVisible(true);
         }
+        onScroll();
 
         document.addEventListener('scroll', onScroll);
         return () => document.removeEventListener('scroll', onScroll);
