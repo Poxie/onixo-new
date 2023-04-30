@@ -331,7 +331,7 @@
     gap: var(--spacing-quaternary);
     margin-top: var(--spacing-secondary);
 
-    &>button {
+    &>button, &>a {
         min-width: 150px;
         padding: var(--spacing-quaternary);
     }

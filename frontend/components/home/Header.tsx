@@ -11,7 +11,10 @@ export const Header = () => {
                 Onixo provides many different customizable options, as well as fun utilities, moderation, logging, welcoming, and much more.
             </p>
             <div className={styles['header-buttons']}>
-                <Button className={styles['header-button']}>
+                <Button 
+                    className={styles['header-button']}
+                    href={'/invite'}
+                >
                     Invite to Server
                 </Button>
                 <Button 

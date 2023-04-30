@@ -22,7 +22,7 @@ export const QuickActionsExtension: React.FC<QuickActionJson & {
                 </p>
                 <div className={styles['qa-buttons']}>
                     <div className={styles['qa-button']}>
-                        <Button>
+                        <Button href={'/invite'}>
                             Invite to Server
                         </Button>
                     </div>

@@ -18,7 +18,10 @@ export const Customize = () => {
                     <Button type={'tertiary'}>
                         Go to Dashboard
                     </Button>
-                    <Button type={'tertiary'}>
+                    <Button 
+                        type={'tertiary'} 
+                        href={'/invite'}
+                    >
                         Invite to Server
                     </Button>
                 </div>
