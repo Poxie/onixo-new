@@ -253,6 +253,7 @@
     align-items: center;
     justify-content: space-between;
     gap: var(--spacing-secondary);
+    transition: opacity .5s, transform .5s;
 
     &.reversed {
         img {
@@ -261,6 +262,11 @@
         .tile-text {
             order: 1;
         }
+    }
+
+    &.hidden {
+        transform: translateY(40px);
+        opacity: 0;
     }
 }
 .tile-text {
