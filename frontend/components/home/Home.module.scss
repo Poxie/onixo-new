@@ -12,10 +12,13 @@
     font-size: 50px;
 }
 .sub-header {
-    margin-top: var(--spacing-secondary);
+    margin: var(--spacing-secondary) 0 var(--spacing-primary);
+    color: var(--text-secondary);
+    font-size: 20px;
 }
 .header-highlight {
     position: relative;
+    cursor: default;
 
     &::after {
         content: '';
