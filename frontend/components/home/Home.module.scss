@@ -241,7 +241,7 @@
         animation-delay: .9s;
     }
 
-    button {
+    button, a {
         &:hover {
             transform: translateY(-4px) !important;
         }
