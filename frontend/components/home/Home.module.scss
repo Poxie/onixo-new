@@ -70,10 +70,12 @@
     --top: 41px;
     z-index: 0;
     position: absolute;
-    left: 0;
+    transform: translateX(-50%);
+    left: 50%;
     top: var(--top);
     font-size: 200px;
     text-transform: uppercase;
+    text-align: center;
     font-weight: 700;
     color: var(--background-secondary);
     text-shadow: -3px 0 var(--background-tertiary), 0 3px var(--background-tertiary), 3px 0 var(--background-tertiary), 0 -3px var(--background-tertiary);
