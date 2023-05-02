@@ -2,26 +2,26 @@
     {
         "title": "Moderation",
         "content": "It is easier than ever to keep your server safe with our highly interactive and customizable moderation tools. Moderation logs, modifiable commands, antil-links, and much more.",
-        "img": "moderation.svg"
+        "img": "moderation"
     },
     {
         "title": "Welcomes & Goodbyes",
         "content": "Give your new members a welcoming message in the server, their DMs or both! Want your members to receive a role upon joining? No problem!",
-        "img": "tile2.svg"
+        "img": "greet"
     },
     {
         "title": "Logging",
         "content": "Choose what logs, if any, are sent for each action, and where they are sent. Decide how they are sent by customizing the contents of the logs.",
-        "img": "logging.svg"
+        "img": "logging"
     },
     {
         "title": "Todo lists",
         "content": "Highly flexible todo lists. Create your own list in the Onixo DMs or a global one in your server. Create, edit, delete and check todos, and customize your todo list how you want.",
-        "img": "todos.svg"
+        "img": "todos"
     },
     {
         "title": "Settings",
         "content": "All of our modules and commands have highly customizable settings! Change the functionality and display of our features to your own liking.",
-        "img": "settings.svg"
+        "img": "settings"
     }
 ]

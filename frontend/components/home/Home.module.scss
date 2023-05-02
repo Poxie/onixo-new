@@ -169,10 +169,13 @@
         color: var(--text-secondary);
         animation-delay: .7s;
     }
-    img {
+    .qa-img {
         animation: text-in .6s forwards;
         animation-delay: 1s;
         opacity: 0;
+        flex: 1;
+    }
+    svg {
         margin: 0 auto;
         max-height: 275px;
     }

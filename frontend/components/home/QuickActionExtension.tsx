@@ -1,11 +1,35 @@
+import { LoggingImg } from '@/assets/icons/LoggingImg';
 import Button from '../button';
 import styles from './Home.module.scss';
 import { QuickActionJson } from "./QuickActions"
+import { TodosImg } from '@/assets/icons/TodosImg';
+import { SettingsImg } from '@/assets/icons/SettingsImg';
+import { ModerationImg } from '@/assets/icons/ModerationImg';
+import { GreetImg } from '@/assets/icons/GreetImg';
 
 export const QuickActionsExtension: React.FC<QuickActionJson & {
     animateOut: boolean;
     expired: boolean;
 }> = ({ title, content, img, animateOut, expired }) => {
+    let icon = null;
+    switch(img) {
+        case 'greet':
+            icon = <GreetImg />;
+            break;
+        case 'moderation':
+            icon = <ModerationImg />;
+            break;
+        case 'logging':
+            icon = <LoggingImg />;
+            break;
+        case 'todos':
+            icon = <TodosImg />;
+            break;
+        case 'settings':
+            icon = <SettingsImg />;
+            break;
+    }
+    
     const className = [
         styles['qa-container'],
         animateOut ? styles['animate-out'] : '',
@@ -33,7 +57,9 @@ export const QuickActionsExtension: React.FC<QuickActionJson & {
                     </div>
                 </div>
             </div>
-            <img src={`/icons/${img}`} alt="" />
+            <div className={styles['qa-img']}>
+                {icon}
+            </div>
         </div>
     )
 }
