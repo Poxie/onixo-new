@@ -20,6 +20,7 @@ export const Header = () => {
                 <Button 
                     className={styles['header-button']} 
                     type={'secondary'}
+                    href={'/features'}
                 >
                     See features
                 </Button>
