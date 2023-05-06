@@ -23,19 +23,19 @@
         "id": "greeting",
         "tiles": [
             {
-                "title": "Many different actions",
-                "text": "We provide a large range of different moderation actions. Everything from warn, mute, kick and ban.",
-                "image": "mod-tile-1.svg"
+                "title": "Flexible greeting messages",
+                "text": "Easily greet your new members the way you want to with our highly flexible greeting messages.",
+                "image": "greet-tile-1.svg"
             },
             {
-                "title": "Log all your actions",
-                "text": "Log any actions made by yourself or by your moderators; the way you want it.",
-                "image": "mod-tile-2.svg"
+                "title": "Welcome roles",
+                "text": "Give your new users and bots a role upon joining the server. You can add up to 10 roles!",
+                "image": "greet-tile-2.svg"
             },
             {
-                "title": "Moderator roles",
-                "text": "Select what roles within your server should be  able to execute what action, or all actions.",
-                "image": "mod-tile-3.svg"
+                "title": "Channel selector",
+                "text": "Select where the greeting messages should appear. Send the new member a custom DM message.",
+                "image": "greet-tile-3.svg"
             }
         ]
     }
