@@ -1,6 +1,6 @@
 import { HammerIcon } from '@/assets/icons/HammerIcon';
 import styles from './Home.module.scss';
-import { QuickAction } from './QuickAction';
+import { QuickActions as QuickActionsList } from '../quick-actions';
 import { HandIcon } from '@/assets/icons/HandIcon';
 import { FeatherIcon } from '@/assets/icons/FeatherIcon';
 import { CheckListIcon } from '@/assets/icons/CheckListIcon';
@@ -52,16 +52,12 @@ export const QuickActions = () => {
             <span className={styles['back-text']}>
                 Quick Actions
             </span>
-            <ul className={styles['action-list']}>
-                {items.map(item => (
-                    <QuickAction 
-                        {...item}
-                        onClick={() => onClick(item.text)}
-                        active={active === item.text}
-                        key={item.text}
-                    />
-                ))}
-            </ul>
+            
+            <QuickActionsList 
+                onClick={onClick}
+                active={active}
+                className={styles['qa-actions']}
+            />
 
             {activeAction && (
                 <QuickActionsExtension 

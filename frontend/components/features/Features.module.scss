@@ -1,0 +1,114 @@
+.header {
+    --section-padding: 100px;
+    padding: var(--section-padding) 0;
+    border-bottom: 1px solid var(--background-tertiary);
+    max-width: var(--width-main-max);
+    width: var(--width-main);
+    margin: 0 auto;
+
+    h1, p {
+        margin: 0;
+    }
+    h1 {
+        font-size: 50px;
+        margin-bottom: var(--spacing-secondary);
+    }
+    p {
+        font-size: 18px;
+        color: var(--text-secondary);
+        line-height: 30px;
+    }
+}
+.qa-actions {
+    margin-top: var(--spacing-primary);
+
+    svg {
+        width: 45px;
+        padding: 6px 0;
+    }
+}
+.side-actions {
+    --row-amount: 1 !important;
+    position: fixed;
+    right: var(--spacing-quaternary);
+    top: 50%;
+    transform: translateY(-50%);
+
+    svg {
+        width: 26px !important;
+        transform: translate(0) !important;
+    }
+    span {
+        display: none;
+    }
+    button {
+        padding: var(--spacing-tertiary);
+        transform: translate(0) !important;
+    }
+    li {
+        opacity: 0;
+        transform: translateX(100px);
+        transition: opacity .3s, transform .3s;
+
+        &:nth-of-type(2) {
+            transition-delay: .05s;
+        }
+        &:nth-of-type(3) {
+            transition-delay: .1s;
+        }
+        &:nth-of-type(4) {
+            transition-delay: .15s;
+        }
+        &:nth-of-type(5) {
+            transition-delay: .2s;
+        }
+    }
+
+    &.visible {
+        li {
+            opacity: 1;
+            transform: translate(0);
+        }
+    }
+}
+.feature-content {
+    width: var(--width-main);
+    max-width: var(--width-main-max);
+    margin: 0 auto;
+    padding: 100px 0;
+}
+.tiles {
+    display: grid;
+    gap: 100px;
+}
+.tile {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: calc(var(--spacing-primary) * 3);
+    transition: transform .5s, opacity .5s;
+
+    h2, p {
+        margin: 0;
+    }
+    h2 {
+        font-size: 40px;
+        color: var(--color-primary);
+        margin-bottom: var(--spacing-tertiary);
+    }
+    p {
+        font-size: 20px;
+        color: var(--text-secondary);
+        line-height: 30px;
+    }
+
+    &.hidden {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    &.reversed {
+        .tile-text {
+            order: 1;
+        }
+    }
+}

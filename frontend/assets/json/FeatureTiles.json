@@ -1,0 +1,42 @@
+[
+    {
+        "id": "moderation",
+        "tiles": [
+            {
+                "title": "Many different actions",
+                "text": "We provide a large range of different moderation actions. Everything from warn, mute, kick and ban.",
+                "image": "mod-tile-1.svg"
+            },
+            {
+                "title": "Log all your actions",
+                "text": "Log any actions made by yourself or by your moderators; the way you want it.",
+                "image": "mod-tile-2.svg"
+            },
+            {
+                "title": "Moderator roles",
+                "text": "Select what roles within your server should be  able to execute what action, or all actions.",
+                "image": "mod-tile-3.svg"
+            }
+        ]
+    },
+    {
+        "id": "greeting",
+        "tiles": [
+            {
+                "title": "Many different actions",
+                "text": "We provide a large range of different moderation actions. Everything from warn, mute, kick and ban.",
+                "image": "mod-tile-1.svg"
+            },
+            {
+                "title": "Log all your actions",
+                "text": "Log any actions made by yourself or by your moderators; the way you want it.",
+                "image": "mod-tile-2.svg"
+            },
+            {
+                "title": "Moderator roles",
+                "text": "Select what roles within your server should be  able to execute what action, or all actions.",
+                "image": "mod-tile-3.svg"
+            }
+        ]
+    }
+]

@@ -1,4 +1,4 @@
-import styles from './Home.module.scss';
+import styles from './QuickActions.module.scss';
 import { ReactElement } from "react"
 
 export const QuickAction: React.FC<{
