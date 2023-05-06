@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import styles from './Features.module.scss';
 import { QuickActions } from '../quick-actions';
 import { SideActions } from './SideActions';
@@ -7,10 +7,19 @@ import { Greeting } from './greeting';
 
 export const Features = () => {
     const [active, setActive] = useState<null | string>(null);
+    const ref = useRef<HTMLElement>(null);
 
     const toggleItem = (item: string) => {
         if(active === item) return setActive(null);
         setActive(item);
+
+        // If no previously selected feature, scroll down
+        setTimeout(() => {
+            if(!active && ref.current) {
+                const { top, height } = ref.current?.getBoundingClientRect();
+                window.scrollTo({ top: top + height / 1.5 });
+            }
+        }, 20);
     }
 
     let component = null;
@@ -32,6 +41,7 @@ export const Features = () => {
         <section 
             className={styles['header']}
             data-feature-header
+            ref={ref}
         >
             <h1>
                 What are <span className="highlight">our features?</span>
