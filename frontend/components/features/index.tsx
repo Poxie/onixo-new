@@ -5,6 +5,8 @@ import { SideActions } from './SideActions';
 import { Moderation } from './moderation';
 import { Greeting } from './greeting';
 
+const HEIGHT_PROPORTION = 1.4;
+
 export const Features = () => {
     const [active, setActive] = useState<null | string>(null);
     const ref = useRef<HTMLElement>(null);
@@ -17,9 +19,9 @@ export const Features = () => {
         setTimeout(() => {
             if(!active && ref.current) {
                 const { top, height } = ref.current?.getBoundingClientRect();
-                window.scrollTo({ top: top + height / 1.5 });
+                window.scrollTo({ top: top + height / HEIGHT_PROPORTION + window.scrollY });
             }
-        }, 20);
+        }, 50);
     }
 
     let component = null;
