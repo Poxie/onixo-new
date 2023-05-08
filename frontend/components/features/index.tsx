@@ -29,7 +29,7 @@ export const Features = () => {
         }
     }
     const toggleItem = (item: string) => {
-        if(defaultActive) router.replace(`/features`);
+        if(defaultActive) router.replace(`/features`, undefined, { shallow: true });
 
         if(active === item) return setActive(null);
         setActive(item);
