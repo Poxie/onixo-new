@@ -58,5 +58,25 @@
                 "image": "logging-tile-3.svg"
             }
         ]
+    },
+    {
+        "id": "todos",
+        "tiles": [
+            {
+                "title": "Flexible todo lists",
+                "text": "Flexible todo lists integrated right into your server. Commands for everything you could need to interact with your list.",
+                "image": "todos-tile-1.svg"
+            },
+            {
+                "title": "Server and user todos",
+                "text": "Create a todo list for an entire server, or your own personal todo list in Onixo’s DMs.",
+                "image": "todos-tile-2.svg"
+            },
+            {
+                "title": "Customizable settings",
+                "text": "Decide which roles or users are allowed to modify your todo lists, or limit the commands to a specific channel.",
+                "image": "todos-tile-3.svg"
+            }
+        ]
     }
 ]
