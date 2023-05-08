@@ -55,7 +55,7 @@ export const QuickActionsExtension: React.FC<QuickActionJson & {
                             type={'tertiary'}
                             href={`/features?f=${id}`}
                         >
-                            Go to {title}
+                            Read more
                         </Button>
                     </div>
                 </div>
