@@ -7,11 +7,11 @@ import { CheckListIcon } from '@/assets/icons/CheckListIcon';
 import { ToolsIcon } from '@/assets/icons/ToolsIcon';
 
 const items = [
-    { text: 'Moderation', icon: <HammerIcon /> },
-    { text: 'Welcomes & Goodbyes', icon: <HandIcon /> },
-    { text: 'Logging', icon: <FeatherIcon /> },
-    { text: 'Todo lists', icon: <CheckListIcon /> },
-    { text: 'Settings', icon: <ToolsIcon /> }
+    { id: 'moderation', text: 'Moderation', icon: <HammerIcon /> },
+    { id: 'greetings', text: 'Welcomes & Goodbyes', icon: <HandIcon /> },
+    { id: 'logging', text: 'Logging', icon: <FeatherIcon /> },
+    { id: 'todos', text: 'Todo lists', icon: <CheckListIcon /> },
+    { id: 'settings', text: 'Settings', icon: <ToolsIcon /> }
 ]
 
 export const QuickActions: React.FC<{
@@ -30,9 +30,9 @@ export const QuickActions: React.FC<{
             {items.map(item => (
                 <QuickAction 
                     {...item}
-                    onClick={() => onClick(item.text)}
-                    active={active === item.text}
-                    key={item.text}
+                    onClick={() => onClick(item.id)}
+                    active={active === item.id}
+                    key={item.id}
                 />
             ))}
         </ul>

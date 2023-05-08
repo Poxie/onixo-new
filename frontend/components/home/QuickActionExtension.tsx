@@ -10,10 +10,10 @@ import { GreetImg } from '@/assets/icons/GreetImg';
 export const QuickActionsExtension: React.FC<QuickActionJson & {
     animateOut: boolean;
     expired: boolean;
-}> = ({ title, content, img, animateOut, expired }) => {
+}> = ({ id, title, content, animateOut, expired }) => {
     let icon = null;
-    switch(img) {
-        case 'greet':
+    switch(id) {
+        case 'greetings':
             icon = <GreetImg />;
             break;
         case 'moderation':
@@ -51,7 +51,10 @@ export const QuickActionsExtension: React.FC<QuickActionJson & {
                         </Button>
                     </div>
                     <div className={styles['qa-button']}>
-                        <Button type={'tertiary'}>
+                        <Button 
+                            type={'tertiary'}
+                            href={`/features?f=${id}`}
+                        >
                             Go to {title}
                         </Button>
                     </div>

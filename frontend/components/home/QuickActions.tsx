@@ -1,23 +1,10 @@
-import { HammerIcon } from '@/assets/icons/HammerIcon';
 import styles from './Home.module.scss';
 import { QuickActions as QuickActionsList } from '../quick-actions';
-import { HandIcon } from '@/assets/icons/HandIcon';
-import { FeatherIcon } from '@/assets/icons/FeatherIcon';
-import { CheckListIcon } from '@/assets/icons/CheckListIcon';
-import { ToolsIcon } from '@/assets/icons/ToolsIcon';
 import { useMemo, useRef, useState } from 'react';
 import actions from '@/assets/json/QuickActions.json';
 import { QuickActionsExtension } from './QuickActionExtension';
 
 export type QuickActionJson = typeof actions[0];
-
-const items = [
-    { text: 'Moderation', icon: <HammerIcon /> },
-    { text: 'Welcomes & Goodbyes', icon: <HandIcon /> },
-    { text: 'Logging', icon: <FeatherIcon /> },
-    { text: 'Todo lists', icon: <CheckListIcon /> },
-    { text: 'Settings', icon: <ToolsIcon /> }
-]
 
 const ANIMATE_OUT_DURATION = 700;
 export const QuickActions = () => {
@@ -26,11 +13,11 @@ export const QuickActions = () => {
     const [expired, setExpired] = useState(false);
     const timeout = useRef<NodeJS.Timeout | null>(null);
 
-    const onClick = (text: string) => {
-        const updateActive = () => setActive(text === active ? null : text);
+    const onClick = (id: string) => {
+        const updateActive = () => setActive(id === active ? null : id);
 
         if(active) {
-            if(active === text) {
+            if(active === id) {
                 setExpired(true);
             }
             setAnimateOut(true);
@@ -46,7 +33,7 @@ export const QuickActions = () => {
         }
     }
 
-    const activeAction = useMemo(() => actions.find(action => action.title === active), [active]);
+    const activeAction = useMemo(() => actions.find(action => action.id === active), [active]);
     return(
         <section className={styles['quick-actions']}>
             <span className={styles['back-text']}>
