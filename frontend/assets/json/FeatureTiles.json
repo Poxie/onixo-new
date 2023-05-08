@@ -20,7 +20,7 @@
         ]
     },
     {
-        "id": "greeting",
+        "id": "greetings",
         "tiles": [
             {
                 "title": "Flexible greeting messages",

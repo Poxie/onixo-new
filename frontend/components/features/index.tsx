@@ -1,13 +1,10 @@
+import TILES from '@/assets/json/FeatureTiles.json';
 import { useEffect, useRef, useState } from 'react';
 import styles from './Features.module.scss';
 import { QuickActions } from '../quick-actions';
 import { SideActions } from './SideActions';
-import { Moderation } from './moderation';
-import { Greeting } from './greeting';
 import { useRouter } from 'next/router';
-import { Logging } from './logging';
-import { Todos } from './todos';
-import { Settings } from './settings';
+import { FeatureTiles } from './FeatureTiles';
 
 const HEIGHT_PROPORTION = 1.4;
 
@@ -42,25 +39,9 @@ export const Features = () => {
         setTimeout(scrollDown, 50);
     }
 
-    let component = null;
-    switch(active) {
-        case 'moderation':
-            component = <Moderation />;
-            break;
-        case 'greetings':
-            component = <Greeting />;
-            break;
-        case 'logging':
-            component = <Logging />;
-            break;
-        case 'todos':
-            component = <Todos />;
-            break;
-        case 'settings':
-            component = <Settings />;
-            break;
-    }
-    
+    let tiles = active ? (
+        TILES.find(tile => tile.id === active)?.tiles
+    ) : [];
     return(
         <>
         <SideActions 
@@ -86,7 +67,13 @@ export const Features = () => {
             />
         </section>
 
-        {component}
+        {tiles && (
+            <div className={styles['feature-content']}>
+                <FeatureTiles 
+                    tiles={tiles}
+                />
+            </div>
+        )}
         </>
     )
 }
