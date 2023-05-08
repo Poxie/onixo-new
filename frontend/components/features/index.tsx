@@ -5,6 +5,7 @@ import { SideActions } from './SideActions';
 import { Moderation } from './moderation';
 import { Greeting } from './greeting';
 import { useRouter } from 'next/router';
+import { Logging } from './logging';
 
 const HEIGHT_PROPORTION = 1.4;
 
@@ -45,6 +46,9 @@ export const Features = () => {
             break;
         case 'greetings':
             component = <Greeting />;
+            break;
+        case 'logging':
+            component = <Logging />;
             break;
     }
     

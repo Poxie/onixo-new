@@ -9,7 +9,7 @@
             },
             {
                 "title": "Log all your actions",
-                "text": "Log any actions made by yourself or by your moderators; the way you want it.",
+                "text": "Log any actions made by yourself or by your moderators in your dedicated log channels.",
                 "image": "mod-tile-2.svg"
             },
             {
@@ -36,6 +36,26 @@
                 "title": "Channel selector",
                 "text": "Select where the greeting messages should appear. Send the new member a custom DM message.",
                 "image": "greet-tile-3.svg"
+            }
+        ]
+    },
+    {
+        "id": "logging",
+        "tiles": [
+            {
+                "title": "Log all actions",
+                "text": "Log any actions made by yourself or by your moderators in your dedicated log channels.",
+                "image": "logging-tile-1.svg"
+            },
+            {
+                "title": "Action-specific settings",
+                "text": "Customize the settings for a specific action. Choose where logs for certain actions appear.",
+                "image": "logging-tile-2.svg"
+            },
+            {
+                "title": "Easily accessed logs",
+                "text": "All your server’s logs can be viewed, filtered and modified right here on our dashboard.",
+                "image": "logging-tile-3.svg"
             }
         ]
     }
