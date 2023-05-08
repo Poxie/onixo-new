@@ -102,9 +102,6 @@
         color: var(--text-secondary);
         line-height: 30px;
     }
-    svg {
-        width: 60%;
-    }
 
     &.hidden {
         opacity: 0;
@@ -115,6 +112,9 @@
             order: 1;
         }
     }
+}
+.tile-text, .tile svg {
+    width: 45%;
 }
 
 @media (max-width: 800px) {
@@ -138,10 +138,10 @@
     }
     .tile {
         flex-direction: column;
-
-        img {
-            width: 100%;
-        }
+        gap: var(--spacing-secondary) !important;
+    }
+    .tile-text, .tile svg {
+        width: 100% !important;
     }
     .tile-text {
         order: 0 !important;
