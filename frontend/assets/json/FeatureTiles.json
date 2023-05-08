@@ -78,5 +78,20 @@
                 "image": "todos-tile-3.svg"
             }
         ]
+    },
+    {
+        "id": "settings",
+        "tiles": [
+            {
+                "title": "Highly customizable settings",
+                "text": "All of our modules and commands have highly customizable settings! Change the functionality and display of our features to your own liking.",
+                "image": "settings-tile-1.svg"
+            },
+            {
+                "title": "Dashboard approved",
+                "text": "Update all your settings directly on our dashboard. No commands needed.",
+                "image": "settings-tile-2.svg"
+            }
+        ]
     }
 ]

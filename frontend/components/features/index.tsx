@@ -7,6 +7,7 @@ import { Greeting } from './greeting';
 import { useRouter } from 'next/router';
 import { Logging } from './logging';
 import { Todos } from './todos';
+import { Settings } from './settings';
 
 const HEIGHT_PROPORTION = 1.4;
 
@@ -54,6 +55,9 @@ export const Features = () => {
             break;
         case 'todos':
             component = <Todos />;
+            break;
+        case 'settings':
+            component = <Settings />;
             break;
     }
     
