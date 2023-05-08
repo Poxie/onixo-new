@@ -15,10 +15,12 @@ export const Features = () => {
         if(active === item) return setActive(null);
         setActive(item);
 
-        // If no previously selected feature, scroll down
+        // If no previously selected feature, or if user has not scrolled at all, scroll down
         setTimeout(() => {
-            if(!active && ref.current) {
-                const { top, height } = ref.current?.getBoundingClientRect();
+            if(!ref.current) return;
+            const { top, height } = ref.current?.getBoundingClientRect();
+
+            if(!active || window.scrollY < top + height / HEIGHT_PROPORTION) {
                 window.scrollTo({ top: top + height / HEIGHT_PROPORTION + window.scrollY });
             }
         }, 50);
