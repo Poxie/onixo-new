@@ -2,10 +2,13 @@ import { useRef } from 'react';
 import styles from './Features.module.scss';
 import { Tile } from "./FeatureTiles";
 import { useWithinView } from '@/hooks/useWithinView';
+import { getTileImage } from '@/utils/getTileImage';
 
 export const FeatureTile: React.FC<Tile & {
     reversed: boolean;
-}> = ({ title, text, image, reversed }) => {
+    index: number;
+    id: string;
+}> = ({ id, title, text, index, reversed }) => {
     const ref = useRef<HTMLLIElement>(null);
     
     const visible = useWithinView(ref);
@@ -25,7 +28,7 @@ export const FeatureTile: React.FC<Tile & {
                     {text}
                 </p>
             </div>
-            <img src={`/icons/${image}`} alt="" />
+            {getTileImage(id, index)}
         </li>
     )
 }

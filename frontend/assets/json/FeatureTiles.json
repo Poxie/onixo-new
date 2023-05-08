@@ -4,18 +4,15 @@
         "tiles": [
             {
                 "title": "Many different actions",
-                "text": "We provide a large range of different moderation actions. Everything from warn, mute, kick and ban.",
-                "image": "mod-tile-1.svg"
+                "text": "We provide a large range of different moderation actions. Everything from warn, mute, kick and ban."
             },
             {
                 "title": "Log all your actions",
-                "text": "Log any actions made by yourself or by your moderators in your dedicated log channels.",
-                "image": "mod-tile-2.svg"
+                "text": "Log any actions made by yourself or by your moderators in your dedicated log channels."
             },
             {
                 "title": "Moderator roles",
-                "text": "Select what roles within your server should be  able to execute what action, or all actions.",
-                "image": "mod-tile-3.svg"
+                "text": "Select what roles within your server should be  able to execute what action, or all actions."
             }
         ]
     },

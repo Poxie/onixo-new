@@ -67,9 +67,10 @@ export const Features = () => {
             />
         </section>
 
-        {tiles && (
+        {active && tiles && (
             <div className={styles['feature-content']}>
                 <FeatureTiles 
+                    id={active}
                     tiles={tiles}
                 />
             </div>
