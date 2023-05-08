@@ -18,7 +18,8 @@ export const Features = () => {
 
     useEffect(() => {
         if(!defaultActive) return;
-        scrollDown();
+        setActive(defaultActive);
+        setTimeout(scrollDown, 50);
     }, [defaultActive]);
 
     const scrollDown = () => {
