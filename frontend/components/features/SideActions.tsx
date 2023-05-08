@@ -2,6 +2,8 @@ import styles from './Features.module.scss';
 import { QuickActions } from "../quick-actions";
 import { useEffect, useState } from 'react';
 
+const HEIGHT_PROPORTION = 1.7;
+
 export const SideActions: React.FC<{
     onClick: (text: string) => void;
     active: string | null;
@@ -16,7 +18,7 @@ export const SideActions: React.FC<{
             
             const { top, height } = header.getBoundingClientRect();
             
-            const distanceFromTop = top + height / 1.5;
+            const distanceFromTop = top + height / HEIGHT_PROPORTION;
             setVisible(distanceFromTop < 0);
         }
         onScroll();
