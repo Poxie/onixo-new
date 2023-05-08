@@ -6,8 +6,6 @@ import { SideActions } from './SideActions';
 import { useRouter } from 'next/router';
 import { FeatureTiles } from './FeatureTiles';
 
-const HEIGHT_PROPORTION = 1.4;
-
 export const Features = () => {
     const router = useRouter();
     const { f: defaultActive } = router.query as { f?: string };
@@ -25,8 +23,8 @@ export const Features = () => {
         if(!ref.current) return;
         const { top, height } = ref.current?.getBoundingClientRect();
 
-        if(!active || window.scrollY < top + height / HEIGHT_PROPORTION) {
-            window.scrollTo({ top: top + height / HEIGHT_PROPORTION + window.scrollY });
+        if(!active || window.scrollY < top + height) {
+            window.scrollTo({ top: top + height + window.scrollY });
         }
     }
     const toggleItem = (item: string) => {
