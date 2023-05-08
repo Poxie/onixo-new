@@ -319,8 +319,8 @@
     }
 }
 @media (max-width: 800px) {
-    .action-list {
-        --row-amount: 2;
+    .qa-actions {
+        --row-amount: 2 !important;
     }
     .qa-container {
         --height: 700px;
