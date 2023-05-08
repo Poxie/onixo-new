@@ -133,9 +133,6 @@
     }
 }
 @media (max-width: 550px) {
-    .header {
-        --section-padding: 20px !important;
-    }
     .tile {
         flex-direction: column;
         gap: var(--spacing-secondary) !important;
@@ -159,6 +156,18 @@
             li {
                 transform: translateY(100px) !important;
             }
+        }
+    }
+}
+@media (max-width: 500px) {
+    .header {
+        --section-padding: 20px !important;
+
+        h1 {
+            font-size: 35px;
+        }
+        p {
+            font-size: 16px;
         }
     }
 }
