@@ -16,6 +16,7 @@ export const QuickAction: React.FC<{
             <button 
                 className={className} 
                 onClick={onClick}
+                aria-label={text}
             >
                 {icon}
                 <span>
