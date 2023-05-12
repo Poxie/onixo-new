@@ -1,10 +1,11 @@
-import { User } from '@/types';
-import React, { ReactElement, useEffect, useState } from 'react';
+import { Guild, User } from '@/types';
+import React, { ReactElement, useCallback, useEffect, useState } from 'react';
 
 export type AuthState = {
     loading: boolean;
     token: string | null;
     user: User | null;
+    guilds: Guild[] | null;
 }
 
 const AuthContext = React.createContext({} as AuthState);
@@ -17,6 +18,15 @@ export const AuthProvider: React.FC<{
     const [loading, setLoading] = useState(true);
     const [token, setToken] = useState<string | null>(null);
     const [user, setUser] = useState<User | null>(null);
+    const [guilds, setGuilds] = useState<Guild[] | null>(null);
+
+    const get = useCallback((query: string) => {
+        return fetch(`${process.env.NEXT_PUBLIC_DISCORD_API}${query}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+    }, [token]);
 
     useEffect(() => {
         const token = localStorage.getItem('access_token');
@@ -28,21 +38,22 @@ export const AuthProvider: React.FC<{
     useEffect(() => {
         if(user || !token) return;
 
-        fetch(`${process.env.NEXT_PUBLIC_DISCORD_API}/users/@me`, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-        .then(res => res.json())
-        .then(user => {
-            setUser(user);
-            setLoading(false);
-        })
+        const reqs = [get('/users/@me'),get(`/users/@me/guilds`)];
+
+        Promise.all(reqs)
+            .then(async ([user, guilds]) => {
+                const userData = await user.json();
+                const guildData = await guilds.json();
+
+                setUser(userData);
+                setGuilds(guildData);
+            })
     }, [token]);
     
     const value = {
         token,
         user,
+        guilds,
         loading
     }
     return(
