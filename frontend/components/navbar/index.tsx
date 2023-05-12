@@ -4,6 +4,7 @@ import Button from "../button";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { HamIcon } from "@/assets/icons/HamIcon";
+import { NavbarUser } from "./NavbarUser";
 
 const TABS = ['Features', 'Premium', 'Invite'];
 
@@ -38,9 +39,7 @@ export const Navbar = () => {
                 </ul>
             </div>
             <div className={styles['buttons']}>
-                <Button>
-                    Login with Discord
-                </Button>
+                <NavbarUser />
                 <div 
                     className={styles['ham']}
                     onClick={() => setOpen(!open)}

@@ -33,6 +33,26 @@
     align-items: center;
     gap: var(--spacing-tertiary);
 }
+.user {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-quinary);
+    border-radius: var(--border-radius-tertiary);
+    transition: background-color .2s;
+    cursor: pointer;
+    padding: 10px;
+
+    span {
+        font-size: 13px;
+    }
+    img {
+        border-radius: 50%;
+    }
+
+    &:hover {
+        background-color: var(--background-tertiary);
+    }
+}
 
 .ham {
     display: none;
