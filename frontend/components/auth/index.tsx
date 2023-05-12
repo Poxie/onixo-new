@@ -1,10 +1,12 @@
 import { useRouter } from 'next/router';
 import styles from './Auth.module.scss';
 import { useEffect } from 'react';
+import { useAuth } from '@/contexts/auth';
 
 export const Auth = () => {
     const router = useRouter();
     const { code } = router.query;
+    const { setToken } = useAuth();
     
     useEffect(() => {
         if(!code) return;
@@ -23,7 +25,8 @@ export const Auth = () => {
             localStorage.setItem('access_token', access_token);
             localStorage.setItem('refresh_token', refresh_token);
 
-            window.location.href = '/';
+            setToken(access_token);
+            router.replace('/dashboard');
         })
     }, [code]);
 

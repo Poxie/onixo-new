@@ -2,8 +2,9 @@ import { Guild, User } from '@/types';
 import React, { ReactElement, useCallback, useEffect, useState } from 'react';
 
 export type AuthState = {
-    loading: boolean;
+    setToken: (token: string | null) => void;
     token: string | null;
+    loading: boolean;
     user: User | null;
     guilds: Guild[] | null;
 }
@@ -38,7 +39,7 @@ export const AuthProvider: React.FC<{
     useEffect(() => {
         if(user || !token) return;
 
-        const reqs = [get('/users/@me'),get(`/users/@me/guilds`)];
+        const reqs = [get('/users/@me'), get(`/users/@me/guilds`)];
 
         Promise.all(reqs)
             .then(async ([user, guilds]) => {
@@ -47,10 +48,13 @@ export const AuthProvider: React.FC<{
 
                 setUser(userData);
                 setGuilds(guildData);
+
+                setLoading(false);
             })
     }, [token]);
     
     const value = {
+        setToken,
         token,
         user,
         guilds,
