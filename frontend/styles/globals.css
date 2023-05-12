@@ -50,6 +50,7 @@ button {
   font-family: inherit;
   font-weight: inherit;
   display: block;
+  padding: 0;
 }
 
 ul {
