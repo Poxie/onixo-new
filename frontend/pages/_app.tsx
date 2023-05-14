@@ -32,7 +32,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
       <Provider store={store}>
         <AuthProvider>
           {!isDashboard && <Navbar />}
-          <Component {...pageProps} />
+          {getLayout(<Component {...pageProps} />)}
           <Footer />
         </AuthProvider>
       </Provider>
