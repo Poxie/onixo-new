@@ -1,0 +1,66 @@
+.dashboard {
+    --navbar-height: 72px;
+    --sidebar-width: 275px;
+}
+.navbar {
+    display: flex;
+    height: var(--navbar-height);
+    background-color: var(--background-secondary);
+    padding: var(--spacing-tertiary);
+}
+.navbar-icon {
+    width: 80px;
+    position: relative;
+    display: block;
+}
+.main {
+    display: flex;
+}
+.sidebar {
+    border-top: 2px solid var(--background-primary);
+    background-color: var(--background-secondary);
+    height: calc(100vh - var(--navbar-height));
+    width: var(--sidebar-width);
+    padding: var(--spacing-tertiary);
+}
+.tabs {
+    display: grid;
+    gap: 4px;
+}
+.tab {
+    display: flex;
+    gap: var(--spacing-quinary);
+    align-items: center;
+    font-size: 14px;
+    color: var(--text-secondary);
+    padding: var(--spacing-quinary);
+    border-radius: var(--border-radius-tertiary);
+    transition: background-color .3s, color .3s;
+    font-weight: 600;
+    cursor: pointer;
+
+    svg {
+        width: 25px;
+        aspect-ratio: 1;
+        fill: var(--text-secondary);
+        transition: fill .3s;
+        display: block;
+    }
+
+    &:hover {
+        background-color: var(--background-tertiary);
+        color: var(--text-primary);
+
+        svg {
+            fill: var(--text-primary);
+        }
+    }
+    &.active, &:active {
+        background-color: var(--background-quaternary);
+        color: var(--text-primary);
+
+        svg {
+            fill: var(--text-primary);
+        }
+    }
+}
