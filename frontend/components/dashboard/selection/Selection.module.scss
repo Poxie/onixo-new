@@ -84,6 +84,21 @@
     }
 }
 
+.text-placeholder, .button-placeholder {  
+    opacity: .4;
+    background-color: var(--background-quaternary);
+}
+.text-placeholder {
+    width: 60%;
+    height: 20px;
+    border-radius: 4px;
+}
+.button-placeholder {
+    height: 39px;
+    margin-top: var(--spacing-quaternary);
+    border-radius: var(--border-radius-tertiary);
+}
+
 @media (max-width: 800px) {
     .guild-list {
         --row-amount: 2;

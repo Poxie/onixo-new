@@ -1,13 +1,11 @@
-import Image from 'next/image';
 import styles from './Selection.module.scss';
 import { useAuth } from "@/contexts/auth"
-import { getGuildIcon } from '@/utils/getImages';
-import Button from '@/components/button';
 import { GuildItem } from './GuildItem';
+import { GuildItemSkeleton } from './GuildItemSkeleton';
 
+const PLACEHOLDER_COUNT = 8;
 export const Selection = () => {
     const { guilds } = useAuth();
-    if(!guilds) return null;
 
     return(
         <main className={styles['container']}>
@@ -15,12 +13,18 @@ export const Selection = () => {
                 Select your server
             </h1>
             <ul className={styles['guild-list']}>
-                {guilds.map(guild => (
-                    <GuildItem 
-                        {...guild}
-                        key={guild.id}
-                    />
-                ))}
+                {guilds ? (
+                    guilds.map(guild => (
+                        <GuildItem 
+                            {...guild}
+                            key={guild.id}
+                        />
+                    ))
+                ) : (
+                    Array.from(Array(PLACEHOLDER_COUNT)).map((_,key) => (
+                        <GuildItemSkeleton key={key} />
+                    ))
+                )}
             </ul>
         </main>
     )
