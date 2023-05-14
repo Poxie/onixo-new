@@ -18,6 +18,9 @@
 # production
 /frontend/build
 
+# env
+/frontend/.env.*
+
 # misc
 .DS_Store
 *.pem
