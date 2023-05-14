@@ -4,6 +4,10 @@ import { Guild } from "@/types";
 import { getGuildIcon } from '@/utils/getImages';
 import Button from '@/components/button';
 
+const getInviteLink = (guildId: string) => (
+    `https://discord.com/oauth2/authorize?client_id=814312727115071499&scope=bot&permissions=8&guild_id=${guildId}`
+)
+
 export const GuildItem: React.FC<Guild> = ({ id, icon, name, invited }) => {
     return(
         <li className={styles['guild-item']}>
@@ -43,7 +47,7 @@ export const GuildItem: React.FC<Guild> = ({ id, icon, name, invited }) => {
                         Go to Dashboard
                     </Button>
                 ) : (
-                    <Button>
+                    <Button href={getInviteLink(id)}>
                         Invite to Server
                     </Button>
                 )}
