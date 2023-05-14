@@ -1,4 +1,4 @@
-import { Guild, User } from '@/types';
+import { User } from '@/types';
 import React, { ReactElement, useCallback, useEffect, useState } from 'react';
 
 export type AuthState = {
@@ -6,7 +6,7 @@ export type AuthState = {
     token: string | null;
     loading: boolean;
     user: User | null;
-    guilds: Guild[] | null;
+    get: <T>(query: string, endpoint?: 'discord' | 'backend') => Promise<T>;
 }
 
 const AuthContext = React.createContext({} as AuthState);
@@ -19,14 +19,15 @@ export const AuthProvider: React.FC<{
     const [loading, setLoading] = useState(true);
     const [token, setToken] = useState<string | null>(null);
     const [user, setUser] = useState<User | null>(null);
-    const [guilds, setGuilds] = useState<Guild[] | null>(null);
 
-    const get = useCallback((query: string, endpoint: 'discord' | 'backend'='discord') => {
+    const get = useCallback(async function<T>(query: string, endpoint: 'discord' | 'backend'='discord') {
         return fetch(`${endpoint === 'discord' ? process.env.NEXT_PUBLIC_DISCORD_API : process.env.NEXT_PUBLIC_API_ENDPOINT}${query}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         })
+        .then(res => res.json())
+        .then((data: T) => data)
     }, [token]);
 
     useEffect(() => {
@@ -39,16 +40,9 @@ export const AuthProvider: React.FC<{
     useEffect(() => {
         if(user || !token) return;
 
-        const reqs = [get('/users/@me'), get(`/guilds`, 'backend')];
-
-        Promise.all(reqs)
-            .then(async ([user, guilds]) => {
-                const userData = await user.json();
-                const guildData = await guilds.json();
-
-                setUser(userData);
-                setGuilds(guildData);
-
+        get<User>('/users/@me')
+            .then(user => {
+                setUser(user);
                 setLoading(false);
             })
     }, [token]);
@@ -57,8 +51,8 @@ export const AuthProvider: React.FC<{
         setToken,
         token,
         user,
-        guilds,
-        loading
+        loading,
+        get
     }
     return(
         <AuthContext.Provider value={value}>
