@@ -2,6 +2,7 @@
     margin: 0 auto;
     width: var(--width-main);
     max-width: var(--width-main-max);
+    min-height: calc(100vh - var(--navbar-height) - var(--footer-height));
 
     h1 {
         margin: 0;
