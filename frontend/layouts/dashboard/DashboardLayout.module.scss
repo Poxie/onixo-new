@@ -31,16 +31,15 @@
     display: flex;
     gap: var(--spacing-quinary);
     align-items: center;
-    font-size: 14px;
+    font-size: 12px;
     color: var(--text-secondary);
     padding: var(--spacing-quinary);
     border-radius: var(--border-radius-tertiary);
     transition: background-color .3s, color .3s;
-    font-weight: 600;
     cursor: pointer;
 
     svg {
-        width: 25px;
+        width: 22px;
         aspect-ratio: 1;
         fill: var(--text-secondary);
         transition: fill .3s;
