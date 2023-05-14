@@ -1,3 +1,3 @@
-import { Dashboard } from "@/components/dashboard";
+import { Selection } from "@/components/dashboard/selection";
 
-export default Dashboard;
+export default Selection;

@@ -1,10 +1,10 @@
 import Image from 'next/image';
-import styles from './Dashboard.module.scss';
+import styles from './Selection.module.scss';
 import { useAuth } from "@/contexts/auth"
 import { getGuildIcon } from '@/utils/getImages';
-import Button from '../button';
+import Button from '@/components/button';
 
-export const Dashboard = () => {
+export const Selection = () => {
     const { guilds } = useAuth();
     if(!guilds) return null;
 
