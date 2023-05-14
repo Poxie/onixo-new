@@ -11,4 +11,5 @@ export type Guild = {
     icon: string;
     owner_id: string;
     splash?: string;
+    invited: boolean;
 }

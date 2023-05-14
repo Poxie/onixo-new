@@ -11,15 +11,16 @@ export const Auth = () => {
     useEffect(() => {
         if(!code) return;
 
+        const formData = new FormData();
+        formData.append('code', code as string);
+
         fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/auth`, {
             method: 'POST',
-            body: JSON.stringify({ code }),
-            headers: {
-                'Content-Type': 'application/json'
-            }
+            body: formData
         })
         .then(res => res.json())
         .then(response => {
+            console.log(response);
             const { access_token, refresh_token } = response;
             
             localStorage.setItem('access_token', access_token);

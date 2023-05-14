@@ -6,7 +6,7 @@ import Button from '../button';
 
 export const Dashboard = () => {
     const { guilds } = useAuth();
-    if(!guilds) return;
+    if(!guilds) return null;
 
     return(
         <main className={styles['container']}>
@@ -17,26 +17,45 @@ export const Dashboard = () => {
                 {guilds.map(guild => (
                     <li className={styles['guild-item']}>
                         <div className={styles['guild-item-banner']}>
-                            <Image 
-                                src={getGuildIcon(guild.id, guild.icon)}
-                                alt=""
-                                fill
-                            />
+                            {guild.icon && (
+                                <Image 
+                                    src={getGuildIcon(guild.id, guild.icon)}
+                                    alt=""
+                                    fill
+                                />
+                            )}
                         </div>
                         <div className={styles['guild-item-text']}>
-                            <Image 
-                                width={60}
-                                height={60}
-                                src={getGuildIcon(guild.id, guild.icon)}
-                                className={styles['guild-item-icon']}
-                                alt=""
-                            />
+                            <div className={styles['guild-item-icon']}>
+                                {guild.icon ? (
+                                    <Image 
+                                        width={60}
+                                        height={60}
+                                        src={getGuildIcon(guild.id, guild.icon)}
+                                        className={styles['guild-item-icon']}
+                                        alt=""
+                                    />
+                                ) : (
+                                    <span>
+                                        {guild.name[0].toUpperCase()}
+                                    </span>
+                                )}
+                            </div>
                             <span>
                                 {guild.name}
                             </span>
-                            <Button>
-                                Go to Dashboard
-                            </Button>
+                            {guild.invited ? (
+                                <Button 
+                                    type={'tertiary'}
+                                    href={`/dashboard/${guild.id}`}
+                                >
+                                    Go to Dashboard
+                                </Button>
+                            ) : (
+                                <Button>
+                                    Invite to Server
+                                </Button>
+                            )}
                         </div>
                     </li>
                 ))}

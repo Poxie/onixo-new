@@ -21,8 +21,8 @@ export const AuthProvider: React.FC<{
     const [user, setUser] = useState<User | null>(null);
     const [guilds, setGuilds] = useState<Guild[] | null>(null);
 
-    const get = useCallback((query: string) => {
-        return fetch(`${process.env.NEXT_PUBLIC_DISCORD_API}${query}`, {
+    const get = useCallback((query: string, endpoint: 'discord' | 'backend'='discord') => {
+        return fetch(`${endpoint === 'discord' ? process.env.NEXT_PUBLIC_DISCORD_API : process.env.NEXT_PUBLIC_API_ENDPOINT}${query}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -39,7 +39,7 @@ export const AuthProvider: React.FC<{
     useEffect(() => {
         if(user || !token) return;
 
-        const reqs = [get('/users/@me'), get(`/users/@me/guilds`)];
+        const reqs = [get('/users/@me'), get(`/guilds`, 'backend')];
 
         Promise.all(reqs)
             .then(async ([user, guilds]) => {
