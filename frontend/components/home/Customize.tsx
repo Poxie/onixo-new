@@ -15,7 +15,10 @@ export const Customize = () => {
                     After inviting Onixo, you will be able to customize your server settings on our dashboard. You will also be able to modify the commnads as you see fit.
                 </p>
                 <div className={styles['customize-buttons']}>
-                    <Button type={'tertiary'}>
+                    <Button 
+                        type={'tertiary'}
+                        href={'/dashboard'}
+                    >
                         Go to Dashboard
                     </Button>
                     <Button 
