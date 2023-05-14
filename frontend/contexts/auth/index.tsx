@@ -14,7 +14,7 @@ const AuthContext = React.createContext({} as AuthState);
 export const useAuth = () => React.useContext(AuthContext);
 
 export const AuthProvider: React.FC<{
-    children: ReactElement | ReactElement[]
+    children: any;
 }> = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const [token, setToken] = useState<string | null>(null);
