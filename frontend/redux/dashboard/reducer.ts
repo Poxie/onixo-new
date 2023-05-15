@@ -1,7 +1,8 @@
 import { AnyAction } from "redux";
 import { DashboardState } from "./types";
 import { createReducer, updateItemInArray, updateObject } from "../utils";
-import { ADD_AUTOMOD, SET_GUILDS, UPDATE_ANTILINK } from "./constants";
+import { ADD_AUTOMOD, SET_GUILDS, SET_GUILD_CHANNELS, UPDATE_ANTILINK } from "./constants";
+import { Channel } from "diagnostics_channel";
 
 // Reducer actions
 type ReducerAction = (state: DashboardState, action: AnyAction) => DashboardState;
@@ -38,11 +39,25 @@ const updateAntilink: ReducerAction = (state, action) => {
     })
 }
 
+const setGuildChannels: ReducerAction = (state, action) => {
+    const { guildId, channels } = action.payload;
+
+    return updateObject(state, {
+        channels: (
+            state.channels
+                .filter(item => item.guildId !== guildId)
+                .concat({ guildId, items: channels })
+        )
+    })
+}
+
 export const dashboardReducer = createReducer({
     guilds: null,
-    automod: []
+    automod: [],
+    channels: [] 
 }, {
     [SET_GUILDS]: setGuilds,
     [ADD_AUTOMOD]: addAutomod,
     [UPDATE_ANTILINK]: updateAntilink,
+    [SET_GUILD_CHANNELS]: setGuildChannels
 })
