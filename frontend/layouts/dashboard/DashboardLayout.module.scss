@@ -7,6 +7,8 @@
     height: var(--navbar-height);
     background-color: var(--background-secondary);
     padding: var(--spacing-tertiary);
+    position: sticky;
+    top: 0;
 }
 .navbar-icon {
     width: 80px;
@@ -26,6 +28,8 @@
     height: calc(100vh - var(--navbar-height));
     width: var(--sidebar-width);
     padding: var(--spacing-tertiary);
+    position: sticky;
+    top: var(--navbar-height);
 
     &>* {
         padding: var(--spacing-tertiary) 0;

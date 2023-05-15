@@ -33,7 +33,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
         <AuthProvider>
           {!isDashboard && <Navbar />}
           {getLayout(<Component {...pageProps} />)}
-          <Footer />
+          {!isDashboard && <Footer />}
         </AuthProvider>
       </Provider>
     </div>
