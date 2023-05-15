@@ -1,6 +1,6 @@
 import os, requests
 from database import database
-from utils.constants import ALLOWED_ANTILINK_SITES
+from utils.constants import ALLOWED_ANTILINK_SITES, ALLOWED_LOGGING_ACTIONS
 from flask import Blueprint, request, jsonify, abort
 from utils.auth import get_access_token
 
@@ -31,6 +31,16 @@ def get_bot_guilds():
             admin_guilds.append(guild)
 
     return jsonify(admin_guilds)
+
+@guilds.get('/guilds/<int:guild_id>/channels')
+def get_guild_channels(guild_id: int):
+    headers = {'Authorization': f'Bot {os.getenv("BOT_TOKEN")}'}
+    r = requests.get(f'{API_ENDPOINT}/guilds/{guild_id}/channels', headers=headers)
+    channels = r.json()
+
+    text_channels = [channel for channel in channels if channel['type'] == 0]
+
+    return jsonify(text_channels)
 
 @guilds.get('/guilds/<int:guild_id>/automod')
 def get_guild_automod(guild_id: int):
@@ -81,6 +91,66 @@ def update_guild_antilink(guild_id: int):
     db.update_one({ '_id': guild_id }, {
         '$set': {
             f'antilink.{property}': value
+        }
+    })
+
+    return jsonify({})
+
+@guilds.patch('/guilds/<int:guild_id>/action-logs')
+def update_action_logs(guild_id: int):
+    access_token = get_access_token(request.headers)
+
+    db = database['logging']
+
+    action = request.form.get('action')
+    channel_id = request.form.get('channel_id')
+
+    if not action or not channel_id:
+        abort(400, 'action and channel_id are required properties')
+
+    if action not in ALLOWED_LOGGING_ACTIONS:
+        abort(400, 'action is unsupported')
+
+    try:
+        channel_id = int(channel_id)
+    except:
+        abort(400, 'channel_id must be an integer')
+
+    # Determining log key
+    if action == 'all':
+        key = 'all_logs_channel'
+    else:
+        key = f'{action}_log_channel'
+
+    # Removing previous webhook
+    cursor = db.find_one({ '_id': guild_id })
+    prev_action = cursor[f'{key}']
+
+    if len(prev_action) >= 2:
+        prev_channel_id = prev_action[0]
+        prev_webhook_id = prev_action[1]
+        prev_webhook_token = prev_action[2]
+
+        r = requests.delete(f'{API_ENDPOINT}/webhooks/{prev_webhook_id}/{prev_webhook_token}')
+
+    # Creating new webhook for new channel
+    headers = {
+        'Authorization': f'Bot {os.getenv("BOT_TOKEN")}',
+        'Content-Type': 'application/json'
+    }
+    data = {
+        'name': 'Onixo'
+    }
+    r2 = requests.post(f'{API_ENDPOINT}/channels/{channel_id}/webhooks', json=data, headers=headers)
+    data = r2.json()
+
+    webhook_id = data['id']
+    webhook_token = data['token']
+
+    # Updating db with new webhook and channel
+    db.update_one({ '_id': guild_id }, {
+        '$set': {
+            f'{key}': [channel_id, webhook_id, webhook_token]
         }
     })
 
