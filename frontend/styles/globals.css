@@ -19,6 +19,7 @@
   --spacing-tertiary: 20px;
   --spacing-quaternary: 15px;
   --spacing-quinary: 10px;
+  --spacing-senary: 5px;
 
   --border-radius-primary: 12px;
   --border-radius-secondary: 10px;
@@ -51,6 +52,7 @@ button {
   font-weight: inherit;
   display: block;
   padding: 0;
+  text-align: unset;
 }
 
 ul {
