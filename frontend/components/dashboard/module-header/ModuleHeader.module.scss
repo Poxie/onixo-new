@@ -1,0 +1,19 @@
+.container {
+    background-color: var(--background-secondary);
+    border-radius: var(--border-radius-secondary);
+    padding: var(--spacing-tertiary);
+    gap: var(--spacing-quinary);
+    display: grid;
+
+    h1, p {
+        margin: 0;
+    }
+    h1 {
+        font-size: 25px;
+        font-weight: 500;
+    }
+    p {
+        font-size: 14px;
+        color: var(--text-secondary);
+    }
+}

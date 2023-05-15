@@ -11,7 +11,7 @@ export const DashboardLayout: React.FC<{
             <Navbar />
             <div className={styles['main']}>
                 <Sidebar />
-                <main>
+                <main className={styles['dash-content']}>
                     {children}
                 </main>
             </div>
