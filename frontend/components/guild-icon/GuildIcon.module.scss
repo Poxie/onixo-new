@@ -1,0 +1,18 @@
+.container {
+    --icon-size: 32px;
+    position: relative;
+    width: var(--icon-size);
+    height: var(--icon-size);
+    background-color: var(--background-quaternary);
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-weight: 600;
+
+    img {
+        display: block;
+        border-radius: 50%;
+    }
+}
