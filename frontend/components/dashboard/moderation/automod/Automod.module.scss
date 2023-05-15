@@ -25,6 +25,23 @@
         color: var(--text-secondary);
     }
 }
+.preset-item-skeleton {
+    height: 72.5px;
+    align-items: center;
+
+    .skeleton-text {
+        width: 40%;
+        height: 22px;
+        border-radius: 4px;
+        background-color: var(--background-quaternary);
+    }
+    .skeleton-button {
+        height: 41px;
+        width: 80px;
+        background-color: var(--background-quaternary);
+        border-radius: var(--border-radius-tertiary);
+    }
+}
 .link-container {
     margin-top: var(--spacing-senary);
     padding: var(--spacing-quaternary);

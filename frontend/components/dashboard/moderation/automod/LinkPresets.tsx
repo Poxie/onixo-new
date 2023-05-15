@@ -4,6 +4,7 @@ import styles from './Automod.module.scss';
 import { useAppSelector } from '@/redux/store';
 import { selectAntilinkById } from '@/redux/dashboard/selectors';
 import { useMemo } from 'react';
+import { LinkPresetItemSkeleton } from './LinkPresetItemSkeleton';
 
 const ID_TO_TEXT: {[key: string]: any} = {
     'discord': 'Discord',
@@ -13,6 +14,7 @@ const ID_TO_TEXT: {[key: string]: any} = {
     'instagram': 'Instagram',
     'facebook': 'Facebook'
 }
+const PLACEHOLDER_COUNT = Object.keys(ID_TO_TEXT).length;
 
 export const LinkPresets = () => {
     const guildId = useGuildId();
@@ -28,7 +30,13 @@ export const LinkPresets = () => {
             })
     )), [antilink]);
 
-    if(!antilink) return null;
+    if(!antilink) return (
+        <ul className={styles['presets']}>
+            {Array.from(Array(PLACEHOLDER_COUNT)).map((_,key) => (
+                <LinkPresetItemSkeleton key={key} />
+            ))}
+        </ul>
+    )
 
     return(
         <ul className={styles['presets']}>
