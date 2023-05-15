@@ -1,14 +1,10 @@
 import Image from 'next/image';
 import styles from './Selection.module.scss';
-import { Guild } from "@/types";
 import { getGuildIcon } from '@/utils/getImages';
 import Button from '@/components/button';
 import { useAppSelector } from '@/redux/store';
 import { selectGuildById } from '@/redux/dashboard/selectors';
-
-const getInviteLink = (guildId: string) => (
-    `https://discord.com/oauth2/authorize?client_id=814312727115071499&scope=bot&permissions=8&guild_id=${guildId}`
-)
+import { getInviteLink } from '@/utils/getLinks';
 
 export const GuildItem: React.FC<{
     guildId: string;
