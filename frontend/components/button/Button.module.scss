@@ -59,7 +59,6 @@
             fill: var(--text-secondary);
         }
         &:hover:not(.disabled) {
-            transform: translateY(-2px);
             color: var(--text-primary);
         }
     }
