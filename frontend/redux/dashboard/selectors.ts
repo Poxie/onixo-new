@@ -7,6 +7,7 @@ const _selectId = (_:RootState, __:any, id: string) => id;
 export const selectGuilds = (state: RootState) => state.dashboard.guilds;
 export const selectAutomods = (state: RootState) => state.dashboard.automod;
 export const selectChannels = (state: RootState) => state.dashboard.channels;
+export const selectActionLogs = (state: RootState) => state.dashboard.actionLogs;
 
 export const selectGuildIds = createSelector(
     [selectGuilds],
@@ -41,4 +42,15 @@ export const selectGuildChannelIds = createSelector(
 export const selectChannelById = createSelector(
     [selectGuildChannels, _selectId],
     (channels, channelId) => channels?.find(channel => channel.id === channelId)
+)
+
+export const selectGuildActionLogs = createSelector(
+    [selectActionLogs, selectId],
+    (actionLogs, guildId) => (
+        actionLogs.find(item => item.guildId === guildId)?.logChannels
+    )
+)
+export const selectGuildActionLog = createSelector(
+    [selectGuildActionLogs, _selectId],
+    (channels, actionType) => (channels ? (channels as any)[`${actionType}_log${actionType === 'all' ? 's' : ''}_channel`] : undefined) as string | undefined
 )

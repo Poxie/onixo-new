@@ -6,17 +6,34 @@ import { ItemList } from '../../item-list';
 import { useAuth } from '@/contexts/auth';
 import { useGuildId } from '@/hooks/useGuildId';
 import { ActionLog } from './ActionLog';
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '@/redux/store';
+import { addActionLogs } from '@/redux/dashboard/actions';
+import { ReduxActionLogs } from '@/types';
+import { selectGuildActionLog } from '@/redux/dashboard/selectors';
 
 export const ActionLogs = () => {
     const guildId = useGuildId();
-    const { patch } = useAuth();
+    const { token, get, patch } = useAuth();
 
-    const updateChannel = (action: string, channelId: string) => {
+    const dispatch = useAppDispatch();
+    const allActionsChannel = useAppSelector(state => selectGuildActionLog(state, guildId, 'all'));
+
+    const updateChannel = (action: string, channelId: string | null) => {
         patch(`/guilds/${guildId}/action-logs`, {
             action,
             channel_id: channelId
         })
     }
+
+    useEffect(() => {
+        if(!token || !guildId) return;
+
+        get<ReduxActionLogs['logChannels']>(`/guilds/${guildId}/action-logs`, 'backend')
+            .then(channels => {
+                dispatch(addActionLogs(guildId, channels));
+            })
+    }, [get, guildId]);
 
     return(
         <ModuleSection
@@ -30,6 +47,7 @@ export const ActionLogs = () => {
             >
                 <ItemList 
                     onChange={itemId => updateChannel('all', itemId)}
+                    defaultActive={allActionsChannel ? allActionsChannel[0] : undefined}
                 />
             </ModuleSubsection>
             <ModuleSubsection className={logStyles['multi-section']}>

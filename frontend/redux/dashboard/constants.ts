@@ -2,3 +2,4 @@ export const SET_GUILDS = 'SET_GUILDS';
 export const ADD_AUTOMOD = 'ADD_AUTOMOD';
 export const UPDATE_ANTILINK = 'UPDATE_ANTILINK';
 export const SET_GUILD_CHANNELS = 'SET_GUILD_CHANNELS';
+export const ADD_ACTION_LOGS = 'ADD_ACTION_LOGS';
