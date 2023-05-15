@@ -2,13 +2,13 @@ import styles from './Selection.module.scss';
 import { GuildItem } from './GuildItem';
 import { GuildItemSkeleton } from './GuildItemSkeleton';
 import { useAppSelector } from '@/redux/store';
-import { selectGuilds } from '@/redux/dashboard/selectors';
+import { selectGuildIds } from '@/redux/dashboard/selectors';
 import { NextPageWithLayout } from '@/pages/_app';
 import { DashAuthLayout } from '@/layouts/dash-auth';
 
 const PLACEHOLDER_COUNT = 8;
 export const Selection: NextPageWithLayout = () => {
-    const guilds = useAppSelector(selectGuilds);
+    const guildIds = useAppSelector(selectGuildIds);
 
     return(
         <main className={styles['container']}>
@@ -16,11 +16,11 @@ export const Selection: NextPageWithLayout = () => {
                 Select your server
             </h1>
             <ul className={styles['guild-list']}>
-                {guilds ? (
-                    guilds.map(guild => (
+                {guildIds ? (
+                    guildIds.map(guildId => (
                         <GuildItem 
-                            {...guild}
-                            key={guild.id}
+                            guildId={guildId}
+                            key={guildId}
                         />
                     ))
                 ) : (

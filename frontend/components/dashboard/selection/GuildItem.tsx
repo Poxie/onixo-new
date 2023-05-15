@@ -3,12 +3,20 @@ import styles from './Selection.module.scss';
 import { Guild } from "@/types";
 import { getGuildIcon } from '@/utils/getImages';
 import Button from '@/components/button';
+import { useAppSelector } from '@/redux/store';
+import { selectGuildById } from '@/redux/dashboard/selectors';
 
 const getInviteLink = (guildId: string) => (
     `https://discord.com/oauth2/authorize?client_id=814312727115071499&scope=bot&permissions=8&guild_id=${guildId}`
 )
 
-export const GuildItem: React.FC<Guild> = ({ id, icon, name, invited }) => {
+export const GuildItem: React.FC<{
+    guildId: string;
+}> = ({ guildId }) => {
+    const guild = useAppSelector(state => selectGuildById(state, guildId));
+    if(!guild) return null;
+
+    const { id, name, icon, invited } = guild;
     return(
         <li className={styles['guild-item']}>
             <div className={styles['guild-item-banner']}>
