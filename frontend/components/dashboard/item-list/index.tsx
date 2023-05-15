@@ -3,7 +3,7 @@ import { useGuildId } from "@/hooks/useGuildId"
 import { selectGuildChannelIds } from "@/redux/dashboard/selectors";
 import { useAppSelector } from "@/redux/store";
 import { ListItem } from "./ListItem";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SelectedItem } from './SelectedItem';
 import { ArrowIcon } from '@/assets/icons/ArrowIcon';
 
@@ -16,6 +16,7 @@ export const ItemList: React.FC<{
 
     const [open, setOpen] = useState(false);
     const [activeId, setActiveId] = useState<string | null>(defaultActive);
+    const ref = useRef<HTMLButtonElement>(null);
 
     useEffect(() => setActiveId(defaultActive), [defaultActive]);
 
@@ -41,6 +42,7 @@ export const ItemList: React.FC<{
                             id={activeId}
                             guildId={guildId}
                             onClick={() => handleChange(null)}
+                            ref={ref}
                         />
                     ) : (
                         <span>

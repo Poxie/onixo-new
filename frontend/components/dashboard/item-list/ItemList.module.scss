@@ -33,6 +33,7 @@
         svg {
             width: 8px;
             fill: var(--text-secondary);
+            transition: fill .3s;
         }
     }
     &>svg {
@@ -40,6 +41,12 @@
         display: block;
         fill: var(--text-secondary);
         transition: transform .3s;
+    }
+
+    &:hover {
+        button svg {
+            fill: var(--text-primary);
+        }
     }
 }
 .items {
