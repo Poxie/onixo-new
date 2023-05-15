@@ -7,6 +7,7 @@ export type AuthState = {
     loading: boolean;
     user: User | null;
     get: <T>(query: string, endpoint?: 'discord' | 'backend') => Promise<T>;
+    patch: <T>(query: string, body?: Object) => Promise<T>;
 }
 
 const AuthContext = React.createContext({} as AuthState);
@@ -22,6 +23,32 @@ export const AuthProvider: React.FC<{
 
     const get = useCallback(async function<T>(query: string, endpoint: 'discord' | 'backend'='discord') {
         return fetch(`${endpoint === 'discord' ? process.env.NEXT_PUBLIC_DISCORD_API : process.env.NEXT_PUBLIC_API_ENDPOINT}${query}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(res => res.json())
+        .then((data: T) => data)
+    }, [token]);
+
+    const patch = useCallback(async function<T>(query: string, body?: Object, endpoint: 'discord' | 'backend'='discord') {
+        // If body is provided, create a form data
+        const formData = new FormData();
+        Object.entries(body || {}).forEach(([key, value]) => {
+            if(Array.isArray(value)) {
+                if(value[0] instanceof File) {
+                    value.forEach(v => formData.append(key, v));
+                } else {
+                    formData.append(key, JSON.stringify(value));
+                }
+                return;
+            }
+            formData.append(key, value);
+        })
+
+        return fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}${query}`, {
+            method: 'PATCH',
+            body: formData,
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -52,7 +79,8 @@ export const AuthProvider: React.FC<{
         token,
         user,
         loading,
-        get
+        get,
+        patch
     }
     return(
         <AuthContext.Provider value={value}>
