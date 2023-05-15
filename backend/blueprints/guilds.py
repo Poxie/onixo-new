@@ -77,15 +77,11 @@ def update_guild_antilink(guild_id: int):
             value = list(value)
         except:
             abort(400, 'Value must be a list')
-    
-    settings = db.find_one({ '_id': guild_id })
-    antilink = settings['antilink']
-    antilink[property] = value
 
     db.update_one({ '_id': guild_id }, {
         '$set': {
-            'antilink': antilink
+            f'antilink.{property}': value
         }
     })
 
-    return jsonify(antilink)
+    return jsonify({})
