@@ -137,6 +137,10 @@
     --icon-size: 28px !important;
     --letter-size: 14px !important;
 }
+.dd-item-skeleton:hover {
+    background-color: var(--background-tertiary) !important;
+    cursor: default;
+}
 .dd-icon-skeleton {
     @extend .dd-icon;
     border-radius: 50%;
