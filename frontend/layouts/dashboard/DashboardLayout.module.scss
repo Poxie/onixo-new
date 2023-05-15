@@ -135,6 +135,7 @@
 }
 .dd-icon {
     --icon-size: 28px !important;
+    --letter-size: 14px !important;
 }
 .dd-icon-skeleton {
     @extend .dd-icon;
