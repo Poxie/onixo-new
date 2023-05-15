@@ -1,3 +1,4 @@
+import { DashAuthLayout } from "@/layouts/dash-auth"
 import { DashboardLayout } from "@/layouts/dashboard"
 import { NextPageWithLayout } from "@/pages/_app"
 
@@ -10,7 +11,9 @@ export const Moderation: NextPageWithLayout = () => {
 }
 
 Moderation.getLayout = page => (
-    <DashboardLayout>
-        {page}
-    </DashboardLayout>
+    <DashAuthLayout>
+        <DashboardLayout>
+            {page}
+        </DashboardLayout>
+    </DashAuthLayout>
 )

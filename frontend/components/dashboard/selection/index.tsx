@@ -1,28 +1,14 @@
 import styles from './Selection.module.scss';
 import { GuildItem } from './GuildItem';
 import { GuildItemSkeleton } from './GuildItemSkeleton';
-import { useAppDispatch, useAppSelector } from '@/redux/store';
+import { useAppSelector } from '@/redux/store';
 import { selectGuilds } from '@/redux/dashboard/selectors';
-import { useEffect } from 'react';
-import { useAuth } from '@/contexts/auth';
-import { Guild } from '@/types';
-import { setGuilds } from '@/redux/dashboard/actions';
+import { NextPageWithLayout } from '@/pages/_app';
+import { DashAuthLayout } from '@/layouts/dash-auth';
 
 const PLACEHOLDER_COUNT = 8;
-export const Selection = () => {
-    const { get, token } = useAuth();
-
-    const dispatch = useAppDispatch();
+export const Selection: NextPageWithLayout = () => {
     const guilds = useAppSelector(selectGuilds);
-
-    useEffect(() => {
-        if(!token || guilds) return;
-
-        get<Guild[]>('/guilds', 'backend')
-            .then(guilds => {
-                dispatch(setGuilds(guilds));
-            })
-    }, [get]);
 
     return(
         <main className={styles['container']}>
@@ -46,3 +32,9 @@ export const Selection = () => {
         </main>
     )
 }
+
+Selection.getLayout = page => (
+    <DashAuthLayout>
+        {page}
+    </DashAuthLayout>
+)
