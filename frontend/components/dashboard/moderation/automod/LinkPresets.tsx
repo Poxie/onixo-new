@@ -1,6 +1,6 @@
 import { useGuildId } from '@/hooks/useGuildId';
 import { LinkPresetItem } from './LinkPresetItem';
-import styles from './Moderation.module.scss';
+import styles from './Automod.module.scss';
 import { useAppSelector } from '@/redux/store';
 import { selectAntilinkById } from '@/redux/dashboard/selectors';
 import { useMemo } from 'react';

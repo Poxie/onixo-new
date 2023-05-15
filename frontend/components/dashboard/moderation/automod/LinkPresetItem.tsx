@@ -1,5 +1,5 @@
 import { useAuth } from '@/contexts/auth';
-import styles from './Moderation.module.scss';
+import styles from './Automod.module.scss';
 import Button from "@/components/button"
 import { useAppDispatch } from '@/redux/store';
 import { updateAntilink } from '@/redux/dashboard/actions';

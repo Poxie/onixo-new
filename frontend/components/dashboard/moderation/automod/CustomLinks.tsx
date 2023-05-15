@@ -1,4 +1,4 @@
-import styles from './Moderation.module.scss';
+import styles from './Automod.module.scss';
 import { Input } from "@/components/input"
 
 export const CustomLinks = () => {
