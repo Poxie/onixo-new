@@ -1,0 +1,34 @@
+.container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    background-color: var(--background-tertiary);
+    border: 1px solid var(--background-quaternary);
+    border-radius: var(--border-radius-tertiary);
+
+    input, textarea {
+        width: 100%;
+        font-size: 14px;
+        outline: none;
+        padding: var(--spacing-quaternary);
+        border: none;
+        background-color: transparent;
+        color: var(--text-primary);
+    }
+    textarea {
+        min-height: 80px;
+        resize: vertical;
+    }
+
+    svg {
+        width: 14px;
+        height: 14px;
+        margin: var(--spacing-tertiary);
+        margin-right: 0;
+        fill: var(--text-secondary);
+        display: block;
+    }
+    label+textarea, label+input {
+        padding-left: 0;
+    }
+}
