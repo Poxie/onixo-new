@@ -1,0 +1,38 @@
+.selected {
+    padding: var(--spacing-quinary);
+    background-color: var(--background-tertiary);
+    border: 1px solid var(--background-quaternary);
+    border-radius: var(--border-radius-tertiary);
+    cursor: pointer;
+    width: 100%;
+}
+.items {
+    padding: var(--spacing-quinary);
+    background: var(--background-tertiary);
+    border: 1px solid var(--background-quaternary);
+    border-radius: var(--border-radius-tertiary);
+    margin-top: var(--spacing-senary);
+    max-height: 210px;
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+        width: 15px;
+    }
+    &::-webkit-scrollbar-thumb {
+        border: 5px solid var(--background-tertiary);
+        background-color: var(--background-primary);
+        border-radius: 120px;
+    }
+
+    button {
+        width: 100%;
+        padding: var(--spacing-quinary);
+        border-radius: var(--border-radius-tertiary);
+        transition: background-color .2s;
+        cursor: pointer;
+
+        &:hover {
+            background-color: var(--background-quaternary);
+        }
+    }
+}
