@@ -1,7 +1,7 @@
 import styles from './ModuleSubsection.module.scss';
 
 export const ModuleSubsection: React.FC<{
-    header: string;
+    header?: string;
     subHeader?: string;
     className?: string;
     children: any;
@@ -9,14 +9,20 @@ export const ModuleSubsection: React.FC<{
     return(
         <div>
             <div className={styles['header-container']}>
-                <span className={styles['header']}>
-                    {header}
-                </span>
-                <span className={styles['subheader']}>
-                    {subHeader}
-                </span>
+                {header && (
+                    <span className={styles['header']}>
+                        {header}
+                    </span>
+                )}
+                {subHeader && (
+                    <span className={styles['subheader']}>
+                        {subHeader}
+                    </span>
+                )}
             </div>
-            {children}
+            <div className={className}>
+                {children}
+            </div>
         </div>
     )
 }

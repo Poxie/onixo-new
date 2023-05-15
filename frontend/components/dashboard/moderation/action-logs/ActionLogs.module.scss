@@ -1,0 +1,17 @@
+.multi-section {
+    --row-count: 2;
+    display: grid;
+    gap: var(--spacing-tertiary);
+    grid-template-columns: repeat(var(--row-count), 1fr);
+}
+.action-text {
+    margin-bottom: var(--spacing-quinary);
+    p {
+        margin: 0;
+        font-size: 14px;
+    }
+    span {
+        font-size: 12px;
+        color: var(--text-secondary);
+    }
+}

@@ -12,10 +12,11 @@ import { selectAutomodFetched } from '@/redux/dashboard/selectors';
 import { addAutomod } from '@/redux/dashboard/actions';
 import { AutoMod } from '@/types';
 import { Automod } from './automod';
+import { ActionLogs } from './action-logs';
 
 const CHIPS = [
     { text: 'Automod', id: 'automod' },
-    { text: 'Logging', id: 'logging' },
+    { text: 'Action logs', id: 'action-logs' },
     { text: 'Commands', id: 'commands' },
 ]
 export const Moderation: NextPageWithLayout = () => {
@@ -51,6 +52,9 @@ export const Moderation: NextPageWithLayout = () => {
             />
             {activeChip === 'automod' && (
                 <Automod />
+            )}
+            {activeChip === 'action-logs' && (
+                <ActionLogs />
             )}
         </>
     )
