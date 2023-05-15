@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react"
 import { getInviteLink } from '@/utils/getLinks';
 import { ArrowIcon } from '@/assets/icons/ArrowIcon';
+import { SidebarDropdownSkeleton } from './SidebarDropdownSkeleton';
 
 export const SidebarDropdown = () => {
     const { guildId } = useRouter().query as { guildId: string };
@@ -22,7 +23,7 @@ export const SidebarDropdown = () => {
         setOpen(false);
     }, [guildId]);
 
-    if(!activeGuild) return null;
+    if(!activeGuild) return <SidebarDropdownSkeleton />;
 
     const selectedClassName = [
         styles['dd-item'],

@@ -81,6 +81,7 @@
     justify-content: space-between;
 
     .dd-selected-main {
+        flex: 1;
         display: flex;
         align-items: center;
         gap: var(--spacing-quinary);
@@ -134,4 +135,18 @@
 }
 .dd-icon {
     --icon-size: 28px !important;
+}
+.dd-icon-skeleton {
+    @extend .dd-icon;
+    border-radius: 50%;
+    min-width: var(--icon-size);
+    width: var(--icon-size);
+    height: var(--icon-size);
+    background-color: var(--background-quaternary);
+}
+.dd-text-skeleton {
+    height: 16px;
+    width: 45%;
+    background-color: var(--background-quaternary);
+    border-radius: 4px;
 }
