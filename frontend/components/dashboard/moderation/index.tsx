@@ -9,6 +9,14 @@ import { ModuleSubsection } from '../module-subsection';
 import { LinkPresets } from './LinkPresets';
 import { Input } from '@/components/input';
 import { CustomLinks } from './CustomLinks';
+import { useEffect } from 'react';
+import { useAuth } from '@/contexts/auth';
+import { useRouter } from 'next/router';
+import { useGuildId } from '@/hooks/useGuildId';
+import { useAppDispatch, useAppSelector } from '@/redux/store';
+import { selectAutomodFetched } from '@/redux/dashboard/selectors';
+import { addAutomod } from '@/redux/dashboard/actions';
+import { AutoMod } from '@/types';
 
 const CHIPS = [
     { text: 'Automod', id: 'automod' },
@@ -16,6 +24,22 @@ const CHIPS = [
     { text: 'Commands', id: 'commands' },
 ]
 export const Moderation: NextPageWithLayout = () => {
+    const guildId = useGuildId();
+    const { get, token } = useAuth();
+
+    const dispatch = useAppDispatch();
+    const hasFetched = useAppSelector(state => selectAutomodFetched(state, guildId));
+
+    // If automod has not yet fetched, fetch it
+    useEffect(() => {
+        if(!token || !guildId || hasFetched) return;
+
+        get<AutoMod>(`/guilds/${guildId}/automod`, 'backend')
+            .then(automod => {
+                dispatch(addAutomod(automod));
+            });
+    }, [get, guildId, hasFetched]);
+
     return(
         <>
             <ModuleHeader 

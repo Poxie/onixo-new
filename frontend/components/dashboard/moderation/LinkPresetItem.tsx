@@ -1,8 +1,11 @@
 import styles from './Moderation.module.scss';
 import Button from "@/components/button"
-import { LinkPreset } from "./LinkPresets"
 
-export const LinkPresetItem: React.FC<LinkPreset> = ({ id, text }) => {
+export const LinkPresetItem: React.FC<{
+    id: string;
+    text: string;
+    active: boolean;
+}> = ({ id, text, active }) => {
     return(
         <li className={styles['preset-item']}>
             <div className={styles['preset-text']}>
@@ -13,8 +16,8 @@ export const LinkPresetItem: React.FC<LinkPreset> = ({ id, text }) => {
                     Remove {text} links
                 </span>
             </div>
-            <Button type={'tertiary'}>
-                Enabled
+            <Button type={active ? 'tertiary' : 'primary'}>
+                {active ? 'Disable' : 'Enable'}
             </Button>
         </li>
     )

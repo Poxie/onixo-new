@@ -13,3 +13,16 @@ export type Guild = {
     splash?: string;
     invited: boolean;
 }
+
+export type AutoMod = {
+    guild_id: string;
+    antilink: {
+        discord: boolean;
+        youtube: boolean;
+        twitch: boolean;
+        instagram: boolean;
+        twitter: boolean;
+        facebook: boolean;
+        custom: string[]
+    }
+}
