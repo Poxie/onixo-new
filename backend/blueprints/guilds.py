@@ -1,5 +1,6 @@
 import os, requests
 from database import database
+from utils.constants import ALLOWED_ANTILINK_SITES
 from flask import Blueprint, request, jsonify, abort
 from utils.auth import get_access_token
 
@@ -52,3 +53,39 @@ def get_guild_automod(guild_id: int):
     }
 
     return jsonify(automod_settings)
+
+@guilds.patch('/guilds/<int:guild_id>/antilink')
+def update_guild_antilink(guild_id: int):
+    db = database['settings']
+
+    property = request.form.get('property')
+    value = request.form.get('value')
+
+    if not property or not value:
+        abort(400, 'Property or value is missing')
+    
+    if property not in ALLOWED_ANTILINK_SITES:
+        abort(400, 'Unsupported site')
+    
+    if value != 'custom':
+        if value not in ['false', 'true']:
+            abort(400, 'Value must be a boolean')
+
+        value = value == 'true'
+    else:
+        try:
+            value = list(value)
+        except:
+            abort(400, 'Value must be a list')
+    
+    settings = db.find_one({ '_id': guild_id })
+    antilink = settings['antilink']
+    antilink[property] = value
+
+    db.update_one({ '_id': guild_id }, {
+        '$set': {
+            'antilink': antilink
+        }
+    })
+
+    return jsonify(antilink)
