@@ -30,3 +30,25 @@ def get_bot_guilds():
             admin_guilds.append(guild)
 
     return jsonify(admin_guilds)
+
+@guilds.get('/guilds/<int:guild_id>/automod')
+def get_guild_automod(guild_id: int):
+    db = database['settings']
+
+    # Fetching guild's bot settings
+    settings = db.find_one({ '_id': guild_id })
+    if not settings:
+        return 404, 'Guild not found'
+    
+    # Converting antilink numbers to booleans
+    antilink = {}
+    for key, val in settings['antilink'].items():
+        antilink[key] = bool(val)
+
+    # Creating a dict with automod values to return
+    automod_settings = {
+        'guild_id': str(guild_id),
+        'antilink': antilink
+    }
+
+    return jsonify(automod_settings)
