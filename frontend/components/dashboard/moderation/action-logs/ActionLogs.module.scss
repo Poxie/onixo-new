@@ -3,6 +3,31 @@
     display: grid;
     gap: var(--spacing-tertiary);
     grid-template-columns: repeat(var(--row-count), 1fr);
+
+    &.disabled {
+        position: relative;
+
+        .action {
+            opacity: .2;
+        }
+
+        &::after {
+            content: 'Remove general logging channel to access these settings';
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            color: var(--text-secondary);
+            font-size: 20px;
+            font-weight: 600;
+            font-style: italic;
+        }
+    }
 }
 .action-text {
     margin-bottom: var(--spacing-quinary);

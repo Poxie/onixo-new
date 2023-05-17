@@ -37,6 +37,10 @@ export const ActionLogs = () => {
             })
     }, [get, guildId, allActionsChannel]);
 
+    const className = [
+        logStyles['multi-section'],
+        allActionsChannel ? logStyles['disabled'] : ''
+    ].join(' ');
     return(
         <ModuleSection
             header={'Action logging'}
@@ -53,7 +57,7 @@ export const ActionLogs = () => {
                     loading={allActionsChannel === undefined}
                 />
             </ModuleSubsection>
-            <ModuleSubsection className={logStyles['multi-section']}>
+            <ModuleSubsection className={className}>
                 <ActionLog 
                     type={'ban'}
                     onChange={(type, channelId) => updateChannel(type, channelId)}
