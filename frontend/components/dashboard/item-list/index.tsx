@@ -39,11 +39,13 @@ export const ItemList: React.FC<{
     ].join(' ');
     return(
         <div className={className}>
-            <button 
-                className={styles['selected']}
-                onClick={handleClick}
-                disabled={loading}
-            >
+            <div className={styles['selected']}>
+                <button 
+                    className={styles['selected-button']}
+                    onClick={handleClick}
+                    disabled={loading}
+                    aria-label="Select channhels"
+                />
                 <div className={styles['selected-main']}>
                     {loading ? (
                         <div className={styles['loading']} />
@@ -63,7 +65,7 @@ export const ItemList: React.FC<{
                     )}
                 </div>
                 <ArrowIcon />
-            </button>
+            </div>
             {open && (
                 <ul className={styles['items']}>
                     {channelIds?.map(channelId => (
