@@ -48,6 +48,7 @@ export const ActionLogs = () => {
                 <ItemList 
                     onChange={itemId => updateChannel('all', itemId)}
                     defaultActive={allActionsChannel ? allActionsChannel[0] : undefined}
+                    loading={!allActionsChannel}
                 />
             </ModuleSubsection>
             <ModuleSubsection className={logStyles['multi-section']}>

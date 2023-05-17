@@ -48,6 +48,13 @@
             fill: var(--text-primary);
         }
     }
+
+    .loading {
+        height: 31px;
+        width: 120px;
+        border-radius: 4px;
+        background-color: var(--background-quaternary);
+    }
 }
 .items {
     padding: var(--spacing-quinary);

@@ -10,7 +10,8 @@ import { ArrowIcon } from '@/assets/icons/ArrowIcon';
 export const ItemList: React.FC<{
     onChange?: (itemId: string | null) => void;
     defaultActive?: string;
-}> = ({ defaultActive=null, onChange }) => {
+    loading?: boolean;
+}> = ({ defaultActive=null, onChange, loading=false }) => {
     const guildId = useGuildId();
     const channelIds = useAppSelector(state => selectGuildChannelIds(state, guildId));
 
@@ -20,10 +21,16 @@ export const ItemList: React.FC<{
 
     useEffect(() => setActiveId(defaultActive), [defaultActive]);
 
-    const handleChange = (itemId: string | null) => {
+    const handleChange = (itemId: string | null, e: React.MouseEvent) => {
         setOpen(false);
         setActiveId(itemId)
         onChange && onChange(itemId);
+    }
+    const handleClick = (e: React.MouseEvent) => {
+        // Checks if click is on selected item item, if so return
+        if(e.currentTarget.contains(ref.current)) return;
+
+        setOpen(prev => !prev);
     }
 
     const className = [
@@ -34,20 +41,25 @@ export const ItemList: React.FC<{
         <div className={className}>
             <button 
                 className={styles['selected']}
-                onClick={() => setOpen(!open)}
+                onClick={handleClick}
+                disabled={loading}
             >
                 <div className={styles['selected-main']}>
-                    {activeId ? (
-                        <SelectedItem 
-                            id={activeId}
-                            guildId={guildId}
-                            onClick={() => handleChange(null)}
-                            ref={ref}
-                        />
+                    {loading ? (
+                        <div className={styles['loading']} />
                     ) : (
-                        <span>
-                            No channel selected.
-                        </span>
+                        activeId ? (
+                            <SelectedItem 
+                                id={activeId}
+                                guildId={guildId}
+                                onClick={e => handleChange(null, e)}
+                                ref={ref}
+                            />
+                        ) : (
+                            <span>
+                                No channel selected.
+                            </span>
+                        )
                     )}
                 </div>
                 <ArrowIcon />

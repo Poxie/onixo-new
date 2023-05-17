@@ -6,7 +6,7 @@ import { forwardRef } from "react";
 type Props = {
     id: string;
     guildId: string;
-    onClick?: () => void;
+    onClick?: (e: React.MouseEvent) => void;
 }
 export const SelectedItem = forwardRef<HTMLButtonElement, Props>(({ id, guildId, onClick }, ref) => {
     const channel = useAppSelector(state => selectChannelById(state, guildId, id));

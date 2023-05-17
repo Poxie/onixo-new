@@ -25,6 +25,7 @@ export const ActionLog: React.FC<{
             <ItemList 
                 onChange={channelId => onChange(type, channelId)}
                 defaultActive={channel ? channel[0] : undefined}
+                loading={!channel}
             />
         </div>
     )
