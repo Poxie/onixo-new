@@ -1,8 +1,9 @@
 import { AnyAction } from "redux";
 import { DashboardState } from "./types";
 import { createReducer, updateItemInArray, updateObject } from "../utils";
-import { ADD_ACTION_LOGS, ADD_AUTOMOD, SET_GUILDS, SET_GUILD_CHANNELS, UPDATE_ANTILINK } from "./constants";
+import { ADD_ACTION_LOGS, ADD_AUTOMOD, SET_GUILDS, SET_GUILD_CHANNELS, UPDATE_ACTION_LOG, UPDATE_ANTILINK } from "./constants";
 import { Channel } from "diagnostics_channel";
+import { ReduxActionLogs } from "@/types";
 
 // Reducer actions
 type ReducerAction = (state: DashboardState, action: AnyAction) => DashboardState;
@@ -63,6 +64,30 @@ const addActionLogs: ReducerAction = (state, action) => {
     })
 }
 
+const updateActionLog: ReducerAction = (state, action) => {
+    const { guildId, action: _action, webhookData }: {
+        guildId: string;
+        action: string;
+        webhookData: ReduxActionLogs['logChannels']['all_logs_channel'];
+    } = action.payload;
+
+    const key = _action === 'all' ? `all_logs_channel` : `${_action}_log_channel`;
+    const newLogs = state.actionLogs.map(log => {
+        if(log.guildId !== guildId) return log;
+        
+        const newLog = updateObject(log, {
+            logChannels: updateObject(log.logChannels, {
+                [key]: webhookData
+            })
+        })
+        return newLog
+    })
+
+    return updateObject(state, {
+        actionLogs: newLogs
+    })
+}
+
 export const dashboardReducer = createReducer({
     guilds: null,
     automod: [],
@@ -73,5 +98,6 @@ export const dashboardReducer = createReducer({
     [ADD_AUTOMOD]: addAutomod,
     [UPDATE_ANTILINK]: updateAntilink,
     [SET_GUILD_CHANNELS]: setGuildChannels,
-    [ADD_ACTION_LOGS]: addActionLogs
+    [ADD_ACTION_LOGS]: addActionLogs,
+    [UPDATE_ACTION_LOG]: updateActionLog
 })

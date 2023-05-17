@@ -1,5 +1,5 @@
 import { AutoMod, Channel, Guild, ReduxActionLogs } from "@/types";
-import { ADD_ACTION_LOGS, ADD_AUTOMOD, SET_GUILDS, SET_GUILD_CHANNELS, UPDATE_ANTILINK } from "./constants";
+import { ADD_ACTION_LOGS, ADD_AUTOMOD, SET_GUILDS, SET_GUILD_CHANNELS, UPDATE_ACTION_LOG, UPDATE_ANTILINK } from "./constants";
 
 export const setGuilds = (guilds: Guild[]) => ({
     type: SET_GUILDS,
@@ -20,4 +20,8 @@ export const setGuildChannels = (guildId: string, channels: Channel[]) => ({
 export const addActionLogs = (guildId: string, logChannels: ReduxActionLogs['logChannels']) => ({
     type: ADD_ACTION_LOGS,
     payload: { guildId, logChannels }
+})
+export const updateActionLog = (guildId: string, action: string, webhookData: ReduxActionLogs['logChannels']['all_logs_channel']) => ({
+    type: UPDATE_ACTION_LOG,
+    payload: { guildId, action, webhookData }
 })

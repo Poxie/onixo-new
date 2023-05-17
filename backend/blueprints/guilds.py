@@ -180,4 +180,10 @@ def update_action_logs(guild_id: int):
             }
         })
 
-    return jsonify({})
+    # Getting new channel/webhook id and token
+    new_settings = db.find_one({ '_id': guild_id })
+    new_action_settings = new_settings[key]
+    if new_action_settings:
+        new_action_settings[0] = str(new_action_settings[0])
+
+    return jsonify(new_action_settings)
