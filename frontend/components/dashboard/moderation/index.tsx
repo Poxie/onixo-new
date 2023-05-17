@@ -13,11 +13,12 @@ import { addAutomod } from '@/redux/dashboard/actions';
 import { AutoMod } from '@/types';
 import { Automod } from './automod';
 import { ActionLogs } from './action-logs';
+import { ModSettings } from './settings';
 
 const CHIPS = [
     { text: 'Automod', id: 'automod' },
     { text: 'Action logs', id: 'action-logs' },
-    { text: 'Commands', id: 'commands' },
+    { text: 'Settings', id: 'settings' },
 ]
 export const Moderation: NextPageWithLayout = () => {
     const guildId = useGuildId();
@@ -55,6 +56,9 @@ export const Moderation: NextPageWithLayout = () => {
             )}
             {activeChip === 'action-logs' && (
                 <ActionLogs />
+            )}
+            {activeChip === 'settings' && (
+                <ModSettings />
             )}
         </>
     )

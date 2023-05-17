@@ -1,9 +1,8 @@
 import { AnyAction } from "redux";
 import { DashboardState } from "./types";
 import { createReducer, updateItemInArray, updateObject } from "../utils";
-import { ADD_ACTION_LOGS, ADD_AUTOMOD, SET_GUILDS, SET_GUILD_CHANNELS, UPDATE_ACTION_LOG, UPDATE_ANTILINK } from "./constants";
-import { Channel } from "diagnostics_channel";
-import { ReduxActionLogs } from "@/types";
+import { ADD_ACTION_LOGS, ADD_AUTOMOD, SET_GUILDS, SET_GUILD_CHANNELS, SET_MOD_SETTINGS, UPDATE_ACTION_LOG, UPDATE_ANTILINK, UPDATE_MOD_SETTING } from "./constants";
+import { ReduxActionLogs, ReduxModSettings } from "@/types";
 
 // Reducer actions
 type ReducerAction = (state: DashboardState, action: AnyAction) => DashboardState;
@@ -88,16 +87,53 @@ const updateActionLog: ReducerAction = (state, action) => {
     })
 }
 
+const setModSettings: ReducerAction = (state, action) => {
+    const { guildId, settings }: ReduxModSettings = action.payload;
+
+    return updateObject(state, {
+        modSettings: (
+            state.modSettings
+                .filter(setting => setting.guildId !== guildId)
+                .concat({ guildId, settings })
+        )
+    })
+}
+
+const updateModSetting: ReducerAction = (state, action) => {
+    const { guildId, setting, value }: {
+        guildId: string;
+        setting: keyof ReduxModSettings['settings'];
+        value: boolean;
+    } = action.payload;
+
+    return updateObject(state, {
+        modSettings: (
+            state.modSettings.map(modSetting => {
+                if(modSetting.guildId !== guildId) return modSetting;
+
+                return updateObject(modSetting, {
+                    settings: updateObject(modSetting.settings, {
+                        [setting]: value
+                    })
+                })
+            })
+        )
+    })
+}
+
 export const dashboardReducer = createReducer({
     guilds: null,
     automod: [],
     channels: [],
     actionLogs: [],
+    modSettings: [],
 }, {
     [SET_GUILDS]: setGuilds,
     [ADD_AUTOMOD]: addAutomod,
     [UPDATE_ANTILINK]: updateAntilink,
     [SET_GUILD_CHANNELS]: setGuildChannels,
     [ADD_ACTION_LOGS]: addActionLogs,
-    [UPDATE_ACTION_LOG]: updateActionLog
+    [UPDATE_ACTION_LOG]: updateActionLog,
+    [SET_MOD_SETTINGS]: setModSettings,
+    [UPDATE_MOD_SETTING]: updateModSetting,
 })

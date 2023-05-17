@@ -1,0 +1,89 @@
+.checkbox{
+    --knob-size: 18px;
+    --spacing: 2px;
+    position: relative;
+    min-width: 40px;
+    width: 40px;
+    height: 24px;
+    border-radius: 60px;
+    background-color: var(--background-secondary);
+    border: 1px solid var(--background-quaternary);
+    cursor: pointer;
+  
+    .knob{
+        position: absolute;
+        width: var(--knob-size);
+        height: var(--knob-size);
+        top: var(--spacing);
+        left: var(--spacing);
+        background-color: var(--background-quaternary);
+        border-radius: 30px;
+    
+        .line1{
+            position: absolute;
+            top: 8px;
+            left: 3px;
+            width: 12px;
+            height: 2px;
+            transform: rotateZ(45deg);
+            transform-origin: center;
+        }
+
+        .line2{
+            position: absolute;
+            top: 8px;
+            left: 3px;
+            width: 12px;
+            height: 2px;
+            transform: rotateZ(-45deg);
+            transform-origin: center;
+        }
+    }
+
+    &.checked{
+        .knob{
+            animation: knob 0.3s ease-out 0s 1 normal forwards;
+            .line1{
+                animation: line1 0.3s ease-out 0s 1 normal forwards;
+            }
+            .line2{
+                animation: line2 0.3s ease-out 0s 1 normal forwards;
+            }
+        }
+    }
+    
+    &.unchecked{
+        .knob{
+            animation: knob 0.3s ease-out 0s 1 reverse forwards;
+        }
+        
+        .line1{
+            animation: line1 0.3s ease-out 0s 1 reverse forwards;
+        }
+
+        .line2{
+            animation: line2 0.3s ease-out 0s 1 reverse forwards;
+        }    
+    }
+}
+
+@keyframes knob{
+    0%   { width: var(--knob-size); height: var(--knob-size); top: var(--spacing); left: var(--spacing); }
+    33%  { width: 24px; height: 16px; top: 3px; left: var(--spacing); }
+    66%  { width: 24px; height: 16px; top: 3px; left: 12px; }
+    100% { width: var(--knob-size); height: var(--knob-size); top: var(--spacing); left: 18px; }
+}
+
+@keyframes line1{
+    0%   { top: 8px; left: 3px; width: 12px; height: 2px; background-color: var(--text-secondary); transform: rotateZ(45deg); }
+    25%  { top: 7px; left: 8px; width: 8px; height: 2px; transform: rotateZ( 0deg); }
+    75%  { top: 7px; left: 8px; width: 8px; height: 2px; transform: rotateZ( 0deg); }
+    100% { top: 10px; left: 3px; width: 6px; height: 2px; background-color: var(--text-primary); transform: rotateZ(45deg); }
+}
+
+@keyframes line2{
+    0%   { top: 8px; left: 3px; width: 12px; height: 2px; background-color: var(--text-secondary); transform: rotateZ(-45deg); }
+    25%  { top: 7px; left: 8px; width: 8px; height: 2px; transform: rotateZ(  0deg); }
+    75%  { top: 7px; left: 8px; width: 8px; height: 2px; transform: rotateZ(  0deg); }
+    100% { top: 8px; left: 6px; width: 10px; height: 2px; background-color: var(--text-primary); transform: rotateZ(-45deg); }
+}

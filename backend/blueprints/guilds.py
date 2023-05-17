@@ -1,6 +1,6 @@
 import os, requests
 from database import database
-from utils.constants import ALLOWED_ANTILINK_SITES, ALLOWED_LOGGING_ACTIONS
+from utils.constants import ALLOWED_ANTILINK_SITES, ALLOWED_LOGGING_ACTIONS, ALLOWED_MOD_SETTINGS_PROPERTIES
 from flask import Blueprint, request, jsonify, abort
 from utils.auth import get_access_token
 
@@ -187,3 +187,42 @@ def update_action_logs(guild_id: int):
         new_action_settings[0] = str(new_action_settings[0])
 
     return jsonify(new_action_settings)
+
+@guilds.get('/guilds/<int:guild_id>/mod-settings')
+def get_guild_mod_settings(guild_id: int):
+    db = database['settings']
+
+    settings = db.find_one({ '_id': guild_id })
+    mod_settings = settings['moderation']
+
+    if mod_settings:
+        for key, value in mod_settings.items():
+            mod_settings[key] = bool(value)
+
+    return jsonify(mod_settings)
+
+@guilds.patch('/guilds/<int:guild_id>/mod-settings')
+def update_guild_mod_settings(guild_id: int):
+    db = database['settings']
+
+    property = request.form.get('property')
+    value = request.form.get('value')
+
+    if not property or not value:
+        abort(400, 'Property and value are required')
+
+    if property not in ALLOWED_MOD_SETTINGS_PROPERTIES:
+        abort(400, 'Unsupported property')
+
+    if value not in ['true', 'false']:
+        abort(400, 'Unsupported value')
+
+    value = value == 'true'
+
+    db.update_one({ '_id': guild_id }, {
+        '$set': {
+            f'moderation.{property}': value
+        }
+    })
+
+    return jsonify({})

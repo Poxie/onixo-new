@@ -62,3 +62,13 @@ export type ReduxActionLogs = {
         warn_log_channel?: string[];
     }
 }
+export type ReduxModSettings = {
+    guildId: string;
+    settings: {
+        confirmation: boolean;
+        ephemeral: boolean;
+        incName: boolean;
+        incReason: boolean;
+        sendDMs: boolean;
+    }
+}
