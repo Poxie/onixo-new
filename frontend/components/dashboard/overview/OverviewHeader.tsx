@@ -10,8 +10,6 @@ import { GuildIcon } from '@/components/guild-icon';
 export const OverviewHeader = () => {
     const guildId = useGuildId();
     const guild = useAppSelector(state => selectGuildById(state, guildId));
-
-    if(!guild) return null;
     
     return(
         <header className={styles['header']}>
@@ -19,15 +17,24 @@ export const OverviewHeader = () => {
                 Overview for
             </ModuleSubheader>
             <div className={styles['header-guild']}>
-                <GuildIcon 
-                    guildId={guildId}
-                    icon={guild.icon}
-                    name={guild.name}
-                    className={styles['header-icon']}
-                />
-                <span>
-                    {guild.name}
-                </span>
+                {guild ? (
+                    <>
+                    <GuildIcon 
+                        guildId={guildId}
+                        icon={guild.icon}
+                        name={guild.name}
+                        className={styles['header-icon']}
+                    />
+                    <span>
+                        {guild.name}
+                    </span>
+                    </>
+                ) : (
+                    <>
+                    <div className={`${styles['header-icon']} ${styles['loading-icon']}`} />
+                    <div className={styles['loading-text']} />
+                    </>
+                )}
             </div>
         </header>
     )

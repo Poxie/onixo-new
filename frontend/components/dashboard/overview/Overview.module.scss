@@ -17,6 +17,16 @@
 .header-icon {
     --icon-size: 38px;
     --border-radius: var(--border-radius-tertiary);
+    background-color: var(--background-quaternary);
+    border-radius: var(--border-radius);
+    width: var(--icon-size);
+    height: var(--icon-size);
+}
+.loading-text {
+    height: 20px;
+    width: 150px;
+    background-color: var(--background-quaternary);
+    border-radius: 4px;
 }
 
 .module-list {
