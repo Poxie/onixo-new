@@ -27,6 +27,7 @@ export const Checkbox: React.FC<{
             className={className}
             onClick={handleChange}
             disabled={loading}
+            aria-label={checked ? 'Disable' : 'Enable'}
             key={`${checked}`}
         >
             {!loading && (
