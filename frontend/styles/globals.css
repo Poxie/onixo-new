@@ -8,6 +8,11 @@
   --color-primary: #5943ff;
   --color-secondary: #4837c8;
 
+  --menu-background: var(--background-tertiary);
+  --menu-separator-background: var(--background-quaternary);
+  --menu-item-background-hover: var(--background-quaternary);
+  --menu-item-background-active: var(--background-quaternary);
+
   --navbar-height: 104px;
   --footer-height: 92px;
 

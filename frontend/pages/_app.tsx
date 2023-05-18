@@ -1,6 +1,7 @@
 import { Footer } from '@/components/footer'
 import { Navbar } from '@/components/navbar'
 import { AuthProvider } from '@/contexts/auth'
+import { MenuProvider } from '@/contexts/menu'
 import { store } from '@/redux/store'
 import '@/styles/globals.css'
 import { NextPage } from 'next'
@@ -31,9 +32,11 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
     <div className={inter['className']}>
       <Provider store={store}>
         <AuthProvider>
-          {!isDashboard && <Navbar />}
-          {getLayout(<Component {...pageProps} />)}
-          {!isDashboard && <Footer />}
+          <MenuProvider>
+            {!isDashboard && <Navbar />}
+            {getLayout(<Component {...pageProps} />)}
+            {!isDashboard && <Footer />}
+          </MenuProvider>
         </AuthProvider>
       </Provider>
     </div>
