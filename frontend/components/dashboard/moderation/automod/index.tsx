@@ -16,12 +16,12 @@ export const Automod = () => {
             >
                 <LinkPresets />
             </ModuleSubsection>
-            <ModuleSubsection
+            {/* <ModuleSubsection
                 header={'Custom links'}
                 subHeader='Add your own custom links to scan for. We will automatically scan for all possible link combinations.'
             >
                 <CustomLinks />
-            </ModuleSubsection>
+            </ModuleSubsection> */}
         </ModuleSection>
     )
 }
