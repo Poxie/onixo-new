@@ -25,6 +25,9 @@ export const SidebarDropdown = () => {
 
     if(!activeGuild) return <SidebarDropdownSkeleton />;
 
+    const invitedGuilds = guilds?.filter(guild => guild.invited);
+    const notInvitedGuilds = guilds?.filter(guild => !guild.invited);
+
     const selectedClassName = [
         styles['dd-item'],
         styles['dd-selected'],
@@ -51,29 +54,64 @@ export const SidebarDropdown = () => {
             </button>
 
             {guilds && open && (
-                <ul className={styles['dd-items']}>
-                    {guilds.map(guild => {
-                        const href = guild.invited ? `/dashboard/${guild.id}` : getInviteLink(guild.id);
-                        return(
-                            <li key={guild.id}>
-                                <Link
-                                    className={styles['dd-item']}
-                                    href={href}
-                                >
-                                    <GuildIcon 
-                                        guildId={guild.id}
-                                        name={guild.name}
-                                        icon={guild.icon}
-                                        className={styles['dd-icon']}
-                                    />
-                                    <span>
-                                        {guild.name}
-                                    </span>
-                                </Link>
-                            </li>
-                        )
-                    })}
-                </ul>
+                <div className={styles['dd-items']}>
+                    {invitedGuilds && (
+                        <>
+                        <span className={styles['dd-header']}>
+                            Invited
+                        </span>
+                        <ul>
+                            {invitedGuilds.map(guild => (
+                                <li key={guild.id}>
+                                    <Link
+                                        className={styles['dd-item']}
+                                        href={`/dashboard/${guild.id}`}
+                                    >
+                                        <GuildIcon 
+                                            guildId={guild.id}
+                                            name={guild.name}
+                                            icon={guild.icon}
+                                            className={styles['dd-icon']}
+                                        />
+                                        <span>
+                                            {guild.name}
+                                        </span>
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                        </>
+                    )}
+                    {notInvitedGuilds && (
+                        <>
+                        <span className={styles['dd-header']}>
+                            Invite now
+                        </span>
+                        <ul>
+                            {notInvitedGuilds.map(guild => {
+                                return(
+                                    <li key={guild.id}>
+                                        <Link
+                                            className={styles['dd-item']}
+                                            href={getInviteLink(guild.id)}
+                                        >
+                                            <GuildIcon 
+                                                guildId={guild.id}
+                                                name={guild.name}
+                                                icon={guild.icon}
+                                                className={styles['dd-icon']}
+                                            />
+                                            <span>
+                                                {guild.name}
+                                            </span>
+                                        </Link>
+                                    </li>
+                                )
+                            })}
+                        </ul>
+                        </>
+                    )}
+                </div>
             )}
         </div>
     )

@@ -143,6 +143,19 @@
         border-radius: 120px;
     }
 }
+.dd-header {
+    display: block;
+    padding: var(--spacing-quinary);
+    font-size: 10px;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--text-secondary);
+
+    &:not(:first-child) {
+        margin-top: calc(var(--spacing-quinary));
+        border-top: 1px solid var(--background-quaternary);
+    }
+}
 .dd-item {
     width: 100%;
     cursor: pointer;
