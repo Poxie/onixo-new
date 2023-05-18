@@ -39,7 +39,7 @@ export const ActionLogs = () => {
 
     const className = [
         logStyles['multi-section'],
-        allActionsChannel ? logStyles['disabled'] : ''
+        (allActionsChannel && allActionsChannel[0]) ? logStyles['disabled'] : ''
     ].join(' ');
     return(
         <ModuleSection
