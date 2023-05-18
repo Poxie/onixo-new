@@ -118,6 +118,7 @@ def get_action_logs(guild_id: int):
 
     return jsonify(channels)
 
+
 @guilds.patch('/guilds/<int:guild_id>/action-logs')
 def update_action_logs(guild_id: int):
     db = database['logging']
@@ -146,10 +147,26 @@ def update_action_logs(guild_id: int):
         key = f'{action}_log_channel'
 
     # Removing previous webhook
-    cursor = db.find_one({ '_id': guild_id })
-    prev_action = cursor[f'{key}']
+    log_settings = db.find_one({ '_id': guild_id })
 
-    if prev_action and len(prev_action) >= 2:
+    # If server has not used logging previous, create first instance
+    if not log_settings:
+        new_logging_settings = {'_id': guild_id}
+        for action in ALLOWED_LOGGING_ACTIONS:
+            if action == 'all':
+                new_logging_settings[f'{action}_logs_channel'] = []
+            else:
+                new_logging_settings[f'{action}_log_channel'] = []
+
+        # Inserting initial logging object
+        db.insert_one(new_logging_settings)
+
+        # After creating, update with newly created settings
+        log_settings = db.find_one({ '_id': guild_id })
+
+    # Updating correct log setting
+    if log_settings[f'{key}'] and len(log_settings[f'{key}']) >= 2:
+        prev_action = log_settings[f'{key}']
         prev_channel_id = prev_action[0]
         prev_webhook_id = prev_action[1]
         prev_webhook_token = prev_action[2]
@@ -181,7 +198,7 @@ def update_action_logs(guild_id: int):
         # Resetting log channel
         db.update_one({ '_id': guild_id }, {
             '$set': {
-                f'{key}': None
+                f'{key}': []
             }
         })
 
