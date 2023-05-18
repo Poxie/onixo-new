@@ -103,12 +103,17 @@ def get_action_logs(guild_id: int):
     logging_channels = db.find_one({ '_id': guild_id })
 
     channels = {}
-    for key, value in logging_channels.items():
-        if key == '_id': continue
+    if logging_channels:
+        for key, value in logging_channels.items():
+            if key == '_id': continue
 
-        if value:
-            channels[key] = [str(value[0]), value[1], value[2]]
-        else:
+            if value:
+                channels[key] = [str(value[0]), value[1], value[2]]
+            else:
+                channels[key] = [None, None, None]
+    else:
+        for action in ['all', 'ban', 'kick', 'warn', 'mute']:
+            key = f'{action}_logs_channel' if action == 'all' else f'{action}_log_channel'
             channels[key] = [None, None, None]
 
     return jsonify(channels)
