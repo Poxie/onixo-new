@@ -10,7 +10,9 @@ import { ArrowIcon } from '@/assets/icons/ArrowIcon';
 import { SidebarDropdownSkeleton } from './SidebarDropdownSkeleton';
 
 export const SidebarDropdown = () => {
-    const { guildId } = useRouter().query as { guildId: string };
+    const router = useRouter();
+    const asPath = router.asPath;
+    const { guildId } = router.query as { guildId: string };
 
     const [active, setActive] = useState(guildId);
     const [open, setOpen] = useState(false);
@@ -61,24 +63,29 @@ export const SidebarDropdown = () => {
                             Invited
                         </span>
                         <ul>
-                            {invitedGuilds.map(guild => (
-                                <li key={guild.id}>
-                                    <Link
-                                        className={styles['dd-item']}
-                                        href={`/dashboard/${guild.id}`}
-                                    >
-                                        <GuildIcon 
-                                            guildId={guild.id}
-                                            name={guild.name}
-                                            icon={guild.icon}
-                                            className={styles['dd-icon']}
-                                        />
-                                        <span>
-                                            {guild.name}
-                                        </span>
-                                    </Link>
-                                </li>
-                            ))}
+                            {invitedGuilds.map(guild => {
+                                const splitPath = asPath.split('/');
+                                const extraPath = splitPath.slice(3, splitPath.length).join('/');
+
+                                return(
+                                    <li key={guild.id}>
+                                        <Link
+                                            className={styles['dd-item']}
+                                            href={`/dashboard/${guild.id}/${extraPath}`}
+                                        >
+                                            <GuildIcon 
+                                                guildId={guild.id}
+                                                name={guild.name}
+                                                icon={guild.icon}
+                                                className={styles['dd-icon']}
+                                            />
+                                            <span>
+                                                {guild.name}
+                                            </span>
+                                        </Link>
+                                    </li>
+                                )
+                            })}
                         </ul>
                         </>
                     )}
