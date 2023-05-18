@@ -64,10 +64,10 @@ const addActionLogs: ReducerAction = (state, action) => {
 }
 
 const updateActionLog: ReducerAction = (state, action) => {
-    const { guildId, action: _action, webhookData }: {
+    const { guildId, action: _action, channelId }: {
         guildId: string;
         action: string;
-        webhookData: ReduxActionLogs['logChannels']['all_logs_channel'];
+        channelId: ReduxActionLogs['logChannels']['all_logs_channel'];
     } = action.payload;
 
     const key = _action === 'all' ? `all_logs_channel` : `${_action}_log_channel`;
@@ -76,7 +76,7 @@ const updateActionLog: ReducerAction = (state, action) => {
         
         const newLog = updateObject(log, {
             logChannels: updateObject(log.logChannels, {
-                [key]: webhookData
+                [key]: channelId
             })
         })
         return newLog

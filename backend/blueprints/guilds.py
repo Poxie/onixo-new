@@ -108,13 +108,13 @@ def get_action_logs(guild_id: int):
             if key == '_id': continue
 
             if value:
-                channels[key] = [str(value[0]), value[1], value[2]]
+                channels[key] = str(value[0])
             else:
-                channels[key] = [None, None, None]
+                channels[key] = None
     else:
         for action in ['all', 'ban', 'kick', 'warn', 'mute']:
             key = f'{action}_logs_channel' if action == 'all' else f'{action}_log_channel'
-            channels[key] = [None, None, None]
+            channels[key] = None
 
     return jsonify(channels)
 
@@ -202,13 +202,16 @@ def update_action_logs(guild_id: int):
             }
         })
 
-    # Getting new channel/webhook id and token
+    # Getting new channel id
     new_settings = db.find_one({ '_id': guild_id })
     new_action_settings = new_settings[key]
-    if new_action_settings:
-        new_action_settings[0] = str(new_action_settings[0])
 
-    return jsonify(new_action_settings)
+    # Getting new channel_id
+    new_channel_id = None
+    if new_action_settings and len(new_action_settings) >= 2:
+        new_channel_id = str(new_action_settings[0])
+
+    return jsonify(new_channel_id)
 
 @guilds.get('/guilds/<int:guild_id>/mod-settings')
 def get_guild_mod_settings(guild_id: int):

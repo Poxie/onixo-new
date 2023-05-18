@@ -21,9 +21,9 @@ export const addActionLogs = (guildId: string, logChannels: ReduxActionLogs['log
     type: ADD_ACTION_LOGS,
     payload: { guildId, logChannels }
 })
-export const updateActionLog = (guildId: string, action: string, webhookData: ReduxActionLogs['logChannels']['all_logs_channel']) => ({
+export const updateActionLog = (guildId: string, action: string, channelId: ReduxActionLogs['logChannels']['all_logs_channel']) => ({
     type: UPDATE_ACTION_LOG,
-    payload: { guildId, action, webhookData }
+    payload: { guildId, action, channelId }
 })
 export const setModSettings = (guildId: string, settings: ReduxModSettings['settings']) => ({
     type: SET_MOD_SETTINGS,

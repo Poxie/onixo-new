@@ -20,11 +20,12 @@ export const ActionLogs = () => {
     const allActionsChannel = useAppSelector(state => selectGuildActionLog(state, guildId, 'all'));
 
     const updateChannel = (action: string, channelId: string | null) => {
+        // Updating UI with new channel
+        dispatch(updateActionLog(guildId, action, channelId))
+
         patch<ReduxActionLogs['logChannels']['all_logs_channel']>(`/guilds/${guildId}/action-logs`, {
             action,
             channel_id: channelId
-        }).then(webhookData => {
-            dispatch(updateActionLog(guildId, action, webhookData))
         })
     }
 
@@ -39,7 +40,7 @@ export const ActionLogs = () => {
 
     const className = [
         logStyles['multi-section'],
-        (allActionsChannel && allActionsChannel[0]) ? logStyles['disabled'] : ''
+        allActionsChannel ? logStyles['disabled'] : ''
     ].join(' ');
     return(
         <ModuleSection
@@ -53,7 +54,7 @@ export const ActionLogs = () => {
             >
                 <ItemList 
                     onChange={itemId => updateChannel('all', itemId)}
-                    defaultActive={allActionsChannel ? allActionsChannel[0] : undefined}
+                    defaultActive={allActionsChannel}
                     loading={allActionsChannel === undefined}
                 />
             </ModuleSubsection>

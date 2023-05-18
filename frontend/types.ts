@@ -55,11 +55,11 @@ export type ReduxChannel = {
 export type ReduxActionLogs = {
     guildId: string;
     logChannels: {
-        all_logs_channel?: string[];
-        ban_log_channel?: string[];
-        kick_log_channel?: string[];
-        mute_log_channel?: string[];
-        warn_log_channel?: string[];
+        all_logs_channel?: string | null;
+        ban_log_channel?: string | null;
+        kick_log_channel?: string | null;
+        mute_log_channel?: string | null;
+        warn_log_channel?: string | null;
     }
 }
 export type ReduxModSettings = {
