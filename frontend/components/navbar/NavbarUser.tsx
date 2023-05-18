@@ -7,6 +7,7 @@ import { useCallback, useRef } from 'react';
 import { useMenu } from '@/contexts/menu';
 import { MenuGroup } from '@/contexts/menu/types';
 import { useRouter } from 'next/router';
+import { useNavbarMenu } from '@/hooks/useNavbarMenu';
 
 const oauthUrl = `
 https://discord.com/oauth2/authorize
@@ -21,23 +22,7 @@ export const NavbarUser = () => {
     const { setMenu } = useMenu();
 
     const ref = useRef<HTMLButtonElement>(null);
-
-    const logout = useCallback(() => {
-        localStorage.removeItem('access_token')
-        localStorage.removeItem('refresh_token')
-        window.location.href = '/';
-    }, []);
-    const showMenu = useCallback(() => {
-        const groups: MenuGroup[] = [
-            [
-                { text: 'Dashboard', onClick: () => router.push('/dashboard') },
-            ],
-            [
-                { text: 'Log out', onClick: logout, type: 'danger' }
-            ]
-        ]
-        setMenu(groups, ref);
-    }, []);
+    const { show: showMenu } = useNavbarMenu(ref);
 
     if(loading) return null;
 

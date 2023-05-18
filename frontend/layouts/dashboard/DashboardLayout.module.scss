@@ -4,6 +4,8 @@
 }
 .navbar {
     display: flex;
+    align-items: center;
+    justify-content: space-between;
     height: var(--navbar-height);
     background-color: var(--background-secondary);
     padding: var(--spacing-tertiary);
@@ -14,6 +16,23 @@
     width: 80px;
     position: relative;
     display: block;
+}
+.navbar-user {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-quinary);
+    padding: var(--spacing-quinary);
+    border-radius: var(--border-radius-tertiary);
+    transition: background-color .3s;
+    cursor: pointer;
+
+    img {
+        border-radius: 50%;
+    }
+
+    &:hover {
+        background-color: var(--background-quaternary);
+    }
 }
 .main {
     display: flex;
