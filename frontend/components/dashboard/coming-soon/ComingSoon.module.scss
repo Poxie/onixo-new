@@ -1,0 +1,22 @@
+.container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: var(--spacing-primary);
+    background-color: var(--background-tertiary);
+    border-radius: var(--border-radius-tertiary);
+    text-align: center;
+
+    h1, p {
+        margin: 0;
+    }
+    h1 {
+        font-size: 20px;
+        margin-bottom: var(--spacing-quinary);
+    }
+    p {
+        color: var(--text-secondary);
+        font-size: 14px;
+        margin-bottom: var(--spacing-quaternary);
+    }
+}
