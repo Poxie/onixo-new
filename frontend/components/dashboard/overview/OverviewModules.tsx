@@ -5,7 +5,7 @@ import { useGuildId } from "@/hooks/useGuildId"
 import Link from "next/link"
 
 const modules = [
-    { text: 'Moderation', icon: <HammerIcon />, path: 'moderation' },
+    { text: 'Moderation', icon: <HammerIcon />, path: 'moderation/automod' },
     { text: 'Welcomes & Goodbyes', icon: <HandIcon />, path: 'greetings' },
 ]
 

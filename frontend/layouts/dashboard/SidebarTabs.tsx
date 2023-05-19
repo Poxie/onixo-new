@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 const TABS = [
     { text: 'Overview', path: '', icon: <OverviewIcon /> },
-    { text: 'Moderation', path: '/moderation', icon: <HammerIcon /> },
+    { text: 'Moderation', path: '/moderation', href: 'automod', icon: <HammerIcon /> },
     { text: 'Welcomes & Goodbyes', path: '/greetings', icon: <HandIcon /> },
 ]
 
@@ -19,8 +19,8 @@ export const SidebarTabs = () => {
     return(
         <ul className={styles['tabs']}>
             {TABS.map(tab => {
-                const path = `/dashboard/${guildId}${tab.path}`;
-                const isActive = path === asPath;
+                const path = `/dashboard/${guildId}${tab.path}/${tab.href ? tab.href : ''}`;
+                const isActive = !tab.path ? asPath === `/dashboard/${guildId}` : asPath.includes(tab.path);
 
                 const className = [
                     styles['tab'],

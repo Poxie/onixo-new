@@ -1,7 +1,6 @@
 import { ModuleSection } from '../../module-section';
 import { ModuleSubheader } from '../../module-subheader';
-import styles from '../Moderation.module.scss';
-import settingsStyles from './ModSettings.module.scss';
+import styles from './ModSettings.module.scss';
 import { SettingsItem } from './SettingsItem';
 import { useEffect } from 'react';
 import { useAuth } from '@/contexts/auth';
@@ -10,8 +9,12 @@ import { useAppDispatch, useAppSelector } from '@/redux/store';
 import { selectGuildModSettings, selectModSettingsFetched } from '@/redux/dashboard/selectors';
 import { ReduxModSettings } from '@/types';
 import { setModSettings } from '@/redux/dashboard/actions';
+import { DashAuthLayout } from '@/layouts/dash-auth';
+import { DashboardLayout } from '@/layouts/dashboard';
+import { ModerationLayout } from '@/layouts/moderation';
+import { NextPageWithLayout } from '@/pages/_app';
 
-export const ModSettings = () => {
+export const ModSettings: NextPageWithLayout = () => {
     const guildId = useGuildId();
     const { token, get } = useAuth();
 
@@ -31,13 +34,12 @@ export const ModSettings = () => {
         <ModuleSection
             header={'Moderation settings'}
             description={'Here you can update settings to change the display and behavior of our moderation commands and logging. These settings apply to all moderation actions and logs.'}
-            className={styles['section']}
         >
             <div>
                 <ModuleSubheader>
                     Command usage
                 </ModuleSubheader>
-                <div className={settingsStyles['section']}>
+                <div className={styles['section']}>
                     <SettingsItem 
                         id={'ephemeral'}
                         title={'Ephemeral'}
@@ -54,7 +56,7 @@ export const ModSettings = () => {
                 <ModuleSubheader>
                     Notify user by DMs
                 </ModuleSubheader>
-                <div className={settingsStyles['section']}>
+                <div className={styles['section']}>
                     <SettingsItem 
                         id={'sendDMs'}
                         title={'Send DMs'}
@@ -78,3 +80,13 @@ export const ModSettings = () => {
         </ModuleSection>
     )
 }
+
+ModSettings.getLayout = page => (
+    <DashAuthLayout>
+        <DashboardLayout>
+            <ModerationLayout>
+                {page}
+            </ModerationLayout>
+        </DashboardLayout>
+    </DashAuthLayout>
+)

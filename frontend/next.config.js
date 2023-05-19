@@ -11,6 +11,11 @@ const nextConfig = {
         destination: 'https://discord.com/oauth2/authorize?client_id=814312727115071499&scope=bot&permissions=8',
         permanent: true,
         basePath: false
+      },
+      {
+        source: '/dashboard/:guildId/moderation',
+        destination: '/dashboard/:guildId/moderation/automod',
+        permanent: true,
       }
     ]
   }

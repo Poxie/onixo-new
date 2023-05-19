@@ -1,5 +1,4 @@
-import styles from '../Moderation.module.scss';
-import logStyles from './ActionLogs.module.scss';
+import styles from './ActionLogs.module.scss';
 import { ModuleSection } from "../../module-section"
 import { ModuleSubsection } from '../../module-subsection';
 import { ItemList } from '../../item-list';
@@ -11,8 +10,12 @@ import { useAppDispatch, useAppSelector } from '@/redux/store';
 import { addActionLogs, updateActionLog } from '@/redux/dashboard/actions';
 import { ReduxActionLogs } from '@/types';
 import { selectGuildActionLog } from '@/redux/dashboard/selectors';
+import { NextPageWithLayout } from '@/pages/_app';
+import { DashAuthLayout } from '@/layouts/dash-auth';
+import { DashboardLayout } from '@/layouts/dashboard';
+import { ModerationLayout } from '@/layouts/moderation';
 
-export const ActionLogs = () => {
+export const ActionLogs: NextPageWithLayout = () => {
     const guildId = useGuildId();
     const { token, get, patch } = useAuth();
 
@@ -39,14 +42,13 @@ export const ActionLogs = () => {
     }, [get, guildId, allActionsChannel]);
 
     const className = [
-        logStyles['multi-section'],
-        allActionsChannel ? logStyles['disabled'] : ''
+        styles['multi-section'],
+        allActionsChannel ? styles['disabled'] : ''
     ].join(' ');
     return(
         <ModuleSection
             header={'Action logging'}
             description={'Decide where action logs should appear, if you decide they should appear at all.'}
-            className={styles['section']}
         >
             <ModuleSubsection
                 header={'General logging channel'}
@@ -79,3 +81,13 @@ export const ActionLogs = () => {
         </ModuleSection>
     )
 }
+
+ActionLogs.getLayout = page => (
+    <DashAuthLayout>
+        <DashboardLayout>
+            <ModerationLayout>
+                {page}
+            </ModerationLayout>
+        </DashboardLayout>
+    </DashAuthLayout>
+)
