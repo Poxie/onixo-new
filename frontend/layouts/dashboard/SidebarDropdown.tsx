@@ -8,11 +8,15 @@ import { useEffect, useState } from "react"
 import { getInviteLink } from '@/utils/getLinks';
 import { ArrowIcon } from '@/assets/icons/ArrowIcon';
 import { SidebarDropdownSkeleton } from './SidebarDropdownSkeleton';
+import { useScreenSizes } from '@/hooks/useScreenSizes';
 
+const ITEMS_VISIBLE_DEFAULT_THRESHOLD = 500;
 export const SidebarDropdown = () => {
     const router = useRouter();
     const asPath = router.asPath;
     const { guildId } = router.query as { guildId: string };
+
+    const screenSize = useScreenSizes();
 
     const [active, setActive] = useState(guildId);
     const [open, setOpen] = useState(false);
@@ -55,7 +59,7 @@ export const SidebarDropdown = () => {
                 <ArrowIcon />
             </button>
 
-            {guilds && open && (
+            {((guilds && open) || screenSize === 'phone') && (
                 <div className={styles['dd-items']}>
                     {invitedGuilds && (
                         <>

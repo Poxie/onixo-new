@@ -33,7 +33,9 @@ export const SidebarTabs = () => {
                             href={path}
                         >
                             {tab.icon}
-                            {tab.text}
+                            <span>
+                                {tab.text}
+                            </span>
                         </Link>
                     </li>
                 )

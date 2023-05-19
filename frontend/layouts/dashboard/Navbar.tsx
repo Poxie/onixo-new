@@ -1,12 +1,10 @@
 import Link from 'next/link';
 import styles from './DashboardLayout.module.scss';
 import { OnixoBannerIcon } from '@/assets/icons/OnixoBannerIcon';
-import { useMenu } from '@/contexts/menu';
 import { useAuth } from '@/contexts/auth';
 import Image from 'next/image';
 import { getUserAvatar } from '@/utils/getImages';
-import { useCallback, useRef } from 'react';
-import { MenuGroup } from '@/contexts/menu/types';
+import { useRef } from 'react';
 import { useNavbarMenu } from '@/hooks/useNavbarMenu';
 
 export const Navbar = () => {
