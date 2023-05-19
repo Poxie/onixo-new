@@ -30,13 +30,16 @@
 }
 
 .module-list {
-    --row-count: 6;
-    display: grid;
+    display: flex;
     gap: var(--spacing-quinary);
-    grid-template-columns: repeat(var(--row-count), 1fr);
     padding: var(--spacing-tertiary);
     background-color: var(--background-secondary);
     border-radius: var(--border-radius-tertiary);
+
+    li {
+        flex: 1;
+        max-width: 200px;
+    }
 }
 .module-item {
     display: flex;
@@ -63,6 +66,15 @@
 
         svg {
             fill: var(--text-primary);
+        }
+    }
+}
+@media (max-width: 400px) {
+    .module-list {
+        flex-direction: column;
+        
+        li {
+            max-width: 100% !important;
         }
     }
 }
