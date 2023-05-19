@@ -47,3 +47,17 @@
         margin: 0;
     }
 }
+@media (max-width: 600px) {
+    .section {
+        --row-count: 1;
+    }
+    .item {
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+
+        &::after {
+            content: unset !important;
+        }
+    }
+}
