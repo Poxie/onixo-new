@@ -40,3 +40,8 @@
         color: var(--text-secondary);
     }
 }
+@media (max-width: 600px) {
+    .multi-section {
+        --row-count: 1;
+    }
+}
