@@ -53,3 +53,14 @@
         color: var(--text-secondary);
     }
 }
+
+@media (max-width: 800px) {
+    .presets {
+        --row-count: 2;
+    }
+}
+@media (max-width: 600px) {
+    .presets {
+        --row-count: 1;
+    }
+}
