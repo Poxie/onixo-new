@@ -71,10 +71,15 @@ export const SidebarDropdown = () => {
                                 const splitPath = asPath.split('/');
                                 const extraPath = splitPath.slice(3, splitPath.length).join('/');
 
+                                const activeGuild = guild.id === guildId;
+                                const className = [
+                                    styles['dd-item'],
+                                    activeGuild ? styles['active'] : ''
+                                ].join(' ')
                                 return(
                                     <li key={guild.id}>
                                         <Link
-                                            className={styles['dd-item']}
+                                            className={className}
                                             href={`/dashboard/${guild.id}/${extraPath}`}
                                         >
                                             <GuildIcon 

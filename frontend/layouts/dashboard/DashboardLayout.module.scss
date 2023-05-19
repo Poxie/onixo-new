@@ -170,7 +170,7 @@
         font-size: 13px;
     }
 
-    &:hover {
+    &:hover, &.active {
         background-color: var(--background-quaternary);
     }
 }
