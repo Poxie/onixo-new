@@ -2,7 +2,7 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-    padding: var(--spacing-primary);
+    padding: var(--spacing-primary) var(--spacing-quaternary);
     background-color: var(--background-tertiary);
     border-radius: var(--border-radius-tertiary);
     text-align: center;
