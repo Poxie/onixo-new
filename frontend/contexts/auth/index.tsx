@@ -27,7 +27,10 @@ export const AuthProvider: React.FC<{
                 'Authorization': `Bearer ${token}`
             }
         })
-        .then(res => res.json())
+        .then(async res => {
+            if(!res.ok) throw new Error((await res.json()).message);
+            return res.json();
+        })
         .then((data: T) => data)
     }, [token]);
 
@@ -53,7 +56,39 @@ export const AuthProvider: React.FC<{
                 'Authorization': `Bearer ${token}`
             }
         })
-        .then(res => res.json())
+        .then(async res => {
+            if(!res.ok) throw new Error((await res.json()).message);
+            return res.json();
+        })
+        .then((data: T) => data)
+    }, [token]);
+
+    const post = useCallback(async function<T>(query: string, body?: Object, endpoint: 'discord' | 'backend'='discord') {
+        // If body is provided, create a form data
+        const formData = new FormData();
+        Object.entries(body || {}).forEach(([key, value]) => {
+            if(Array.isArray(value)) {
+                if(value[0] instanceof File) {
+                    value.forEach(v => formData.append(key, v));
+                } else {
+                    formData.append(key, JSON.stringify(value));
+                }
+                return;
+            }
+            formData.append(key, value);
+        })
+
+        return fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}${query}`, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(async res => {
+            if(!res.ok) throw new Error((await res.json()).message);
+            return res.json();
+        })
         .then((data: T) => data)
     }, [token]);
 
@@ -71,6 +106,25 @@ export const AuthProvider: React.FC<{
             .then(user => {
                 setUser(user);
                 setLoading(false);
+            })
+            .catch(error => {
+                const refreshToken = localStorage.getItem('refresh_token');
+                if(!refreshToken) {
+                    setLoading(false);
+                    setToken(null);
+                    setUser(null);
+                    return;
+                }
+
+                post('/refresh', { refresh_token: refreshToken }, 'backend')
+                    .then(data => {
+                        
+                    })
+                    .catch(() => {
+                        setLoading(false);
+                        setToken(null);
+                        setUser(null);
+                    })
             })
     }, [token]);
     
