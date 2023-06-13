@@ -6,7 +6,12 @@ import { useRouter } from "next/router";
 import { HamIcon } from "@/assets/icons/HamIcon";
 import { NavbarUser } from "./NavbarUser";
 
-const TABS = ['Features', 'Premium', 'Invite'];
+const TABS = [
+    { text: 'Home', path: '/' },
+    { text: 'Features', path: '/features' },
+    { text: 'Premium', path: '/premium' },
+    { text: 'Invite', path: '/invite' }
+]
 
 export const Navbar = () => {
     const asPath = useRouter().asPath;
@@ -26,16 +31,21 @@ export const Navbar = () => {
                     {process.env.NEXT_PUBLIC_WEBSITE_NAME}
                 </Link>
                 <ul className={styles['tabs']}>
-                    {TABS.map(tab => (
-                        <li 
-                            onClick={() => setOpen(false)}
-                            key={tab}
-                        >
-                            <Link className={styles['tab']} href={`/${tab.toLowerCase()}`}>
-                                {tab}
-                            </Link>
-                        </li>
-                    ))}
+                    {TABS.map(({ text, path }) => {
+                        return(
+                            <li 
+                                onClick={() => setOpen(false)}
+                                key={path}
+                            >
+                                <Link 
+                                    className={styles['tab']} 
+                                    href={path}
+                                >
+                                    {text}
+                                </Link>
+                            </li>
+                        )
+                    })}
                 </ul>
             </div>
             <div className={styles['buttons']}>
