@@ -25,7 +25,9 @@
     color: var(--text-secondary);
 }
 .tab {
-    &:hover {
+    transition: color .2s;
+    
+    &:hover, &.active {
         color: var(--text-primary);
     }
 }

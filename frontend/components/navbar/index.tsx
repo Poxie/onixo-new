@@ -1,6 +1,5 @@
 import Link from "next/link"
 import styles from './Navbar.module.scss';
-import Button from "../button";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { HamIcon } from "@/assets/icons/HamIcon";
@@ -32,13 +31,15 @@ export const Navbar = () => {
                 </Link>
                 <ul className={styles['tabs']}>
                     {TABS.map(({ text, path }) => {
+                        const active = path === asPath;
+
                         return(
                             <li 
                                 onClick={() => setOpen(false)}
                                 key={path}
                             >
                                 <Link 
-                                    className={styles['tab']} 
+                                    className={`${styles['tab']} ${active ? styles['active'] : ''}`} 
                                     href={path}
                                 >
                                     {text}
