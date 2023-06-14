@@ -1,5 +1,6 @@
 import os, requests
 from database import database
+from operator import itemgetter
 from utils.constants import ALLOWED_ANTILINK_SITES, ALLOWED_LOGGING_ACTIONS, ALLOWED_MOD_SETTINGS_PROPERTIES
 from flask import Blueprint, request, jsonify, abort
 from utils.auth import get_access_token, check_admin
@@ -29,6 +30,9 @@ def get_bot_guilds():
         if (int(guild['permissions']) & ADMIN_PERMS) == ADMIN_PERMS:
             guild['invited'] = int(guild['id']) in guild_ids  
             admin_guilds.append(guild)
+
+    # Sorting guilds based on invited property
+    admin_guilds = sorted(admin_guilds, key=itemgetter('invited'), reverse=True)
 
     return jsonify(admin_guilds)
 
