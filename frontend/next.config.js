@@ -13,6 +13,12 @@ const nextConfig = {
         basePath: false
       },
       {
+        source: '/support',
+        destination: 'https://discord.gg/aEGcHWZBA3',
+        permanent: true,
+        basePath: false
+      },
+      {
         source: '/dashboard/:guildId/moderation',
         destination: '/dashboard/:guildId/moderation/automod',
         permanent: true,
