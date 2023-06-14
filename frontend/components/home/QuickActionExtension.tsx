@@ -1,16 +1,19 @@
+import React from 'react';
 import { LoggingImg } from '@/assets/icons/LoggingImg';
-import Button from '../button';
 import styles from './Home.module.scss';
 import { QuickActionJson } from "./QuickActions"
 import { TodosImg } from '@/assets/icons/TodosImg';
 import { SettingsImg } from '@/assets/icons/SettingsImg';
 import { ModerationImg } from '@/assets/icons/ModerationImg';
 import { GreetImg } from '@/assets/icons/GreetImg';
+import Button from '../button';
 
-export const QuickActionsExtension: React.FC<QuickActionJson & {
+type Props = QuickActionJson & {
     animateOut: boolean;
     expired: boolean;
-}> = ({ id, title, content, animateOut, expired }) => {
+}
+
+export const QuickActionsExtension = React.forwardRef<HTMLDivElement, Props>(({ id, title, content, animateOut, expired }, ref) => {
     let icon = null;
     switch(id) {
         case 'greetings':
@@ -36,7 +39,7 @@ export const QuickActionsExtension: React.FC<QuickActionJson & {
         expired ? styles['expired'] : ''
     ].join(' ');
     return(
-        <div className={className}>
+        <div className={className} ref={ref}>
             <div className={styles['qa-text']}>
                 <h2>
                     {title}
@@ -65,4 +68,4 @@ export const QuickActionsExtension: React.FC<QuickActionJson & {
             </div>
         </div>
     )
-}
+})
