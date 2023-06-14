@@ -1,6 +1,6 @@
 import styles from './ModerationLayout.module.scss';
 import { Chips } from "@/components/chips"
-import { useEffect, useState } from 'react';
+import { useEffect, useInsertionEffect, useState } from 'react';
 import { useAuth } from '@/contexts/auth';
 import { useGuildId } from '@/hooks/useGuildId';
 import { useAppDispatch, useAppSelector } from '@/redux/store';
@@ -8,6 +8,7 @@ import { selectAutomodFetched } from '@/redux/dashboard/selectors';
 import { addAutomod } from '@/redux/dashboard/actions';
 import { AutoMod } from '@/types';
 import { ModuleHeader } from '@/components/dashboard/module-header';
+import { useRouter } from 'next/router';
 
 const CHIPS = [
     { text: 'Automod', id: 'automod' },
@@ -17,6 +18,7 @@ const CHIPS = [
 export const ModerationLayout: React.FC<{
     children: any;
 }> = ({ children }) => {
+    const router = useRouter();
     const guildId = useGuildId();
     const { get, token } = useAuth();
 
@@ -33,7 +35,12 @@ export const ModerationLayout: React.FC<{
             });
     }, [get, guildId, hasFetched]);
 
-    const [activeChip, setActiveChip] = useState('automod');
+    const [activeChip, setActiveChip] = useState(CHIPS[0].id);
+
+    useEffect(() => {
+        const chipId = router.pathname.split('/').at(-1) as string;
+        setActiveChip(chipId);
+    }, [router.pathname]);
 
     return(
         <>

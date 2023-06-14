@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './Chips.module.scss';
 import { useRouter } from 'next/router';
 
@@ -16,6 +16,12 @@ export const Chips: React.FC<{
 }> = ({ chips, defaultActive, onChange, basePath, className }) => {
     const router = useRouter();
     const [activeChip, setActiveChip] = useState(defaultActive || chips[0].id);
+
+    // Updates active chip on default change
+    useEffect(() => {
+        if(!defaultActive) return;
+        setActiveChip(defaultActive);
+    }, [defaultActive]);
 
     const handleChange = (chipId: string) => {
         setActiveChip(chipId);
