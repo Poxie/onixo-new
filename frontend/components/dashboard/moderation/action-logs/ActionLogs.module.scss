@@ -12,7 +12,7 @@
         }
 
         &::after {
-            content: 'Remove general logging channel to access these settings';
+            content: 'Remove general logging channel to access these settings.';
             text-align: center;
             display: flex;
             align-items: center;
@@ -23,9 +23,7 @@
             width: 100%;
             height: 100%;
             color: var(--text-secondary);
-            font-size: 20px;
-            font-weight: 600;
-            font-style: italic;
+            font-size: 16px;
         }
     }
 }
