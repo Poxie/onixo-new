@@ -1,6 +1,11 @@
+.main {
+    --padding: 240px;
+    padding-top: calc(var(--padding) - var(--navbar-height));
+    min-height: calc(100dvh - var(--footer-height) - var(--navbar-height));
+}
 .header {
     --section-padding: 100px;
-    padding: var(--section-padding) 0;
+    padding-bottom: var(--section-padding);
     border-bottom: 1px solid var(--background-tertiary);
     max-width: var(--width-main-max);
     width: var(--width-main);

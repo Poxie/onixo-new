@@ -9,7 +9,8 @@ const TABS = [
     { text: 'Home', path: '/' },
     { text: 'Features', path: '/features' },
     { text: 'Premium', path: '/premium' },
-    { text: 'Invite', path: '/invite' }
+    { text: 'Support', path: '/support' },
+    { text: 'Invite', path: '/invite' },
 ]
 
 export const Navbar = () => {

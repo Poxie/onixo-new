@@ -46,33 +46,36 @@ export const Features = () => {
             active={active}
             onClick={toggleItem}
         />
-        <section 
-            className={styles['header']}
-            data-feature-header
-            ref={ref}
-        >
-            <h1>
-                What are <span className="highlight">our features?</span>
-            </h1>
-            <p>
-                You are certain to be pleased by our large variety of commands and modules. Everything from moderation to fun utility commands; from todo lists to auto-welcoming, and much more. Select a module below to view more.
-            </p>
-            <QuickActions 
-                active={active}
-                onClick={toggleItem}
-                className={styles['qa-actions']}
-                textDefaultVisible
-            />
-        </section>
 
-        {active && tiles && (
-            <div className={styles['feature-content']}>
-                <FeatureTiles 
-                    id={active}
-                    tiles={tiles}
+        <div className={styles['main']}>
+            <section 
+                className={styles['header']}
+                data-feature-header
+                ref={ref}
+            >
+                <h1>
+                    What are <span className="highlight">our features?</span>
+                </h1>
+                <p>
+                    You are certain to be pleased by our large variety of commands and modules. Everything from moderation to fun utility commands; from todo lists to auto-welcoming, and much more. Select a module below to view more.
+                </p>
+                <QuickActions 
+                    active={active}
+                    onClick={toggleItem}
+                    className={styles['qa-actions']}
+                    textDefaultVisible
                 />
-            </div>
-        )}
+            </section>
+
+            {active && tiles && (
+                <section className={styles['feature-content']}>
+                    <FeatureTiles 
+                        id={active}
+                        tiles={tiles}
+                    />
+                </section>
+            )}
+        </div>
         </>
     )
 }
