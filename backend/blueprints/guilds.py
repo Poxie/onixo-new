@@ -2,7 +2,7 @@ import os, requests
 from database import database
 from utils.constants import ALLOWED_ANTILINK_SITES, ALLOWED_LOGGING_ACTIONS, ALLOWED_MOD_SETTINGS_PROPERTIES
 from flask import Blueprint, request, jsonify, abort
-from utils.auth import get_access_token
+from utils.auth import get_access_token, check_admin
 
 guilds = Blueprint('guilds', __name__)
 
@@ -33,6 +33,7 @@ def get_bot_guilds():
     return jsonify(admin_guilds)
 
 @guilds.get('/guilds/<int:guild_id>/channels')
+@check_admin
 def get_guild_channels(guild_id: int):
     headers = {'Authorization': f'Bot {os.getenv("BOT_TOKEN")}'}
     r = requests.get(f'{API_ENDPOINT}/guilds/{guild_id}/channels', headers=headers)
@@ -43,6 +44,7 @@ def get_guild_channels(guild_id: int):
     return jsonify(text_channels)
 
 @guilds.get('/guilds/<int:guild_id>/automod')
+@check_admin
 def get_guild_automod(guild_id: int):
     db = database['settings']
 
@@ -65,6 +67,7 @@ def get_guild_automod(guild_id: int):
     return jsonify(automod_settings)
 
 @guilds.patch('/guilds/<int:guild_id>/antilink')
+@check_admin
 def update_guild_antilink(guild_id: int):
     db = database['settings']
 
@@ -97,6 +100,7 @@ def update_guild_antilink(guild_id: int):
     return jsonify({})
 
 @guilds.get('/guilds/<int:guild_id>/action-logs')
+@check_admin
 def get_action_logs(guild_id: int):
     db = database['logging']
 
@@ -120,6 +124,7 @@ def get_action_logs(guild_id: int):
 
 
 @guilds.patch('/guilds/<int:guild_id>/action-logs')
+@check_admin
 def update_action_logs(guild_id: int):
     db = database['logging']
 
@@ -214,6 +219,7 @@ def update_action_logs(guild_id: int):
     return jsonify(new_channel_id)
 
 @guilds.get('/guilds/<int:guild_id>/mod-settings')
+@check_admin
 def get_guild_mod_settings(guild_id: int):
     db = database['settings']
 
@@ -227,6 +233,7 @@ def get_guild_mod_settings(guild_id: int):
     return jsonify(mod_settings)
 
 @guilds.patch('/guilds/<int:guild_id>/mod-settings')
+@check_admin
 def update_guild_mod_settings(guild_id: int):
     db = database['settings']
 

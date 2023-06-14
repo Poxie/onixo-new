@@ -1,4 +1,7 @@
-from flask import abort
+import requests, websockets, os, json
+from flask import abort, request
+from functools import wraps
+from utils.websockets import send_message
 
 def get_access_token(headers):
     if 'Authorization' not in headers:
@@ -10,3 +13,30 @@ def get_access_token(headers):
     
     access_token = auth_header[1]
     return access_token
+
+def check_admin(f):
+    @wraps(f)
+    async def decorator(*args, **kwargs):
+        access_token = get_access_token(request.headers)
+
+        headers = {
+            'Authorization': f'Bearer {access_token}'
+        }
+        res = requests.get(f'https://discord.com/api/v10/users/@me', headers=headers)
+        user = res.json()
+        if not user:
+            abort(404, 'User was not found')
+
+        is_admin = await send_message(
+            type='CONFIRM_ADMIN',
+            payload={
+                'guild_id': kwargs['guild_id'],
+                'user_id': int(user['id']),
+            }
+        )
+        if not is_admin:
+            abort(401, 'Unauthorized.')
+
+        return f(*args, **kwargs)
+
+    return decorator

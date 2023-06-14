@@ -24,3 +24,27 @@ def exchance_code():
 
     r = requests.post(f'{API_ENDPOINT}/oauth2/token', data=data, headers=headers)
     return r.json()
+
+@auth.post('/refresh')
+def refresh_token_route():
+    refresh_token = request.form.get('refresh_token')
+    if not refresh_token:
+        abort(400, 'Refresh token is required')
+
+    data = {
+        'client_id': os.getenv('CLIENT_ID'),
+        'client_secret': os.getenv('CLIENT_SECRET'),
+        'grant_type': 'refresh_token',
+        'refresh_token': refresh_token
+    }
+    headers = {
+        'Content-Type': 'application/x-www-form-urlencoded'
+    }
+
+    r = requests.post(f'{API_ENDPOINT}/oauth2/token', data=data, headers=headers)
+    response = r.json()
+
+    if 'error' in response:
+        abort(401, response['error'])
+    
+    return jsonify(response)
