@@ -22,7 +22,7 @@ export const ModSettings: NextPageWithLayout = () => {
     const settings = useAppSelector(state => selectGuildModSettings(state, guildId));
     
     useEffect(() => {
-        if(!token || settings) return;
+        if(!token || settings || !guildId) return;
 
         get<ReduxModSettings['settings']>(`/guilds/${guildId}/mod-settings`, 'backend')
             .then(settings => {
