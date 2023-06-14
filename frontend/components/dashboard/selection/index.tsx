@@ -29,6 +29,11 @@ export const Selection: NextPageWithLayout = () => {
                     ))
                 )}
             </ul>
+            {guildIds && !guildIds.length && (
+                <span>
+                    You are not admin on any servers. If this is incorrect, try refreshing the page or reaching out on our support server.
+                </span>
+            )}
         </main>
     )
 }
