@@ -19,7 +19,7 @@ export default function _404() {
                 margin: 0,
                 marginBottom: 'var(--spacing-quaternary)'
             }}>
-                404: OOPS, WHAT'S THIS?
+                404: OOPS, WHAT&apos;S THIS?
             </h1>
             <p style={{
                 fontSize: 20,
@@ -27,7 +27,7 @@ export default function _404() {
                 margin: 0,
                 marginBottom: 'var(--spacing-primary)',
             }}>
-                What you're looking for does not exist. Please recheck the adress you have inputted or go back home.
+                What you&apos;re looking for does not exist. Please recheck the adress you have inputted or go back home.
             </p>
             <div style={{ 
                 width: 400, 
