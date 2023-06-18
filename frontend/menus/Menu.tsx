@@ -6,6 +6,7 @@ import { useMenu } from '../contexts/menu';
 import { motion } from 'framer-motion';
 
 const SPACE_FROM_ELEMENT = 10;
+const INITIAL_SCALE = .95
 export const Menu: React.FC<{
     groups: MenuGroupType[];
     dimensions: { top: number, left: number, width: number, height: number };
@@ -43,10 +44,10 @@ export const Menu: React.FC<{
 
     return(
         <motion.div 
-            initial={{ opacity: 0, translateY: 10 }}
-            exit={{ opacity: 0, translateY: 10 }}
-            animate={{ opacity: 1, translateY: 0 }}
-            transition={{ duration: .25 }}
+            initial={{ opacity: 0, scale: INITIAL_SCALE }}
+            exit={{ opacity: 0, scale: INITIAL_SCALE }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: .15 }}
             className={styles['container']}
             style={{ left: position.left, top: position.top }}
             ref={ref}
