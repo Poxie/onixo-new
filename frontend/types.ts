@@ -1,6 +1,7 @@
 export type User = {
     id: string;
     username: string;
+    global_name: string;
     discriminator: string;
     avatar: string;
     banner: string;

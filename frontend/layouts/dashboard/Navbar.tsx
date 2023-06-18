@@ -33,7 +33,7 @@ export const Navbar = () => {
                         height={28}
                         alt=""
                     />
-                    {user.username}
+                    {user.global_name}
                 </button>
             )}
         </div>

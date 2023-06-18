@@ -3,10 +3,8 @@ import { useAuth } from "@/contexts/auth";
 import Button from "../button"
 import Image from "next/image";
 import { getUserAvatar } from "@/utils/getImages";
-import { useCallback, useRef } from 'react';
+import { useRef } from 'react';
 import { useMenu } from '@/contexts/menu';
-import { MenuGroup } from '@/contexts/menu/types';
-import { useRouter } from 'next/router';
 import { useNavbarMenu } from '@/hooks/useNavbarMenu';
 
 const oauthUrl = `
@@ -17,7 +15,6 @@ https://discord.com/oauth2/authorize
 &redirect_uri=${encodeURIComponent(process.env.NEXT_PUBLIC_REDIRECT_URI as string)}
 `.trim();
 export const NavbarUser = () => {
-    const router = useRouter();
     const { loading, user } = useAuth();
     const { setMenu } = useMenu();
 
@@ -44,7 +41,7 @@ export const NavbarUser = () => {
                     alt=""
                 />
                 <span>
-                    {user.username}
+                    {user.global_name}
                 </span>
             </button>
         )
