@@ -22,3 +22,4 @@ export const SelectedItem = forwardRef<HTMLButtonElement, Props>(({ id, guildId,
         </button>
     )
 })
+SelectedItem.displayName = 'SelectedItem';

@@ -69,3 +69,4 @@ export const QuickActionsExtension = React.forwardRef<HTMLDivElement, Props>(({ 
         </div>
     )
 })
+QuickActionsExtension.displayName = 'QuickACtionsExtension';
