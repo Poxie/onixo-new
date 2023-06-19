@@ -12,7 +12,7 @@ export const Customize = () => {
                     All customizable on our dashboard
                 </h2>
                 <p>
-                    After inviting Onixo, you will be able to customize your server settings on our dashboard. You will also be able to modify the commnads as you see fit.
+                    You can change your settings all in one place on our intuitive dashboard. Customize your commands and modules however you see fit.
                 </p>
                 <div className={styles['customize-buttons']}>
                     <Button 

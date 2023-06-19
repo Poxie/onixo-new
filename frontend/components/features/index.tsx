@@ -57,7 +57,7 @@ export const Features = () => {
                     What are <span className="highlight">our features?</span>
                 </h1>
                 <p>
-                    You are certain to be pleased by our large variety of commands and modules. Everything from moderation to fun utility commands; from todo lists to auto-welcoming, and much more. Select a module below to view more.
+                Come take a look at our variety of commands and modules. Everything from moderation to helpful utility commands; from todo lists to welcomes & goodbyes, and much more. Select a module below to view more.
                 </p>
                 <QuickActions 
                     active={active}

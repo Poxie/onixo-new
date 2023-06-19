@@ -5,10 +5,10 @@ export const Header = () => {
     return(
         <section className={styles['header-container']}>
             <h1 className={styles['header']}>
-                Make your server <span className={`${styles['header-highlight']} highlight`}>YOUR</span> way
+                Customize your server <span className={`${styles['header-highlight']} highlight`}>your</span> way.
             </h1>
             <p className={styles['sub-header']}>
-                Onixo provides many different customizable options, as well as fun utilities, moderation, logging, welcoming, and much more.
+                Onixo is a Discord bot based around utility, moderation, fun and most of all: ease of use and customization. Server management just became effortless.
             </p>
             <div className={styles['header-buttons']}>
                 <Button 

@@ -1,13 +1,13 @@
 [
     {
         "title": "The bot designed for ease",
-        "text": "Quick and easily customizable commands and modules. Change them how you will!",
+        "text": "Customization made simple. Easily change how commands and modules work in your server.",
         "icon": "tile1.svg",
         "boldIndices": [3, 4]
     },
     {
         "title": "Welcome and greet newbies",
-        "text": "Greet new members with a welcoming message, a role, or a friendly DM!",
+        "text": "Greet new members with a welcoming message or DM. Want to give them a role too? No problem. Newbies can be given up to 5 roles upon joining.",
         "icon": "tile2.svg",
         "boldIndices": [0, 2]
     },
