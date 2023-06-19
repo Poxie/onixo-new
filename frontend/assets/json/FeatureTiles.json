@@ -9,10 +9,6 @@
             {
                 "title": "Log all your actions",
                 "text": "Log any actions made by yourself or by your moderators in your dedicated log channels."
-            },
-            {
-                "title": "Moderator roles",
-                "text": "Select what roles within your server should be  able to execute what action, or all actions."
             }
         ]
     },
@@ -68,11 +64,6 @@
                 "title": "Server and user todos",
                 "text": "Create a todo list for an entire server, or your own personal todo list in Onixo’s DMs.",
                 "image": "todos-tile-2.svg"
-            },
-            {
-                "title": "Customizable settings",
-                "text": "Decide which roles or users are allowed to modify your todo lists, or limit the commands to a specific channel.",
-                "image": "todos-tile-3.svg"
             }
         ]
     },
