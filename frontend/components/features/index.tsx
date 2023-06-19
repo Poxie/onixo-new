@@ -5,6 +5,7 @@ import { QuickActions } from '../quick-actions';
 import { SideActions } from './SideActions';
 import { useRouter } from 'next/router';
 import { FeatureTiles } from './FeatureTiles';
+import Head from 'next/head';
 
 export const Features = () => {
     const router = useRouter();
@@ -42,6 +43,13 @@ export const Features = () => {
     ) : [];
     return(
         <>
+        <Head>
+            <title>Onixo - Features</title>
+            <meta name="og:title" content="Onixo - Features" />
+            <meta name="description" content="Come take a look at our variety of commands and modules. Everything from moderation to helpful utility commands; from todo lists to welcomes & goodbyes, and much more." />  
+            <meta name="og:description" content="Come take a look at our variety of commands and modules. Everything from moderation to helpful utility commands; from todo lists to welcomes & goodbyes, and much more." />  
+        </Head>
+
         <SideActions 
             active={active}
             onClick={toggleItem}

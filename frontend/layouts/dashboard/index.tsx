@@ -8,6 +8,7 @@ import { Channel } from '@/types';
 import { setGuildChannels } from '@/redux/dashboard/actions';
 import { useAppDispatch, useAppSelector } from '@/redux/store';
 import { selectChannelsFetched } from '@/redux/dashboard/selectors';
+import Head from 'next/head';
 
 export const DashboardLayout: React.FC<{
     children: ReactElement | ReactElement[];
@@ -29,6 +30,12 @@ export const DashboardLayout: React.FC<{
     }, [get, guildId, fetched]);
     
     return(
+        <>
+        <Head>
+            <title>Onixo - Dashboard</title>
+            <meta name="og:title" content="Onixo - Dashboard" />
+        </Head>
+
         <div className={styles['dashboard']}>
             <Navbar />
             <div className={styles['main']}>
@@ -38,5 +45,6 @@ export const DashboardLayout: React.FC<{
                 </main>
             </div>
         </div>
+        </>
     )
 }

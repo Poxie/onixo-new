@@ -2,9 +2,18 @@ import Link from 'next/link';
 import styles from './Premium.module.scss';
 import { PremiumTile } from "@/assets/tiles/PremiumTile"
 import Button from '../button';
+import Head from 'next/head';
 
 export const Premium = () => {
     return(
+        <>
+        <Head>
+            <title>Onixo - Premium</title>
+            <meta name="og:title" content="Onixo - Premium" />
+            <meta name="description" content="We are currently working on delivering Onixo Premium. It will introduce many new features as well as improvements on current features." />
+            <meta name="og:description" content="We are currently working on delivering Onixo Premium. It will introduce many new features as well as improvements on current features." />
+        </Head>
+
         <div className={styles['container']}>
             <div className={styles['text']}>
                 <h1>
@@ -30,5 +39,6 @@ export const Premium = () => {
                 <PremiumTile />
             </div>
         </div>
+        </>
     )
 }
