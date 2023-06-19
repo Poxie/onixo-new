@@ -8,7 +8,7 @@ from utils.auth import get_access_token, check_admin
 guilds = Blueprint('guilds', __name__)
 
 API_ENDPOINT = os.getenv('API_ENDPOINT')
-ADMIN_PERMS = 0x0000000000000008
+ADMIN_PERMS = 0x0000000000000020
 
 @guilds.get('/guilds')
 def get_bot_guilds():
