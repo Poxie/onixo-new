@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { HamIcon } from "@/assets/icons/HamIcon";
 import { NavbarUser } from "./NavbarUser";
+import { OnixoBannerIcon } from "@/assets/icons/OnixoBannerIcon";
 
 const TABS = [
     { text: 'Home', path: '/' },
@@ -28,7 +29,7 @@ export const Navbar = () => {
         <div className={className}>
             <div className={styles['left']}>
                 <Link className={styles['header']} href="/">
-                    {process.env.NEXT_PUBLIC_WEBSITE_NAME}
+                    <OnixoBannerIcon />
                 </Link>
                 <ul className={styles['tabs']}>
                     {TABS.map(({ text, path }) => {

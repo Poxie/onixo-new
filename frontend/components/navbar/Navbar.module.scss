@@ -17,6 +17,11 @@
 }
 .header {
     font-size: 22px;
+
+    svg {
+        width: 80px;
+        display: block;
+    }
 }
 .tabs {
     display: flex;
