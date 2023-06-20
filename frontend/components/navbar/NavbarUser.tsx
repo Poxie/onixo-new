@@ -6,14 +6,8 @@ import { getUserAvatar } from "@/utils/getImages";
 import { useRef } from 'react';
 import { useMenu } from '@/contexts/menu';
 import { useNavbarMenu } from '@/hooks/useNavbarMenu';
+import { getLoginLink } from '@/utils/getLinks';
 
-const oauthUrl = `
-https://discord.com/oauth2/authorize
-?response_type=code
-&client_id=${process.env.NEXT_PUBLIC_CLIENT_ID}
-&scope=identify%20guilds
-&redirect_uri=${encodeURIComponent(process.env.NEXT_PUBLIC_REDIRECT_URI as string)}
-`.trim();
 export const NavbarUser = () => {
     const { loading, user } = useAuth();
     const { setMenu } = useMenu();
@@ -25,7 +19,7 @@ export const NavbarUser = () => {
 
     return(
         !user ? (
-            <Button href={oauthUrl}>
+            <Button href={getLoginLink()}>
                 Login with Discord
             </Button>
         ) : (
