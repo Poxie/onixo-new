@@ -15,11 +15,12 @@ export const ItemList: React.FC<{
 }> = ({ defaultActive=null, onChange, loading=false }) => {
     const guildId = useGuildId();
     const channelIds = useAppSelector(state => selectGuildChannelIds(state, guildId));
-    const { ref: container } = useModuleSection();
+    const { ref: section } = useModuleSection();
 
     const [open, setOpen] = useState(false);
     const [direction, setDirection] = useState<'top' | 'bottom'>('top');
     const [activeId, setActiveId] = useState<string | null>(defaultActive);
+    const container = useRef<HTMLDivElement>(null)
     const ref = useRef<HTMLButtonElement>(null);
     const items = useRef<HTMLUListElement>(null);
 
@@ -28,16 +29,28 @@ export const ItemList: React.FC<{
 
     // If dropdown exceeds parent, change direction of popup items
     useLayoutEffect(() => {
-        if(!items.current || !container.current) return;
+        if(!items.current || !section.current) return;
 
         const { top: itemTop, height: itemHeight } = items.current.getBoundingClientRect();
-        const { top: containerTop, height: containerHeight } = container.current.getBoundingClientRect();
+        const { top: sectionTop, height: sectionHeight } = section.current.getBoundingClientRect();
 
-        const containerTotal = containerTop + containerHeight;
+        const sectionTotal = sectionTop + sectionHeight;
         const itemTotal = itemTop + itemHeight;
 
-        setDirection(itemTotal > containerTotal ? 'top' : 'bottom');
-    }, [open, container.current]);
+        setDirection(itemTotal > sectionTotal ? 'top' : 'bottom');
+    }, [open, section.current]);
+
+    // Closing on click outside component
+    useEffect(() => {
+        const checkForClickOutside = (e: MouseEvent) => {
+            // @ts-ignore: this works
+            if(container.current && !container.current.contains(e.target)) {
+                setOpen(false);
+            }
+        }
+        document.addEventListener('mousedown', checkForClickOutside);
+        return () => document.removeEventListener('mousedown', checkForClickOutside);
+    }, []);
 
     const handleChange = (itemId: string | null, e: React.MouseEvent) => {
         setOpen(false);
@@ -57,7 +70,7 @@ export const ItemList: React.FC<{
         styles[direction]
     ].join(' ');
     return(
-        <div className={className}>
+        <div className={className} ref={container}>
             <div className={styles['selected']}>
                 <button 
                     className={styles['selected-button']}
