@@ -5,10 +5,24 @@ import { HandIcon } from '@/assets/icons/HandIcon';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
-const TABS = [
-    { text: 'Overview', path: '', icon: <OverviewIcon /> },
-    { text: 'Moderation', path: '/moderation', href: 'automod', icon: <HammerIcon /> },
-    { text: 'Welcomes & Goodbyes', path: '/greetings', icon: <HandIcon /> },
+const GROUPS: {
+    title: string | undefined;
+    tabs: { text: string, path: string, icon: any, href?: string }[]
+}[] = [
+    {
+        title: undefined,
+        tabs: [
+            { text: 'Overview', path: '', icon: <OverviewIcon /> },
+            { text: 'Moderation', path: '/moderation', href: 'automod', icon: <HammerIcon /> },
+            { text: 'Welcomes & Goodbyes', path: '/greetings', icon: <HandIcon /> },
+        ]
+    },
+    {
+        title: 'Utilities',
+        tabs: [
+            { text: 'Embed Messages', path: '/embeds', icon: <OverviewIcon /> }
+        ]
+    }
 ]
 
 export const SidebarTabs = () => {
@@ -17,29 +31,33 @@ export const SidebarTabs = () => {
     const { guildId } = router.query as { guildId: string };
 
     return(
-        <ul className={styles['tabs']}>
-            {TABS.map(tab => {
-                const path = `/dashboard/${guildId}${tab.path}/${tab.href ? tab.href : ''}`;
-                const isActive = !tab.path ? asPath === `/dashboard/${guildId}` : asPath.includes(tab.path);
+        <ul className={styles['groups']}>
+            {GROUPS.map(group => (
+                <ul data-group-title={group.title} className={styles['tabs']}>
+                    {group.tabs.map(tab => {
+                        const path = `/dashboard/${guildId}${tab.path}/${tab.href ? tab.href : ''}`;
+                        const isActive = !tab.path ? asPath === `/dashboard/${guildId}` : asPath.includes(tab.path);
 
-                const className = [
-                    styles['tab'],
-                    isActive ? styles['active'] : ''
-                ].join(' ');
-                return(
-                    <li key={tab.text}>
-                        <Link 
-                            className={className}
-                            href={path}
-                        >
-                            {tab.icon}
-                            <span>
-                                {tab.text}
-                            </span>
-                        </Link>
-                    </li>
-                )
-            })}
+                        const className = [
+                            styles['tab'],
+                            isActive ? styles['active'] : ''
+                        ].join(' ');
+                        return(
+                            <li key={tab.text}>
+                                <Link 
+                                    className={className}
+                                    href={path}
+                                >
+                                    {tab.icon}
+                                    <span>
+                                        {tab.text}
+                                    </span>
+                                </Link>
+                            </li>
+                        )
+                    })}
+                </ul>
+            ))}
         </ul>
     )
 }
