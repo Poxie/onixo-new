@@ -3,9 +3,10 @@ import { useGuildId } from "@/hooks/useGuildId"
 import { selectGuildChannelIds } from "@/redux/dashboard/selectors";
 import { useAppSelector } from "@/redux/store";
 import { ListItem } from "./ListItem";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { SelectedItem } from './SelectedItem';
 import { ArrowIcon } from '@/assets/icons/ArrowIcon';
+import { useModuleSection } from '../module-section';
 
 export const ItemList: React.FC<{
     onChange?: (itemId: string | null) => void;
@@ -14,12 +15,29 @@ export const ItemList: React.FC<{
 }> = ({ defaultActive=null, onChange, loading=false }) => {
     const guildId = useGuildId();
     const channelIds = useAppSelector(state => selectGuildChannelIds(state, guildId));
+    const { ref: container } = useModuleSection();
 
     const [open, setOpen] = useState(false);
+    const [direction, setDirection] = useState<'top' | 'bottom'>('top');
     const [activeId, setActiveId] = useState<string | null>(defaultActive);
     const ref = useRef<HTMLButtonElement>(null);
+    const items = useRef<HTMLUListElement>(null);
 
+    // If default active changes, update active
     useEffect(() => setActiveId(defaultActive), [defaultActive]);
+
+    // If dropdown exceeds parent, change direction of popup items
+    useLayoutEffect(() => {
+        if(!items.current || !container.current) return;
+
+        const { top: itemTop, height: itemHeight } = items.current.getBoundingClientRect();
+        const { top: containerTop, height: containerHeight } = container.current.getBoundingClientRect();
+
+        const containerTotal = containerTop + containerHeight;
+        const itemTotal = itemTop + itemHeight;
+
+        setDirection(itemTotal > containerTotal ? 'top' : 'bottom');
+    }, [open, container.current]);
 
     const handleChange = (itemId: string | null, e: React.MouseEvent) => {
         setOpen(false);
@@ -35,7 +53,8 @@ export const ItemList: React.FC<{
 
     const className = [
         styles['container'],
-        open ? styles['expanded'] : ''
+        open ? styles['expanded'] : '',
+        styles[direction]
     ].join(' ');
     return(
         <div className={className}>
@@ -66,18 +85,16 @@ export const ItemList: React.FC<{
                 </div>
                 <ArrowIcon />
             </div>
-            {open && (
-                <ul className={styles['items']}>
-                    {channelIds?.map(channelId => (
-                        <ListItem 
-                            id={channelId}
-                            guildId={guildId}
-                            onClick={handleChange}
-                            key={channelId}
-                        />
-                    ))}
-                </ul>
-            )}
+            <ul className={styles['items']} ref={items}>
+                {channelIds?.map(channelId => (
+                    <ListItem 
+                        id={channelId}
+                        guildId={guildId}
+                        onClick={handleChange}
+                        key={channelId}
+                    />
+                ))}
+            </ul>
         </div>
     )
 }

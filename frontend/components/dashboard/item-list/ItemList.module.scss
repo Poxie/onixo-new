@@ -1,7 +1,16 @@
-.expanded {
-    .selected {
-        svg {
-            transform: rotate(180deg);
+.container {
+    position: relative;
+    
+    &:not(.expanded) {
+        .items {
+            display: none;
+        }
+    }
+    &.expanded {
+        .selected {
+            svg {
+                transform: rotate(180deg);
+            }
         }
     }
 }
@@ -68,13 +77,22 @@
     width: 100%;
     height: 100%;
 }
+.top {
+    .items {
+        bottom: calc(0px + 100% + var(--spacing-senary));
+    }
+}
 .items {
+    width: 100%;
+    z-index: 14;
+    position: absolute;
     padding: var(--spacing-quinary);
     background: var(--background-tertiary);
     border: 1px solid var(--background-quaternary);
     border-radius: var(--border-radius-tertiary);
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px 0px;
     margin-top: var(--spacing-senary);
-    max-height: 210px;
+    max-height: 200px;
     overflow: auto;
 
     &::-webkit-scrollbar {
