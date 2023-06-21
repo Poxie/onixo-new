@@ -16,7 +16,7 @@ def get_access_token(headers):
 
 def check_admin(f):
     @wraps(f)
-    async def decorator(*args, **kwargs):
+    def decorator(*args, **kwargs):
         access_token = get_access_token(request.headers)
 
         headers = {
@@ -27,7 +27,7 @@ def check_admin(f):
         if not user:
             abort(404, 'User was not found')
 
-        is_admin = await send_message(
+        is_admin = send_message(
             type='CONFIRM_ADMIN',
             payload={
                 'guild_id': kwargs['guild_id'],
@@ -37,6 +37,7 @@ def check_admin(f):
         if not is_admin:
             abort(401, 'Unauthorized.')
 
+        kwargs['user_id'] = user['id']
         return f(*args, **kwargs)
 
     return decorator

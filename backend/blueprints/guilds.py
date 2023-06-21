@@ -1,9 +1,10 @@
-import os, requests
+import os, requests, json
 from database import database
 from operator import itemgetter
-from utils.constants import ALLOWED_ANTILINK_SITES, ALLOWED_LOGGING_ACTIONS, ALLOWED_MOD_SETTINGS_PROPERTIES
+from utils.constants import ALLOWED_ANTILINK_SITES, ALLOWED_LOGGING_ACTIONS, ALLOWED_MOD_SETTINGS_PROPERTIES, SEND_EMBED
 from flask import Blueprint, request, jsonify, abort
 from utils.auth import get_access_token, check_admin
+from utils.websockets import send_message
 
 guilds = Blueprint('guilds', __name__)
 
@@ -38,7 +39,7 @@ def get_bot_guilds():
 
 @guilds.get('/guilds/<int:guild_id>/channels')
 @check_admin
-def get_guild_channels(guild_id: int):
+def get_guild_channels(guild_id: int, user_id: int):
     headers = {'Authorization': f'Bot {os.getenv("BOT_TOKEN")}'}
     r = requests.get(f'{API_ENDPOINT}/guilds/{guild_id}/channels', headers=headers)
     channels = r.json()
@@ -49,7 +50,7 @@ def get_guild_channels(guild_id: int):
 
 @guilds.get('/guilds/<int:guild_id>/automod')
 @check_admin
-def get_guild_automod(guild_id: int):
+def get_guild_automod(guild_id: int, user_id: int):
     db = database['settings']
 
     # Fetching guild's bot settings
@@ -72,7 +73,7 @@ def get_guild_automod(guild_id: int):
 
 @guilds.patch('/guilds/<int:guild_id>/antilink')
 @check_admin
-def update_guild_antilink(guild_id: int):
+def update_guild_antilink(guild_id: int, user_id: int):
     db = database['settings']
 
     property = request.form.get('property')
@@ -105,7 +106,7 @@ def update_guild_antilink(guild_id: int):
 
 @guilds.get('/guilds/<int:guild_id>/action-logs')
 @check_admin
-def get_action_logs(guild_id: int):
+def get_action_logs(guild_id: int, user_id: int):
     db = database['logging']
 
     logging_channels = db.find_one({ '_id': guild_id })
@@ -129,7 +130,7 @@ def get_action_logs(guild_id: int):
 
 @guilds.patch('/guilds/<int:guild_id>/action-logs')
 @check_admin
-def update_action_logs(guild_id: int):
+def update_action_logs(guild_id: int, user_id: int):
     db = database['logging']
 
     action = request.form.get('action')
@@ -224,7 +225,7 @@ def update_action_logs(guild_id: int):
 
 @guilds.get('/guilds/<int:guild_id>/mod-settings')
 @check_admin
-def get_guild_mod_settings(guild_id: int):
+def get_guild_mod_settings(guild_id: int, user_id: int):
     db = database['settings']
 
     settings = db.find_one({ '_id': guild_id })
@@ -238,7 +239,7 @@ def get_guild_mod_settings(guild_id: int):
 
 @guilds.patch('/guilds/<int:guild_id>/mod-settings')
 @check_admin
-def update_guild_mod_settings(guild_id: int):
+def update_guild_mod_settings(guild_id: int, user_id: int):
     db = database['settings']
 
     property = request.form.get('property')
@@ -260,5 +261,28 @@ def update_guild_mod_settings(guild_id: int):
             f'moderation.{property}': value
         }
     })
+
+    return jsonify({})
+
+@guilds.post('/guilds/<int:guild_id>/embeds')
+@check_admin
+def send_embed(guild_id: int, user_id: int):
+    channel_id = request.form.get('channel_id')
+    embed = request.form.get('embed')
+
+    if not channel_id:
+        abort(400, 'channel_id is required')
+
+    if not embed:
+        abort(400, 'embed is required')
+
+    send_message(
+        type=SEND_EMBED, 
+        payload=({
+            'user_id': user_id,
+            'channel_id': channel_id,
+            'embed': json.loads(embed)
+        })
+    )
 
     return jsonify({})

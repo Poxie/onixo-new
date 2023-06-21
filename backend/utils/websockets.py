@@ -1,16 +1,17 @@
-import websockets, json, os
+import json, os
+from websockets.sync.client import connect
 from flask import abort
 
-async def send_message(type: str, payload=None):
-    async with websockets.connect(f'ws://{os.getenv("WEBSOCKET_ORIGIN")}:{os.getenv("WEBSOCKET_PORT")}') as websocket:
+def send_message(type: str, payload=None):
+    with connect(f'ws://{os.getenv("WEBSOCKET_ORIGIN")}:{os.getenv("WEBSOCKET_PORT")}') as websocket:
         message = {
             'type': type,
             'payload': payload
         }
 
-        await websocket.send(json.dumps(message))
+        websocket.send(json.dumps(message))
 
-        data = json.loads(await websocket.recv())
+        data = json.loads(websocket.recv())
         if 'error' in data:
             abort(data['error'], data['message'])
 
