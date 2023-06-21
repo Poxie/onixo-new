@@ -70,3 +70,9 @@ export const selectWelcomeSettings = createSelector(
     [selectWelcome, selectId],
     (welcomes, guildId) => welcomes.find(welcome => welcome.guildId === guildId)
 )
+
+const selectGoodbye = (state: RootState) => state.dashboard.goodbye;
+export const selectGoodbyeSettings = createSelector(
+    [selectGoodbye, selectId],
+    (goodbyes, guildId) => goodbyes.find(bye => bye.guildId === guildId)
+)

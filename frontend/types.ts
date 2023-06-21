@@ -102,3 +102,10 @@ export type ReduxWelcomeSettings = {
         channel: string;
     }
 }
+export type ReduxGoodbyeSettings = {
+    guildId: string;
+    settings: {
+        message: string;
+        channel: string;
+    }
+}

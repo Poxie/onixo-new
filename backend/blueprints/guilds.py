@@ -1,7 +1,7 @@
 import os, requests, json
 from database import database
 from operator import itemgetter
-from utils.constants import ALLOWED_ANTILINK_SITES, ALLOWED_LOGGING_ACTIONS, ALLOWED_MOD_SETTINGS_PROPERTIES, SEND_EMBED, ALLOWED_WELCOME_PROPERTIES
+from utils.constants import ALLOWED_ANTILINK_SITES, ALLOWED_LOGGING_ACTIONS, ALLOWED_MOD_SETTINGS_PROPERTIES, SEND_EMBED, ALLOWED_WELCOME_PROPERTIES, ALLOWED_GOODBYE_PROPERTIES
 from flask import Blueprint, request, jsonify, abort
 from utils.auth import get_access_token, check_admin
 from utils.websockets import send_message
@@ -352,6 +352,76 @@ def update_welcome_setting(guild_id: int, user_id: int):
             settings.update_one({ '_id': guild_id }, {
                 '$set': {
                     f'welcome.{property[0]}': property[1]
+                }
+            })
+
+    return jsonify({})
+
+@guilds.get('/guilds/<int:guild_id>/goodbye')
+@check_admin
+def get_goodbye_settings(guild_id: int, user_id: int):
+    db = database['settings']
+
+    settings = db.find_one({ '_id': guild_id })
+    goodbye = settings['goodbye']
+
+    goodbye['channel'] = str(goodbye['channel'][0]) if len(goodbye['channel']) > 0 else None
+    goodbye['isEnabled'] = bool(goodbye['isEnabled'])
+
+    return jsonify(goodbye)
+
+@guilds.patch('/guilds/<int:guild_id>/goodbye')
+@check_admin
+def update_goodbye_setting(guild_id: int, user_id: int):
+    settings = database['settings']
+    properties = request.form.items()
+
+    for property in properties:
+        if property[0] not in ALLOWED_GOODBYE_PROPERTIES:
+            continue
+
+        if property[0] == 'channel':
+            guild = settings.find_one({ '_id': guild_id })
+            channel = guild['goodbye']['channel']
+            
+            # If previous channel, remove current webhook
+            if len(channel) >= 2:
+                r = requests.delete(f'{API_ENDPOINT}/{channel[1]}/{channel[2]}')
+
+            # If new channel is selected
+            if property[1] != 'null':
+                # Create new webhook for channel
+                headers = {
+                    'Authorization': f'Bot {os.getenv("BOT_TOKEN")}',
+                    'Content-Type': 'application/json'
+                }
+                data = {
+                    'name': 'Onixo'
+                }
+                r2 = requests.post(f'{API_ENDPOINT}/channels/{property[1]}/webhooks', json=data, headers=headers)
+                webhook = r2.json()
+
+                # Update database with new webhook data
+                settings.update_one({ '_id': guild_id }, {
+                    '$set': {
+                        f'goodbye.channel': [int(property[1]), webhook['id'], webhook['token']]
+                    }
+                })
+            
+            # Else if new channel is none
+            else:
+                # Update database with new webhook data
+                settings.update_one({ '_id': guild_id }, {
+                    '$set': {
+                        f'goodbye.channel': []
+                    }
+                })
+
+        # Else just update the database with the values
+        else:
+            settings.update_one({ '_id': guild_id }, {
+                '$set': {
+                    f'goodbye.{property[0]}': property[1]
                 }
             })
 

@@ -1,8 +1,8 @@
 import { AnyAction } from "redux";
 import { DashboardState } from "./types";
 import { createReducer, updateItemInArray, updateObject } from "../utils";
-import { ADD_ACTION_LOGS, ADD_AUTOMOD, SET_GUILDS, SET_GUILD_CHANNELS, SET_MOD_SETTINGS, SET_WELCOME_SETTINGS, UPDATE_ACTION_LOG, UPDATE_ANTILINK, UPDATE_MOD_SETTING, UPDATE_WELCOME_SETTING } from "./constants";
-import { ReduxActionLogs, ReduxModSettings, ReduxWelcomeSettings } from "@/types";
+import { ADD_ACTION_LOGS, ADD_AUTOMOD, SET_GOODBYE_SETTINGS, SET_GUILDS, SET_GUILD_CHANNELS, SET_MOD_SETTINGS, SET_WELCOME_SETTINGS, UPDATE_ACTION_LOG, UPDATE_ANTILINK, UPDATE_GOODBYE_SETTING, UPDATE_MOD_SETTING, UPDATE_WELCOME_SETTING } from "./constants";
+import { ReduxActionLogs, ReduxGoodbyeSettings, ReduxModSettings, ReduxWelcomeSettings } from "@/types";
 
 // Reducer actions
 type ReducerAction = (state: DashboardState, action: AnyAction) => DashboardState;
@@ -157,13 +157,50 @@ const updateWelcomeSetting: ReducerAction = (state, action) => {
     })
 }
 
+const setGoodbyeSettings: ReducerAction = (state, action) => {
+    const { guildId, settings }: {
+        guildId: string;
+        settings: ReduxGoodbyeSettings['settings']
+    } = action.payload;
+
+    return updateObject(state, {
+        goodbye: state.goodbye.filter(wel => wel.guildId !== guildId).concat({
+            guildId,
+            settings
+        })
+    })
+}
+
+const updateGoodbyeSetting: ReducerAction = (state, action) => {
+    const { guildId, setting, value }: {
+        guildId: string;
+        setting: keyof ReduxGoodbyeSettings['settings'];
+        value: any;
+    } = action.payload;
+
+    return updateObject(state, {
+        goodbye: (
+            state.goodbye.map(goodbye => {
+                if(goodbye.guildId !== guildId) return goodbye;
+
+                return updateObject(goodbye, {
+                    settings: updateObject(goodbye.settings, {
+                        [setting]: value
+                    })
+                })
+            })
+        )
+    })
+}
+
 export const dashboardReducer = createReducer({
     guilds: null,
     automod: [],
     channels: [],
     actionLogs: [],
     modSettings: [],
-    welcome: []
+    welcome: [],
+    goodbye: [],
 }, {
     [SET_GUILDS]: setGuilds,
     [ADD_AUTOMOD]: addAutomod,
@@ -175,4 +212,6 @@ export const dashboardReducer = createReducer({
     [UPDATE_MOD_SETTING]: updateModSetting,
     [SET_WELCOME_SETTINGS]: setWelcomeSettings,
     [UPDATE_WELCOME_SETTING]: updateWelcomeSetting,
+    [SET_GOODBYE_SETTINGS]: setGoodbyeSettings,
+    [UPDATE_GOODBYE_SETTING]: updateGoodbyeSetting,
 })
