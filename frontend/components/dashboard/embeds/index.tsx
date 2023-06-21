@@ -144,7 +144,7 @@ export const Embeds: NextPageWithLayout = () => {
         const tempEmbed = {...embed};
         tempEmbed.color = '';
         checkIsEmpty(tempEmbed);
-        
+
         if(isEmpty) return;
 
         // Converting embed color to hexadecimal
@@ -236,7 +236,7 @@ export const Embeds: NextPageWithLayout = () => {
                         
                         <div className={styles['fields']}>
                             {embed.fields.map((field, index) => (
-                                <div className={styles['flex']}>
+                                <div className={styles['flex']} key={index}>
                                     <Input 
                                         placeholder={'Name'}
                                         onChange={text => updateEmbedField(index, 'name', text)}
