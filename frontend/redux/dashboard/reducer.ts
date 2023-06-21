@@ -1,8 +1,8 @@
 import { AnyAction } from "redux";
 import { DashboardState } from "./types";
 import { createReducer, updateItemInArray, updateObject } from "../utils";
-import { ADD_ACTION_LOGS, ADD_AUTOMOD, SET_GUILDS, SET_GUILD_CHANNELS, SET_MOD_SETTINGS, UPDATE_ACTION_LOG, UPDATE_ANTILINK, UPDATE_MOD_SETTING } from "./constants";
-import { ReduxActionLogs, ReduxModSettings } from "@/types";
+import { ADD_ACTION_LOGS, ADD_AUTOMOD, SET_GUILDS, SET_GUILD_CHANNELS, SET_MOD_SETTINGS, SET_WELCOME_SETTINGS, UPDATE_ACTION_LOG, UPDATE_ANTILINK, UPDATE_MOD_SETTING, UPDATE_WELCOME_SETTING } from "./constants";
+import { ReduxActionLogs, ReduxModSettings, ReduxWelcomeSettings } from "@/types";
 
 // Reducer actions
 type ReducerAction = (state: DashboardState, action: AnyAction) => DashboardState;
@@ -121,12 +121,49 @@ const updateModSetting: ReducerAction = (state, action) => {
     })
 }
 
+const setWelcomeSettings: ReducerAction = (state, action) => {
+    const { guildId, settings }: {
+        guildId: string;
+        settings: ReduxWelcomeSettings['settings']
+    } = action.payload;
+
+    return updateObject(state, {
+        welcome: state.welcome.filter(wel => wel.guildId !== guildId).concat({
+            guildId,
+            settings
+        })
+    })
+}
+
+const updateWelcomeSetting: ReducerAction = (state, action) => {
+    const { guildId, setting, value }: {
+        guildId: string;
+        setting: keyof ReduxWelcomeSettings['settings'];
+        value: any;
+    } = action.payload;
+
+    return updateObject(state, {
+        welcome: (
+            state.welcome.map(welcome => {
+                if(welcome.guildId !== guildId) return welcome;
+
+                return updateObject(welcome, {
+                    settings: updateObject(welcome.settings, {
+                        [setting]: value
+                    })
+                })
+            })
+        )
+    })
+}
+
 export const dashboardReducer = createReducer({
     guilds: null,
     automod: [],
     channels: [],
     actionLogs: [],
     modSettings: [],
+    welcome: []
 }, {
     [SET_GUILDS]: setGuilds,
     [ADD_AUTOMOD]: addAutomod,
@@ -136,4 +173,6 @@ export const dashboardReducer = createReducer({
     [UPDATE_ACTION_LOG]: updateActionLog,
     [SET_MOD_SETTINGS]: setModSettings,
     [UPDATE_MOD_SETTING]: updateModSetting,
+    [SET_WELCOME_SETTINGS]: setWelcomeSettings,
+    [UPDATE_WELCOME_SETTING]: updateWelcomeSetting,
 })

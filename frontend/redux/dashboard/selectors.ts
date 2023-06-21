@@ -64,3 +64,9 @@ export const selectModSettingsFetched = createSelector(
     [selectGuildModSettings],
     settings => settings !== undefined
 )
+
+const selectWelcome = (state: RootState) => state.dashboard.welcome;
+export const selectWelcomeSettings = createSelector(
+    [selectWelcome, selectId],
+    (welcomes, guildId) => welcomes.find(welcome => welcome.guildId === guildId)
+)

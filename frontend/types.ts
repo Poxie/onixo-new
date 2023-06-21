@@ -94,3 +94,11 @@ export type ReduxModSettings = {
         sendDMs: boolean;
     }
 }
+export type ReduxWelcomeSettings = {
+    guildId: string;
+    settings: {
+        dm: string;
+        message: string;
+        channel: string;
+    }
+}
