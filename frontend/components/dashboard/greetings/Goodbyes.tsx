@@ -80,14 +80,14 @@ export const Goodbyes = () => {
                     <ModuleSubheader 
                         extraHeader={'Ex-members will be farewelled in this channel.'}
                     >
-                        Welcome channel
+                        Goodbye channel
                     </ModuleSubheader>
                     <ItemList 
                         onChange={channelId => updateProperty('channel', channelId)}
                         defaultActive={goodbye?.settings.channel}
                     />
                     <ModuleSubheader
-                        extraHeader={'Enter a message below to farewell new members.'}
+                        extraHeader={'Enter a message below to farewell ex-members.'}
                         className={styles['header']}
                     >
                         Goodbye message
