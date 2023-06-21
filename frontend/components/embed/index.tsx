@@ -6,7 +6,7 @@ import { useGuildId } from '@/hooks/useGuildId';
 import { useAppSelector } from '@/redux/store';
 import { selectGuildById } from '@/redux/dashboard/selectors';
 
-export const Embed: React.FC<EmbedType> = ({ thumbnail, image, fields, author, footer, url, title, description }) => {
+export const Embed: React.FC<EmbedType> = ({ color, thumbnail, image, fields, author, footer, url, title, description }) => {
     const { user } = useAuth();
     const guildId = useGuildId();
     const guild = useAppSelector(state => selectGuildById(state, guildId));
@@ -15,7 +15,7 @@ export const Embed: React.FC<EmbedType> = ({ thumbnail, image, fields, author, f
 
     const validFields = fields.filter(field => field.name || field.value);
     return(
-        <div className={styles['container']}>
+        <div className={styles['container']} style={{ borderColor: color }}>
             <div className={styles['main']}>
                 <div>
                     {author.text && (
@@ -58,7 +58,7 @@ export const Embed: React.FC<EmbedType> = ({ thumbnail, image, fields, author, f
                                         {field.name}
                                     </span>
                                     <span className={styles['field-value']}>
-                                        {field.value}
+                                        {replaceVariables(field.value, user, guild)}
                                     </span>
                                 </div>
                             ))}

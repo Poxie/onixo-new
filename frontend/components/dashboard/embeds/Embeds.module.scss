@@ -115,6 +115,45 @@
         color: var(--text-primary);
     }
 }
+.colors {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-quinary);
+}
+.color-toggle {
+    cursor: pointer;
+    width: 42px;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--background-quaternary);
+    border-radius: var(--border-radius-tertiary);
+
+    svg {
+        width: 22px;
+        fill: var(--text-secondary);
+        display: block;
+    }
+}
+.sketch-picker {
+    position: absolute;
+    bottom: calc(0px + 100% + var(--spacing-quinary));
+}
+.circle-picker {
+    width: 100% !important;
+    gap: var(--spacing-senary);
+    margin: 0 !important;
+
+    div {
+        margin: 0 !important;
+    }
+}
+.send-button {
+    position: sticky;
+    bottom: 0;
+}
 
 @media (max-width: 1100px) {
     .flex {

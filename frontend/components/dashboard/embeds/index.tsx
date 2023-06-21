@@ -6,7 +6,7 @@ import { ModuleSubheader } from '../module-subheader';
 import { ItemList } from '../item-list';
 import { ModuleSection } from '../module-section';
 import { Input } from '@/components/input';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Embed } from '@/components/embed';
 import Button from '@/components/button';
 import { useAuth } from '@/contexts/auth';
@@ -16,8 +16,9 @@ import { useAppSelector } from '@/redux/store';
 import { selectChannelById } from '@/redux/dashboard/selectors';
 import { Checkbox } from '@/components/checkbox';
 import { Embed as EmbedType } from '@/types';
-import { CloseIcon } from '@/assets/icons/CloseIcon';
 import { BinIcon } from '@/assets/icons/BinIcon';
+import { CirclePicker, SketchPicker } from 'react-color';
+import { BrushIcon } from '@/assets/icons/BrushIcon';
 
 const getCurrentTime = () => {
     const date = new Date();
@@ -42,6 +43,7 @@ const getEmptyEmbed: () => EmbedType = () => ({
     url: '',
     image: '',
     thumbnail: '',
+    color: '000',
     author: {
         text: '',
         icon: ''
@@ -59,8 +61,25 @@ export const Embeds: NextPageWithLayout = () => {
 
     const [embed, setEmbed] = useState(getEmptyEmbed());
     const [channelId, setChannelId] = useState<null | string>(null);
+    const [selectingColor, setSelectingColor] = useState(false);
+    
+    const colorPicker = useRef(null);
 
     const channel = useAppSelector(state => selectChannelById(state, guildId, channelId as string))
+
+    // Closing color picker on click outside
+    useEffect(() => {
+        if(!selectingColor) return;
+        
+        const checkForClickOutside = (e: MouseEvent) => {
+            // @ts-ignore: this works
+            if(colorPicker.current && !colorPicker.current.contains(e.target)) {
+                setSelectingColor(false);
+            }
+        }
+        document.addEventListener('mousedown', checkForClickOutside);
+        return () => document.removeEventListener('mousedown', checkForClickOutside);
+    }, [selectingColor]);
 
     const updateEmbedProperty = (property: keyof ReturnType<typeof getEmptyEmbed>, value: any) => {
         setEmbed(prev => ({...prev, [property]: value}));
@@ -124,6 +143,11 @@ export const Embeds: NextPageWithLayout = () => {
         }
         checkIsEmpty(embed);
         if(isEmpty) return;
+
+        // Converting embed color to hexadecimal
+        if(embed.color) {
+            embed.color = parseInt(embed.color.replace(/^#/, ''), 16) as any;
+        }
 
         // Sending embed
         post(`/guilds/${guildId}/embeds`, {
@@ -286,12 +310,47 @@ export const Embeds: NextPageWithLayout = () => {
                         </div>
                     </div>
 
-                    <Button 
-                        onClick={sendEmbed}
-                        disabled={!channelId}
-                    >
-                        Send Embed
-                    </Button>
+                    <div className={`${styles['flex']} ${styles['section']}`}>
+                        <div>
+                            <span className={styles['header']}>
+                                Color
+                            </span>
+                            <div className={styles['colors']}>
+                                <button 
+                                    className={styles['color-toggle']}
+                                    onClick={() => setSelectingColor(!selectingColor)}
+                                    aria-label={'Select color'}
+                                >
+                                    <BrushIcon />
+                                </button>
+                                {selectingColor && (
+                                    <div 
+                                        className={styles['sketch-picker']}
+                                        ref={colorPicker}
+                                    >
+                                        <SketchPicker 
+                                            color={embed.color}
+                                            onChange={color => updateEmbedProperty('color', color.hex)}
+                                        />
+                                    </div>
+                                )}
+                                <CirclePicker 
+                                    className={styles['circle-picker']} 
+                                    color={embed.color}
+                                    onChange={color => updateEmbedProperty('color', color.hex)}
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className={styles['send-button']}>
+                        <Button 
+                            onClick={sendEmbed}
+                            disabled={!channelId}
+                        >
+                            Send Embed
+                        </Button>
+                    </div>
                 </div>
                 <div>
                     <ModuleSubheader>
