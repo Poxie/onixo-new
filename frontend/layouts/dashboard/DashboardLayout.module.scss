@@ -213,6 +213,7 @@
 @media (max-width: 1000px) {
     .main {
         --sidebar-width: 90px;
+        --tab-width: 44px;
     }
     .sidebar {
         z-index: 14;
@@ -244,10 +245,13 @@
             padding-left: calc(var(--sidebar-width) + var(--spacing-tertiary));
         }
     }
+    .tabs:before {
+        content: '' !important;
+    }
     .tab {
         transition: width .3s;
-        width: 50px;
-        height: 50px;
+        width: var(--tab-width);
+        height: var(--tab-width);
         overflow: hidden;
         display: flex;
         align-items: center;
@@ -271,7 +275,7 @@
             --sidebar-width: 100% !important;
 
             .tab {
-                width: 50px !important;
+                width: var(--tab-width) !important;
             }
             span {
                 opacity: 0 !important;
@@ -282,6 +286,11 @@
             .dd-icon span {
                 opacity: 1 !important;
             }
+        }
+        &>ul {
+            display: flex;
+            padding: 0 !important;
+            gap: var(--spacing-quinary);
         }
     }
     .dd-selected {
@@ -308,7 +317,11 @@
     }
     .tabs {
         display: flex;
-        gap: var(--spacing-tertiary);
+        gap: var(--spacing-quinary);
         padding-top: var(--spacing-quinary);
+
+        &:before {
+            display: none;
+        }
     }
 }
