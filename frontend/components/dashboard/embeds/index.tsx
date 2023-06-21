@@ -145,14 +145,15 @@ export const Embeds: NextPageWithLayout = () => {
         if(isEmpty) return;
 
         // Converting embed color to hexadecimal
-        if(embed.color) {
-            embed.color = parseInt(embed.color.replace(/^#/, ''), 16) as any;
+        let color = embed.color;
+        if(color) {
+            color = parseInt(color.replace(/^#/, ''), 16) as any;
         }
 
         // Sending embed
         post(`/guilds/${guildId}/embeds`, {
             channel_id: channelId,
-            embed: JSON.stringify(embed)
+            embed: JSON.stringify({...embed, ...{ color }})
         })
     }
 
