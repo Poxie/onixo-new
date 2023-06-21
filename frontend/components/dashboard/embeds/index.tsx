@@ -14,6 +14,10 @@ import { useGuildId } from '@/hooks/useGuildId';
 import Image from 'next/image';
 import { useAppSelector } from '@/redux/store';
 import { selectChannelById } from '@/redux/dashboard/selectors';
+import { Checkbox } from '@/components/checkbox';
+import { Embed as EmbedType } from '@/types';
+import { CloseIcon } from '@/assets/icons/CloseIcon';
+import { BinIcon } from '@/assets/icons/BinIcon';
 
 const getCurrentTime = () => {
     const date = new Date();
@@ -27,7 +31,12 @@ const getCurrentTime = () => {
     return `${hours}:${minutes} ${suffix}`
 }
 
-const getEmptyEmbed = () => ({
+const getEmptyField = () => ({
+    name: '',
+    value: '',
+    inline: false
+})
+const getEmptyEmbed: () => EmbedType = () => ({
     description: '',
     title: '',
     url: '',
@@ -38,7 +47,8 @@ const getEmptyEmbed = () => ({
     footer: {
         text: '',
         icon: ''
-    }
+    },
+    fields: [ getEmptyField() ]
 })
 
 export const Embeds: NextPageWithLayout = () => {
@@ -63,6 +73,37 @@ export const Embeds: NextPageWithLayout = () => {
 
             return newEmbed;
         })
+    }
+    const updateEmbedField = (index: number, property: 'name' | 'value' | 'inline', value: any) => {
+        setEmbed(prev => {
+            const newEmbed = {...embed};
+            newEmbed.fields = newEmbed.fields.map((field, key) => {
+                if(key === index) {
+                    return {
+                        ...field,
+                        [property]: value
+                    }
+                }
+                return field;
+            })
+            return newEmbed;
+        })
+    }
+    const addField = () => setEmbed(prev => ({...prev, fields: prev.fields.concat(getEmptyField())}))
+    const removeField = (index: number) => {
+        setEmbed(prev => {
+            const embed = {...prev};
+
+            // If trying to remove last field, just reset its values
+            if(embed.fields.length === 1) {
+                embed.fields = [getEmptyField()];
+                return embed;
+            }
+
+            // Else just remove the field
+            embed.fields = embed.fields.filter((field, key) => key !== index);
+            return embed;
+        });
     }
 
     const sendEmbed = () => {
@@ -156,6 +197,49 @@ export const Embeds: NextPageWithLayout = () => {
                             placeholder={'Description'}
                             textArea
                         />
+                    </div>
+
+                    <div className={styles['section']}>
+                        <span className={styles['header']}>
+                            Fields
+                        </span>
+                        
+                        <div className={styles['fields']}>
+                            {embed.fields.map((field, index) => (
+                                <div className={styles['flex']}>
+                                    <Input 
+                                        placeholder={'Name'}
+                                        onChange={text => updateEmbedField(index, 'name', text)}
+                                        defaultValue={embed.fields[index].name}
+                                    />
+                                    <Input 
+                                        placeholder={'Value'}
+                                        onChange={text => updateEmbedField(index, 'value', text)}
+                                        defaultValue={embed.fields[index].value}
+                                    />
+                                    <div className={styles['checkbox']}>
+                                        Inline?
+                                        <Checkbox 
+                                            onChange={state => updateEmbedField(index, 'inline', state)}
+                                            defaultChecked={embed.fields[index].inline}
+                                        />
+                                    </div>
+                                    <button 
+                                        onClick={() => removeField(index)}
+                                        aria-label={'Remove field'}
+                                    >
+                                        <BinIcon />
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+
+                        <button 
+                            onClick={addField}
+                            className={styles['add-field']}
+                        >
+                            Add field
+                        </button>
                     </div>
 
                     <div className={`${styles['flex']} ${styles['section']}`}>

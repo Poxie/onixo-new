@@ -56,4 +56,37 @@
 }
 .description {
     font-size: 12px;
+    
+    &:has(+.fields) {
+        margin-bottom: var(--spacing-quaternary);
+    }
+}
+.fields {
+    display: flex;
+    gap: var(--spacing-quinary);
+    flex-wrap: wrap;
+    white-space: nowrap;
+
+    &>div {
+        flex: 1;
+    }
+}
+.field {
+    display: grid;
+
+    &:not(.inline) {
+        min-width: 100%;
+    }
+}
+.field-name {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+.field-value {
+    font-size: 13px;
+}
+.filler {
+    width: 100%;
+    display: block;
 }

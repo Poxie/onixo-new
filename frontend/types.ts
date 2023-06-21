@@ -44,6 +44,11 @@ export type Embed = {
         text: string;
         icon: string;
     }
+    fields: {
+        name: string;
+        value: string;
+        inline: boolean;
+    }[];
 }
 
 export type AutoMod = {
