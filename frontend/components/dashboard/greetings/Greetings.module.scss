@@ -1,0 +1,14 @@
+.flex {
+    display: flex;
+    gap: var(--spacing-secondary);
+    
+    &>div {
+        flex: 1;
+    }
+}
+.section {
+    margin-top: var(--spacing-quaternary);
+}
+.header {
+    margin-top: var(--spacing-quaternary) !important;
+}

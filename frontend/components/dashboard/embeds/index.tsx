@@ -19,18 +19,8 @@ import { Embed as EmbedType } from '@/types';
 import { BinIcon } from '@/assets/icons/BinIcon';
 import { CirclePicker, SketchPicker } from 'react-color';
 import { BrushIcon } from '@/assets/icons/BrushIcon';
-
-const getCurrentTime = () => {
-    const date = new Date();
-    let hours = date.getHours();
-    let minutes = date.getMinutes().toString().padStart(2, '0');
-    
-    const suffix = hours > 12 ? 'PM' : 'AM';
-
-    if(hours > 12) hours -= 12;
-
-    return `${hours}:${minutes} ${suffix}`
-}
+import { getCurrentTime } from '@/utils';
+import { MessagePreview } from '../message-preview';
 
 const getEmptyField = () => ({
     name: '',
@@ -356,35 +346,10 @@ export const Embeds: NextPageWithLayout = () => {
                         </Button>
                     </div>
                 </div>
-                <div>
-                    <ModuleSubheader>
-                        Preview
-                    </ModuleSubheader>
-
-                    <div className={styles['preview']}>
-                        <span className={styles['preview-channel']}>
-                            # {channel?.name || 'channel-not-selected'}
-                        </span>
-                        <div className={styles['preview-main']}>
-                            <Image 
-                                className={styles['preview-avatar']}
-                                src="/avatars/onixo.png"
-                                width={38}
-                                height={38}
-                                alt=""
-                            />
-
-                            <div>
-                                <span className={styles['preview-name']}>
-                                    Onixo 
-                                    <span className={styles['bot-badge']}>bot</span> 
-                                    <span className={styles['preview-timestamp']}>Today at {getCurrentTime()}</span>
-                                </span>
-                                <Embed {...embed} />
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <MessagePreview 
+                    channelName={`# ${channel?.name || 'channel-not-selected'}`}
+                    embed={embed}
+                />
             </div>
         </ModuleSection>
         </>

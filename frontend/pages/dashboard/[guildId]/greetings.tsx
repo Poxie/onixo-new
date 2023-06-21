@@ -1,3 +1,3 @@
-import { ComingSoon } from "@/components/dashboard/coming-soon";
+import { Greetings } from "@/components/dashboard/greetings";
 
-export default ComingSoon;
+export default Greetings;
