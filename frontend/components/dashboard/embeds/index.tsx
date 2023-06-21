@@ -141,7 +141,10 @@ export const Embeds: NextPageWithLayout = () => {
             }
             if(variable) isEmpty = false;
         }
-        checkIsEmpty(embed);
+        const tempEmbed = {...embed};
+        tempEmbed.color = '';
+        checkIsEmpty(tempEmbed);
+        
         if(isEmpty) return;
 
         // Converting embed color to hexadecimal
