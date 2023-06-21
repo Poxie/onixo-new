@@ -1,0 +1,49 @@
+.container {
+    padding: var(--spacing-quaternary);
+    background-color: var(--background-tertiary);
+    border-radius: var(--border-radius-tertiary);
+}
+.channel {
+    display: block;
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-quaternary);
+}
+.main {
+    display: flex;
+    gap: var(--spacing-quaternary);
+
+    &>div {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+.avatar {
+    border-radius: 50%;
+}
+.bot-badge {
+    background-color: var(--color-primary);
+    padding: 2px 5px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    font-size: 9px;
+}
+.name {
+    margin-bottom: var(--spacing-senary);
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    gap: var(--spacing-senary);
+}
+.timestamp {
+    margin-left: var(--spacing-senary);
+    font-size: 10px;
+    color: var(--text-secondary);
+}
+.message {
+    font-size: 13px;
+}
+.empty-message {
+    color: var(--text-secondary);
+}
