@@ -12,3 +12,10 @@
 .header {
     margin-top: var(--spacing-quaternary) !important;
 }
+
+@media (max-width: 750px) {
+    .flex {
+        flex-direction: column;
+        gap: var(--spacing-quaternary) !important;
+    }
+}
