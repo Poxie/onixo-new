@@ -40,6 +40,8 @@ const getEmptyEmbed: () => EmbedType = () => ({
     description: '',
     title: '',
     url: '',
+    image: '',
+    thumbnail: '',
     author: {
         text: '',
         icon: ''
@@ -259,6 +261,27 @@ export const Embeds: NextPageWithLayout = () => {
                             <Input 
                                 onChange={text => updateNestedProperty('footer', 'icon', text)}
                                 placeholder={'Footer icon url'}
+                            />
+                        </div>
+                    </div>
+
+                    <div className={`${styles['flex']} ${styles['section']}`}>
+                        <div>
+                            <span className={styles['header']}>
+                                Thumbnail
+                            </span>
+                            <Input 
+                                onChange={text => updateEmbedProperty('thumbnail', text)}
+                                placeholder={'Thumbnail url'}
+                            />
+                        </div>
+                        <div>
+                            <span className={styles['header']}>
+                                Image
+                            </span>
+                            <Input 
+                                onChange={text => updateEmbedProperty('image', text)}
+                                placeholder={'Image url'}
                             />
                         </div>
                     </div>

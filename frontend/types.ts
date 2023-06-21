@@ -33,6 +33,8 @@ export type Channel = {
     last_message_id?: string;
 }
 export type Embed = {
+    thumbnail: string;
+    image: string;
     url: string;
     title: string;
     description: string;

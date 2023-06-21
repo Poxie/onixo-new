@@ -6,7 +6,7 @@ import { useGuildId } from '@/hooks/useGuildId';
 import { useAppSelector } from '@/redux/store';
 import { selectGuildById } from '@/redux/dashboard/selectors';
 
-export const Embed: React.FC<EmbedType> = ({ fields, author, footer, url, title, description }) => {
+export const Embed: React.FC<EmbedType> = ({ thumbnail, image, fields, author, footer, url, title, description }) => {
     const { user } = useAuth();
     const guildId = useGuildId();
     const guild = useAppSelector(state => selectGuildById(state, guildId));
@@ -16,51 +16,71 @@ export const Embed: React.FC<EmbedType> = ({ fields, author, footer, url, title,
     const validFields = fields.filter(field => field.name || field.value);
     return(
         <div className={styles['container']}>
-            {author.text && (
-                <span className={styles['author']}>
-                    {author.icon && (
-                        <img 
-                            src={replaceVariables(author.icon, user, guild)}
-                            alt=""
-                        />
+            <div className={styles['main']}>
+                <div>
+                    {author.text && (
+                        <span className={styles['author']}>
+                            {author.icon && (
+                                <img 
+                                    src={replaceVariables(author.icon, user, guild)}
+                                    alt=""
+                                />
+                            )}
+                            {replaceVariables(author.text, user, guild)}
+                        </span>
                     )}
-                    {replaceVariables(author.text, user, guild)}
-                </span>
-            )}
-            {title && (
-                <span className={styles['title']}>
-                    {url ? (
-                        <a 
-                            href={url}
-                            target="_blank"
-                            referrerPolicy={'no-referrer'}
-                        >
-                            {replaceVariables(title, user, guild)}
-                        </a>
-                    ) : replaceVariables(title, user, guild)}
-                </span>
-            )}
-            {description && (
-                <span className={styles['description']}>
-                    {replaceVariables(description, user, guild)}
-                </span>
-            )}
-            {validFields.length !== 0 && (
-                <div className={styles['fields']}>
-                    {validFields.map((field, index) => (
-                        <div 
-                            className={`${styles['field']} ${field.inline ? styles['inline'] : ''}`} 
-                            key={index}
-                        >
-                            <span className={styles['field-name']}>
-                                {field.name}
-                            </span>
-                            <span className={styles['field-value']}>
-                                {field.value}
-                            </span>
+                    {title && (
+                        <span className={styles['title']}>
+                            {url ? (
+                                <a 
+                                    href={url}
+                                    target="_blank"
+                                    referrerPolicy={'no-referrer'}
+                                >
+                                    {replaceVariables(title, user, guild)}
+                                </a>
+                            ) : replaceVariables(title, user, guild)}
+                        </span>
+                    )}
+                    {description && (
+                        <span className={styles['description']}>
+                            {replaceVariables(description, user, guild)}
+                        </span>
+                    )}
+                    {validFields.length !== 0 && (
+                        <div className={styles['fields']}>
+                            {validFields.map((field, index) => (
+                                <div 
+                                    className={`${styles['field']} ${field.inline ? styles['inline'] : ''}`} 
+                                    key={index}
+                                >
+                                    <span className={styles['field-name']}>
+                                        {field.name}
+                                    </span>
+                                    <span className={styles['field-value']}>
+                                        {field.value}
+                                    </span>
+                                </div>
+                            ))}
                         </div>
-                    ))}
+                    )}
                 </div>
+                {thumbnail && (
+                    <img
+                        className={styles['thumbnail']}
+                        src={replaceVariables(thumbnail, user, guild)}
+                        width={80}
+                        height={80}
+                        alt=""
+                    />
+                )}
+            </div>
+            {image && (
+                <img 
+                    className={styles['image']}
+                    src={replaceVariables(image, user, guild)}
+                    alt="" 
+                />
             )}
             {footer.text && (
                 <span className={styles['footer']}>

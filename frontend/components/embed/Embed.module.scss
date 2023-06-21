@@ -10,7 +10,11 @@
     border-radius: var(--embed-border-radius);
     border-left: var(--embed-border-width) solid var(--embed-border);
     max-width: var(--embed-max-width);
-    display: grid;
+}
+.main {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--spacing-quaternary);
 }
 .author {
     font-size: 13px;
@@ -45,6 +49,7 @@
 .title {
     font-weight: 700;
     font-size: 15px;
+    display: block;
 
     a {
         color: var(--link-color);
@@ -56,9 +61,10 @@
 }
 .description {
     font-size: 12px;
+    display: block;
     
     &:has(+.fields) {
-        margin-bottom: var(--spacing-quaternary);
+        margin-bottom: var(--spacing-quinary);
     }
 }
 .fields {
@@ -72,7 +78,8 @@
     }
 }
 .field {
-    display: grid;
+    display: flex;
+    flex-direction: column;
 
     &:not(.inline) {
         min-width: 100%;
@@ -86,7 +93,12 @@
 .field-value {
     font-size: 13px;
 }
-.filler {
+.thumbnail {
+    border-radius: var(--embed-border-radius);
+}
+.image {
+    margin-top: var(--spacing-quinary);
+    border-radius: var(--embed-border-radius);
     width: 100%;
-    display: block;
+    max-width: 250px;
 }

@@ -45,6 +45,12 @@
 .preview-main {
     display: flex;
     gap: var(--spacing-quaternary);
+
+    &>div {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
 }
 .preview-avatar {
     border-radius: 50%;
