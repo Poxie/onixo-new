@@ -7,6 +7,7 @@ export type AuthState = {
     loading: boolean;
     user: User | null;
     get: <T>(query: string, endpoint?: 'discord' | 'backend') => Promise<T>;
+    post: <T>(query: string, body?: Object) => Promise<T>;
     patch: <T>(query: string, body?: Object) => Promise<T>;
 }
 
@@ -134,6 +135,7 @@ export const AuthProvider: React.FC<{
         user,
         loading,
         get,
+        post,
         patch
     }
     return(

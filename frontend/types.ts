@@ -32,6 +32,19 @@ export type Channel = {
     topic?: string;
     last_message_id?: string;
 }
+export type Embed = {
+    url: string;
+    title: string;
+    description: string;
+    author: {
+        text: string;
+        icon: string;
+    }
+    footer: {
+        text: string;
+        icon: string;
+    }
+}
 
 export type AutoMod = {
     guild_id: string;
