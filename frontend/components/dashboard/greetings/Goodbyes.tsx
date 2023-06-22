@@ -85,6 +85,7 @@ export const Goodbyes = () => {
                     <ItemList 
                         onChange={channelId => updateProperty('channel', channelId)}
                         defaultActive={goodbye?.settings.channel}
+                        loading={goodbye === undefined}
                     />
                     <ModuleSubheader
                         extraHeader={'Enter a message below to farewell ex-members.'}
@@ -93,6 +94,7 @@ export const Goodbyes = () => {
                         Goodbye message
                     </ModuleSubheader>
                     <Input 
+                        loading={goodbye === undefined}
                         placeholder={'Goodbye message'}
                         onChange={message => updateProperty('message', message)}
                         defaultValue={goodbye?.settings.message}
@@ -104,6 +106,7 @@ export const Goodbyes = () => {
                     message={goodbye?.settings.message}
                     placeholder={'Enter a goodbye message.'}
                     channelName={`# ${channel?.name || 'channel-not-selected'}`}
+                    loading={goodbye === undefined}
                 />
             </div>
         </ModuleSection>

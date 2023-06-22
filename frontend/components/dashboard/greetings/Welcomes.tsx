@@ -85,6 +85,7 @@ export const Welcomes = () => {
                     <ItemList 
                         onChange={channelId => updateProperty('channel', channelId)}
                         defaultActive={welcome?.settings.channel}
+                        loading={welcome === undefined}
                     />
                     <ModuleSubheader
                         extraHeader={'Enter a message below to greet new members.'}
@@ -93,6 +94,7 @@ export const Welcomes = () => {
                         Welcome message
                     </ModuleSubheader>
                     <Input 
+                        loading={welcome === undefined}
                         placeholder={'Welcome message'}
                         onChange={message => updateProperty('message', message)}
                         defaultValue={welcome?.settings.message}
@@ -104,6 +106,7 @@ export const Welcomes = () => {
                     message={welcome?.settings.message}
                     placeholder={'Enter a welcome message.'}
                     channelName={`# ${channel?.name || 'channel-not-selected'}`}
+                    loading={welcome === undefined}
                 />
             </div>
             <div className={styles['flex']}>
@@ -114,6 +117,7 @@ export const Welcomes = () => {
                         Welcome direct message
                     </ModuleSubheader>
                     <Input 
+                        loading={welcome === undefined}
                         placeholder={'Direct Message'}
                         onChange={message => updateProperty('dm', message)}
                         defaultValue={welcome?.settings.dm}
@@ -125,6 +129,7 @@ export const Welcomes = () => {
                     message={welcome?.settings.dm}
                     placeholder={'Enter a direct message.'}
                     channelName={`@ ${user?.global_name}`}
+                    loading={welcome === undefined}
                 />
             </div>
         </ModuleSection>
