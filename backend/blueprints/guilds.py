@@ -316,7 +316,7 @@ def update_welcome_setting(guild_id: int, user_id: int):
             
             # If previous channel, remove current webhook
             if len(channel) >= 2:
-                r = requests.delete(f'{API_ENDPOINT}/{channel[1]}/{channel[2]}')
+                r = requests.delete(f'{API_ENDPOINT}/webhooks/{channel[1]}/{channel[2]}')
 
             # If new channel is selected
             if property[1] != 'null':
@@ -330,7 +330,6 @@ def update_welcome_setting(guild_id: int, user_id: int):
                 }
                 r2 = requests.post(f'{API_ENDPOINT}/channels/{property[1]}/webhooks', json=data, headers=headers)
                 webhook = r2.json()
-
                 # Update database with new webhook data
                 settings.update_one({ '_id': guild_id }, {
                     '$set': {
@@ -386,7 +385,7 @@ def update_goodbye_setting(guild_id: int, user_id: int):
             
             # If previous channel, remove current webhook
             if len(channel) >= 2:
-                r = requests.delete(f'{API_ENDPOINT}/{channel[1]}/{channel[2]}')
+                r = requests.delete(f'{API_ENDPOINT}/webhooks/{channel[1]}/{channel[2]}')
 
             # If new channel is selected
             if property[1] != 'null':
