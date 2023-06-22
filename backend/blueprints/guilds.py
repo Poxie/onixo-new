@@ -1,4 +1,4 @@
-import os, requests, json
+import os, requests, json, base64
 from database import database
 from operator import itemgetter
 from utils.constants import ALLOWED_ANTILINK_SITES, ALLOWED_LOGGING_ACTIONS, ALLOWED_MOD_SETTINGS_PROPERTIES, SEND_EMBED, ALLOWED_WELCOME_PROPERTIES, ALLOWED_GOODBYE_PROPERTIES
@@ -320,16 +320,25 @@ def update_welcome_setting(guild_id: int, user_id: int):
 
             # If new channel is selected
             if property[1] != 'null':
+                # Creating encoded onixo avatar
+                dir = os.path.join(os.path.dirname(__file__), '../assets/avatars/onixo.png')
+                binary = open(dir, 'rb').read()
+                base64_str = base64.b64encode(binary).decode('utf-8')
+                data_url = f'data:image/png;base64,{base64_str}'
+
                 # Create new webhook for channel
                 headers = {
                     'Authorization': f'Bot {os.getenv("BOT_TOKEN")}',
                     'Content-Type': 'application/json'
                 }
                 data = {
-                    'name': 'Onixo'
+                    'name': 'Onixo',
+                    'avatar': data_url
                 }
                 r2 = requests.post(f'{API_ENDPOINT}/channels/{property[1]}/webhooks', json=data, headers=headers)
                 webhook = r2.json()
+                print(webhook)
+
                 # Update database with new webhook data
                 settings.update_one({ '_id': guild_id }, {
                     '$set': {
@@ -389,13 +398,20 @@ def update_goodbye_setting(guild_id: int, user_id: int):
 
             # If new channel is selected
             if property[1] != 'null':
+                # Creating encoded onixo avatar
+                dir = os.path.join(os.path.dirname(__file__), '../assets/avatars/onixo.png')
+                binary = open(dir, 'rb').read()
+                base64_str = base64.b64encode(binary).decode('utf-8')
+                data_url = f'data:image/png;base64,{base64_str}'
+
                 # Create new webhook for channel
                 headers = {
                     'Authorization': f'Bot {os.getenv("BOT_TOKEN")}',
                     'Content-Type': 'application/json'
                 }
                 data = {
-                    'name': 'Onixo'
+                    'name': 'Onixo',
+                    'avatar': data_url
                 }
                 r2 = requests.post(f'{API_ENDPOINT}/channels/{property[1]}/webhooks', json=data, headers=headers)
                 webhook = r2.json()
