@@ -15,8 +15,9 @@ type InputProps = {
     placeholder?: string;
     icon?: ReactElement;
     defaultValue?: string;
+    loading?: boolean;
 }
-export const Input = React.forwardRef<HTMLInputElement, InputProps>(({ focusOnMount, containerClassName, inputClassName, onChange, onSubmit, onFocus, onBlur, name, placeholder, icon, textArea=false, type='text', defaultValue='' }, ref) => {
+export const Input = React.forwardRef<HTMLInputElement, InputProps>(({ focusOnMount, containerClassName, inputClassName, onChange, onSubmit, onFocus, onBlur, name, placeholder, icon, textArea=false, type='text', defaultValue='', loading=false }, ref) => {
     const inputRef = useRef<any>(null);
     useImperativeHandle(ref, () => inputRef.current as HTMLInputElement);
 
@@ -53,7 +54,8 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(({ focusOnMo
         id: name,
         required: true,
         ref: inputRef,
-        placeholder
+        placeholder: loading ? 'Loading...' : placeholder,
+        disabled: loading
     }
 
     containerClassName = [

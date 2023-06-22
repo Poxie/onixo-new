@@ -9,6 +9,13 @@
     color: var(--text-secondary);
     margin-bottom: var(--spacing-quaternary);
 }
+.skeleton-text {
+    height: 16px;
+    width: 120px;
+    display: block;
+    background-color: var(--background-quaternary);
+    border-radius: 4px;
+}
 .main {
     display: flex;
     gap: var(--spacing-quaternary);

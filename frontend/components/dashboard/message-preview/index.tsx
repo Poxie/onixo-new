@@ -6,7 +6,7 @@ import { useAuth } from '@/contexts/auth';
 import { useGuildId } from '@/hooks/useGuildId';
 import { useAppSelector } from '@/redux/store';
 import { selectGuildById } from '@/redux/dashboard/selectors';
-import { Embed as EmbedType } from '@/types';
+import { Embed as EmbedType, Guild, User } from '@/types';
 import { getCurrentTime } from '@/utils';
 import { Embed } from '@/components/embed';
 
@@ -15,13 +15,13 @@ export const MessagePreview: React.FC<{
     message?: string;
     embed?: EmbedType;
     placeholder?: string;
-}> = ({ channelName, message, embed, placeholder }) => {
+    loading?: boolean;
+}> = ({ channelName, message, embed, placeholder, loading }) => {
     const guildId = useGuildId();
     const { user } = useAuth();
 
     const guild = useAppSelector(state => selectGuildById(state, guildId));
 
-    if(!guild || !user) return null;
     return(
         <div>
             <ModuleSubheader>
@@ -29,7 +29,9 @@ export const MessagePreview: React.FC<{
             </ModuleSubheader>
             <div className={styles['container']}>
                 <span className={styles['channel']}>
-                    {channelName}
+                    {!loading ? channelName : (
+                        <span className={styles['skeleton-text']} />
+                    )}
                 </span>
                 <div className={styles['main']}>
                     <Image 
@@ -47,12 +49,16 @@ export const MessagePreview: React.FC<{
                             <span className={styles['timestamp']}>Today at {getCurrentTime()}</span>
                         </span>
                         <span className={styles['message']}>
-                            {message ? replaceVariables(message, user, guild) : (
-                                <span className={styles['empty-message']}>
-                                    {placeholder}
-                                </span>
+                            {loading ? (
+                                <span className={styles['skeleton-text']} />
+                            ) : (
+                                message ? replaceVariables(message, user as User, guild as Guild) : (
+                                    <span className={styles['empty-message']}>
+                                        {placeholder}
+                                    </span>
+                                )
                             )}
-                            {embed && (
+                            {!loading && embed && (
                                 <Embed {...embed} />
                             )}
                         </span>
