@@ -58,7 +58,10 @@ export const Embeds: NextPageWithLayout = () => {
     
     const colorPicker = useRef(null);
 
-    const channel = useAppSelector(state => selectChannelById(state, guildId, channelId as string))
+    const channel = useAppSelector(state => selectChannelById(state, guildId, channelId as string));
+
+    // If guild changes, reset channel
+    useEffect(() => setChannelId(null), [guildId]);
 
     // Closing color picker on click outside
     useEffect(() => {
@@ -177,7 +180,8 @@ export const Embeds: NextPageWithLayout = () => {
                     Embed Channel
                 </ModuleSubheader>
                 <ItemList 
-                    onChange={setChannelId} 
+                    onChange={setChannelId}
+                    defaultActive={channelId ?? undefined}
                 />
             </div>
             <div className={styles['main']}>
