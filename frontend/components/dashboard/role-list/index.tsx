@@ -115,7 +115,7 @@ export const RoleList: React.FC<{
                 ))}
                 {roleIds?.length === 0 && (
                     <span className={styles['empty']}>
-                        This server does not seem to have any roles. Note that only roles below Onixo's highest role are displayed.
+                        This server does not seem to have any roles. Note that only roles below Onixo&apos;s highest role are displayed.
                     </span>
                 )}
             </ul>
