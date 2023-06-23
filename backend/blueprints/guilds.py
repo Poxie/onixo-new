@@ -68,7 +68,10 @@ def get_guild_roles(guild_id: int, user_id: int):
         if role['position'] < highest_role['position'] and not role['managed']:
             filtered_roles.append(role)
 
-    return jsonify(filtered_roles)
+    # Sorting based on position
+    sorted_roles = sorted(filtered_roles, key=itemgetter('position'), reverse=True)
+
+    return jsonify(sorted_roles)
 
 @guilds.get('/guilds/<int:guild_id>/automod')
 @check_admin
