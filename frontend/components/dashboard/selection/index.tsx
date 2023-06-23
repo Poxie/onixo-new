@@ -7,19 +7,17 @@ import { NextPageWithLayout } from '@/pages/_app';
 import { DashAuthLayout } from '@/layouts/dash-auth';
 import Head from 'next/head';
 import { useAuth } from '@/contexts/auth';
-import { useRouter } from 'next/router';
 import { getLoginLink } from '@/utils/getLinks';
 
 const PLACEHOLDER_COUNT = 8;
 export const Selection: NextPageWithLayout = () => {
-    const router = useRouter();
     const { token, loading } = useAuth();
 
     const guildIds = useAppSelector(selectGuildIds);
 
     // If user is not logged in
     if(!loading && !token) {
-        router.replace(getLoginLink());
+        window.location.href = getLoginLink();
         return null;
     }
 

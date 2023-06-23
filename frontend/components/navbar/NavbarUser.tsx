@@ -19,7 +19,10 @@ export const NavbarUser = () => {
 
     return(
         !user ? (
-            <Button href={getLoginLink()}>
+            <Button 
+                href={getLoginLink()}
+                external
+            >
                 Login with Discord
             </Button>
         ) : (
