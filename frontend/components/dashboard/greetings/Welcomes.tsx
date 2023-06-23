@@ -146,7 +146,7 @@ export const Welcomes = () => {
             <div className={styles['flex']}>
                 <div>
                     <ModuleSubheader
-                        extraHeader={'Select roles for new members to receive.'}
+                        extraHeader={'Select roles new members should receive.'}
                     >
                         Welcome member roles
                     </ModuleSubheader>
@@ -158,7 +158,7 @@ export const Welcomes = () => {
                 </div>
                 <div>
                     <ModuleSubheader
-                        extraHeader={'Select roles for new bots to receive.'}
+                        extraHeader={'Select roles new bots should receive.'}
                     >
                         Welcome bot roles
                     </ModuleSubheader>
