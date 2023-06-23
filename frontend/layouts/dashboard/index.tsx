@@ -4,11 +4,12 @@ import { Sidebar } from './Sidebar';
 import { Navbar } from './Navbar';
 import { useGuildId } from '@/hooks/useGuildId';
 import { useAuth } from '@/contexts/auth';
-import { Channel } from '@/types';
-import { setGuildChannels } from '@/redux/dashboard/actions';
+import { Channel, Role } from '@/types';
+import { setGuildChannels, setGuildRoles } from '@/redux/dashboard/actions';
 import { useAppDispatch, useAppSelector } from '@/redux/store';
 import { selectChannelsFetched } from '@/redux/dashboard/selectors';
 import Head from 'next/head';
+import { request } from 'http';
 
 export const DashboardLayout: React.FC<{
     children: ReactElement | ReactElement[];
@@ -23,9 +24,15 @@ export const DashboardLayout: React.FC<{
     useEffect(() => {
         if(!token || !guildId || fetched) return;
 
-        get<Channel[]>(`/guilds/${guildId}/channels`, 'backend')
-            .then(channels => {
-                dispatch(setGuildChannels(guildId, channels));
+        const requests = [
+            get<Channel[]>(`/guilds/${guildId}/channels`, 'backend'),
+            get<Role[]>(`/guilds/${guildId}/roles`, 'backend')
+        ];
+
+        Promise.all(requests)
+            .then(([channels, roles]) => {
+                dispatch(setGuildChannels(guildId, channels as Channel[]));
+                dispatch(setGuildRoles(guildId, (roles as Role[]).filter(role => role.name !== '@everyone')));
             })
     }, [get, guildId, fetched]);
     

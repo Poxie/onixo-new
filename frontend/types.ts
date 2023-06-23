@@ -66,13 +66,13 @@ export type AutoMod = {
         custom: string[]
     }
 }
-export type ReduxRole = {
-    guildId: string;
-    items: Role[];
-}
 export type ReduxChannel = {
     guildId: string;
     items: Channel[];
+}
+export type ReduxRole = {
+    guildId: string;
+    items: Role[];
 }
 export type ReduxActionLogs = {
     guildId: string;
@@ -100,6 +100,8 @@ export type ReduxWelcomeSettings = {
         dm: string;
         message: string;
         channel: string;
+        users: string[];
+        bots: string[] 
     }
 }
 export type ReduxGoodbyeSettings = {

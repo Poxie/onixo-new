@@ -1,7 +1,7 @@
 import { AnyAction } from "redux";
 import { DashboardState } from "./types";
 import { createReducer, updateItemInArray, updateObject } from "../utils";
-import { ADD_ACTION_LOGS, ADD_AUTOMOD, SET_GOODBYE_SETTINGS, SET_GUILDS, SET_GUILD_CHANNELS, SET_MOD_SETTINGS, SET_WELCOME_SETTINGS, UPDATE_ACTION_LOG, UPDATE_ANTILINK, UPDATE_GOODBYE_SETTING, UPDATE_MOD_SETTING, UPDATE_WELCOME_SETTING } from "./constants";
+import { ADD_ACTION_LOGS, ADD_AUTOMOD, SET_GOODBYE_SETTINGS, SET_GUILDS, SET_GUILD_CHANNELS, SET_GUILD_ROLES, SET_MOD_SETTINGS, SET_WELCOME_SETTINGS, UPDATE_ACTION_LOG, UPDATE_ANTILINK, UPDATE_GOODBYE_SETTING, UPDATE_MOD_SETTING, UPDATE_WELCOME_SETTING } from "./constants";
 import { ReduxActionLogs, ReduxGoodbyeSettings, ReduxModSettings, ReduxWelcomeSettings } from "@/types";
 
 // Reducer actions
@@ -47,6 +47,18 @@ const setGuildChannels: ReducerAction = (state, action) => {
             state.channels
                 .filter(item => item.guildId !== guildId)
                 .concat({ guildId, items: channels })
+        )
+    })
+}
+
+const setGuildRoles: ReducerAction = (state, action) => {
+    const { guildId, roles } = action.payload;
+
+    return updateObject(state, {
+        roles: (
+            state.roles
+                .filter(item => item.guildId !== guildId)
+                .concat({ guildId, items: roles })
         )
     })
 }
@@ -197,6 +209,7 @@ export const dashboardReducer = createReducer({
     guilds: null,
     automod: [],
     channels: [],
+    roles: [],
     actionLogs: [],
     modSettings: [],
     welcome: [],
@@ -206,6 +219,7 @@ export const dashboardReducer = createReducer({
     [ADD_AUTOMOD]: addAutomod,
     [UPDATE_ANTILINK]: updateAntilink,
     [SET_GUILD_CHANNELS]: setGuildChannels,
+    [SET_GUILD_ROLES]: setGuildRoles,
     [ADD_ACTION_LOGS]: addActionLogs,
     [UPDATE_ACTION_LOG]: updateActionLog,
     [SET_MOD_SETTINGS]: setModSettings,

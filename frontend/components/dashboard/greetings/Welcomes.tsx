@@ -6,11 +6,12 @@ import { ModuleSubheader } from "../module-subheader"
 import { MessagePreview } from "../message-preview"
 import { ReduxWelcomeSettings } from "@/types"
 import { setWelcomeSettings, updateWelcomeSetting } from "@/redux/dashboard/actions"
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useGuildId } from "@/hooks/useGuildId"
 import { useAppDispatch, useAppSelector } from "@/redux/store"
 import { useAuth } from "@/contexts/auth"
 import { selectChannelById, selectGuildById, selectWelcomeSettings } from "@/redux/dashboard/selectors"
+import { RoleList } from '../role-list';
 
 export const Welcomes = () => {
     const guildId = useGuildId();
@@ -21,6 +22,7 @@ export const Welcomes = () => {
     const channel = useAppSelector(state => selectChannelById(state, guildId, welcome?.settings.channel as string));
 
     const tempSettings = useRef(welcome?.settings);
+    const prevSettings = useRef(welcome?.settings);
 
     useEffect(() => {
         if(!token || !guildId) return;
@@ -28,24 +30,24 @@ export const Welcomes = () => {
         get<ReduxWelcomeSettings['settings']>(`/guilds/${guildId}/welcome`, 'backend')
             .then(settings => {
                 dispatch(setWelcomeSettings(guildId, settings));
-                tempSettings.current = settings;
+                tempSettings.current = structuredClone(settings);
+                prevSettings.current = structuredClone(settings);
             })
     }, [token, get, guildId]);
 
-    const sendUpdateRequest = (channelId?: string) => {
-        if(!welcome || !tempSettings.current) return;
+    const sendUpdateRequest = () => {
+        if(!prevSettings.current || !tempSettings.current) return;
 
         // Determining what properties need to update
-        const propertiesToUpdate: {[key: string]: string} = {};
+        const propertiesToUpdate: {[key: string]: string | string[]} = {};
         Object.entries(tempSettings.current).forEach(([key, value]) => {
-            const isSame = welcome.settings[key as keyof typeof welcome.settings] === value;
+            if(!prevSettings.current) return;
+            
+            const isSame = JSON.stringify(prevSettings.current[key as keyof typeof prevSettings.current]) === JSON.stringify(value);
             if(!isSame) {
-                propertiesToUpdate[key] = welcome.settings[key as keyof typeof welcome.settings];
+                propertiesToUpdate[key] = value;
             }
         });
-        
-        // If channelId is present
-        if(channelId !== undefined && (typeof channelId === 'string' || channelId === null)) propertiesToUpdate['channel'] = channelId as string;
 
         // Checking if there are any properties to update
         if(!Object.keys(propertiesToUpdate).length) return;
@@ -53,19 +55,28 @@ export const Welcomes = () => {
         // Updating properties
         patch(`/guilds/${guildId}/welcome`, propertiesToUpdate)
             .then(() => {
-                tempSettings.current = welcome.settings;
+                prevSettings.current = structuredClone(tempSettings.current);
             })
             .catch(() => {
                 if(!tempSettings.current) return;
 
                 // If request fails, restore to previous settings
-                dispatch(setWelcomeSettings(guildId, tempSettings.current))
+                dispatch(setWelcomeSettings(guildId, tempSettings.current));
+                tempSettings.current = structuredClone(prevSettings.current);
             })
     }
-    const updateProperty = (property: keyof ReduxWelcomeSettings['settings'], value: any) => {
+    const updateProperty = (property: keyof ReduxWelcomeSettings['settings'], value: any, shouldUpdateNow?: boolean) => {
+        // Updating current settings
+        if(tempSettings.current) {
+            tempSettings.current[property] = value;
+        }
+
+        // Updating UI
         dispatch(updateWelcomeSetting(guildId, property, value));
-        if(property === 'channel') {
-            sendUpdateRequest(value);
+
+        // If update request should be sent instantly
+        if(shouldUpdateNow) {
+            sendUpdateRequest();
         }
     }
 
@@ -83,7 +94,7 @@ export const Welcomes = () => {
                         Welcome channel
                     </ModuleSubheader>
                     <ItemList 
-                        onChange={channelId => updateProperty('channel', channelId)}
+                        onChange={channelId => updateProperty('channel', channelId, true)}
                         defaultActive={welcome?.settings.channel}
                         loading={welcome === undefined}
                     />
@@ -131,6 +142,32 @@ export const Welcomes = () => {
                     channelName={`@ ${user?.global_name}`}
                     loading={welcome === undefined}
                 />
+            </div>
+            <div className={styles['flex']}>
+                <div>
+                    <ModuleSubheader
+                        extraHeader={'Select roles for new members to receive.'}
+                    >
+                        Welcome member roles
+                    </ModuleSubheader>
+                    <RoleList 
+                        active={welcome?.settings.users || []}
+                        onChange={ids => updateProperty('users', ids, true)}
+                        loading={welcome === undefined}
+                    />
+                </div>
+                <div>
+                    <ModuleSubheader
+                        extraHeader={'Select roles for new bots to receive.'}
+                    >
+                        Welcome bot roles
+                    </ModuleSubheader>
+                    <RoleList 
+                        active={welcome?.settings.bots || []}
+                        onChange={ids => updateProperty('bots', ids, true)}
+                        loading={welcome === undefined}
+                    />
+                </div>
             </div>
         </ModuleSection>
     )
