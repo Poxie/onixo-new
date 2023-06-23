@@ -63,9 +63,12 @@ def get_guild_roles(guild_id: int, user_id: int):
     highest_role = send_message(GET_TOP_ROLE, { 'guild_id': guild_id })
 
     # Preventing roles of highest role or above to be displayed
-    roles = [role for role in roles if role['position'] < highest_role['position']]
+    filtered_roles = []
+    for role in roles:
+        if role['position'] < highest_role['position'] and not role['managed']:
+            filtered_roles.append(role)
 
-    return jsonify(roles)
+    return jsonify(filtered_roles)
 
 @guilds.get('/guilds/<int:guild_id>/automod')
 @check_admin
