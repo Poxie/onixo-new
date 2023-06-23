@@ -33,7 +33,11 @@ export const SidebarTabs = () => {
     return(
         <ul className={styles['groups']}>
             {GROUPS.map(group => (
-                <ul data-group-title={group.title} className={styles['tabs']}>
+                <ul 
+                    data-group-title={group.title} 
+                    className={styles['tabs']}
+                    key={group.title || '0'}
+                >
                     {group.tabs.map(tab => {
                         const path = `/dashboard/${guildId}${tab.path}/${tab.href ? tab.href : ''}`;
                         const isActive = !tab.path ? asPath === `/dashboard/${guildId}` : asPath.includes(tab.path);

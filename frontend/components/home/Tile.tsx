@@ -10,7 +10,7 @@ export const Tile: React.FC<TileType & {
     const visible = useWithinView(ref);
 
     const newTitle = title.split(' ').map((part, index) => {
-        if(boldIndices.includes(index)) return <span className="highlight">{part}</span>;
+        if(boldIndices.includes(index)) return <span className="highlight" key={index}>{part}</span>;
         return part + ' ';
     })
 
