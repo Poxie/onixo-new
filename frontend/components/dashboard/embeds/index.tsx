@@ -21,6 +21,7 @@ import { CirclePicker, SketchPicker } from 'react-color';
 import { BrushIcon } from '@/assets/icons/BrushIcon';
 import { getCurrentTime } from '@/utils';
 import { MessagePreview } from '../message-preview';
+import { useToast } from '@/contexts/toast';
 
 const getEmptyField = () => ({
     name: '',
@@ -46,9 +47,11 @@ const getEmptyEmbed: () => EmbedType = () => ({
 })
 
 export const Embeds: NextPageWithLayout = () => {
+    const { setToast } = useToast();
     const { post } = useAuth();
     const guildId = useGuildId();
 
+    const [sending, setSending] = useState(false);
     const [embed, setEmbed] = useState(getEmptyEmbed());
     const [channelId, setChannelId] = useState<null | string>(null);
     const [selectingColor, setSelectingColor] = useState(false);
@@ -118,7 +121,10 @@ export const Embeds: NextPageWithLayout = () => {
     }
 
     const sendEmbed = () => {
-        if(!channelId) return;
+        if(!channelId) {
+            setToast({ text: 'You must select a channel for the embed.' });
+            return;
+        }
 
         // Checking if embed has properties
         let isEmpty = true;
@@ -135,7 +141,10 @@ export const Embeds: NextPageWithLayout = () => {
         tempEmbed.color = '';
         checkIsEmpty(tempEmbed);
 
-        if(isEmpty) return;
+        if(isEmpty) {
+            setToast({ text: 'You cannot send an empty embed.' })
+            return;
+        }
 
         // Converting embed color to hexadecimal
         let color = embed.color;
@@ -144,9 +153,16 @@ export const Embeds: NextPageWithLayout = () => {
         }
 
         // Sending embed
+        setSending(true);
         post(`/guilds/${guildId}/embeds`, {
             channel_id: channelId,
             embed: JSON.stringify({...embed, ...{ color }})
+        }).then(() => {
+            setToast({ text: `Embed successfully sent in #${channel?.name}.`, type: 'success' })
+        }).catch(() => {
+            setToast({ text: 'Something went wrong sending embed.', type: 'danger' });
+        }).finally(() => {
+            setSending(false);
         })
     }
 
@@ -340,7 +356,7 @@ export const Embeds: NextPageWithLayout = () => {
                     <div className={styles['send-button']}>
                         <Button 
                             onClick={sendEmbed}
-                            disabled={!channelId}
+                            disabled={sending}
                         >
                             Send Embed
                         </Button>
