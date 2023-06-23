@@ -1,7 +1,7 @@
 import os, requests, json, base64
 from database import database
 from operator import itemgetter
-from utils.constants import ALLOWED_ANTILINK_SITES, ALLOWED_LOGGING_ACTIONS, ALLOWED_MOD_SETTINGS_PROPERTIES, SEND_EMBED, ALLOWED_WELCOME_PROPERTIES, ALLOWED_GOODBYE_PROPERTIES
+from utils.constants import GET_TOP_ROLE, ALLOWED_ANTILINK_SITES, ALLOWED_LOGGING_ACTIONS, ALLOWED_MOD_SETTINGS_PROPERTIES, SEND_EMBED, ALLOWED_WELCOME_PROPERTIES, ALLOWED_GOODBYE_PROPERTIES, AUTO_ROLE_PROPERTIES
 from flask import Blueprint, request, jsonify, abort
 from utils.auth import get_access_token, check_admin
 from utils.websockets import send_message
@@ -51,6 +51,21 @@ def get_guild_channels(guild_id: int, user_id: int):
     text_channels = [channel for channel in channels if channel['type'] == 0]
 
     return jsonify(text_channels)
+
+@guilds.get('/guilds/<int:guild_id>/roles')
+@check_admin
+def get_guild_roles(guild_id: int, user_id: int):
+    headers = {'Authorization': f'Bot {os.getenv("BOT_TOKEN")}'}
+    r = requests.get(f'{API_ENDPOINT}/guilds/{guild_id}/roles', headers=headers)
+    roles = r.json()
+
+    # Checking what is the highest role for the bot
+    highest_role = send_message(GET_TOP_ROLE, { 'guild_id': guild_id })
+
+    # Preventing roles of highest role or above to be displayed
+    roles = [role for role in roles if role['position'] < highest_role['position']]
+
+    return jsonify(roles)
 
 @guilds.get('/guilds/<int:guild_id>/automod')
 @check_admin
@@ -298,9 +313,12 @@ def get_welcome_settings(guild_id: int, user_id: int):
 
     settings = db.find_one({ '_id': guild_id })
     welcome = settings['welcome']
+    auto_role = settings['autorole']
 
     welcome['channel'] = str(welcome['channel'][0]) if len(welcome['channel']) > 0 else None
     welcome['isEnabled'] = bool(welcome['isEnabled'])
+    welcome['users'] = [str(id) for id in auto_role['users']]
+    welcome['bots'] = [str(id) for id in auto_role['bots']]
 
     return jsonify(welcome)
 
@@ -311,9 +329,24 @@ def update_welcome_setting(guild_id: int, user_id: int):
     properties = request.form.items()
 
     for property in properties:
+        # If property is auto role
+        if property[0] in AUTO_ROLE_PROPERTIES:
+            try:
+                roles = json.loads(property[1])
+            except:
+                abort(400, f'{property[0]} value must be a list of strings.')
+
+            settings.update_one({ '_id': guild_id }, {
+                '$set': {
+                    f'autorole.{property[0]}': [int(id) for id in roles]
+                }
+            })
+
+        # Making sure not to update unwanted values
         if property[0] not in ALLOWED_WELCOME_PROPERTIES:
             continue
 
+        # Special interaction is needed if channel should update
         if property[0] == 'channel':
             guild = settings.find_one({ '_id': guild_id })
             channel = guild['welcome']['channel']
