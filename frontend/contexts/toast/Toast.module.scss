@@ -48,3 +48,9 @@
         width: 0;
     }
 }
+
+@media (max-width: 600px) {
+    .container {
+        --main-width: calc(100% - var(--spacing-quaternary) * 2) !important;
+    }
+}
