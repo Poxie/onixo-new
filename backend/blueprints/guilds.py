@@ -26,6 +26,10 @@ def get_bot_guilds():
     r = requests.get(f'{API_ENDPOINT}/users/@me/guilds', headers=headers)
     user_guilds = r.json()
     
+    # If we are being rate limited
+    if 'retry_after' in user_guilds:
+        abort(429, {'retry_after': user_guilds['retry_after']})
+
     admin_guilds = []
     for guild in user_guilds:
         if (int(guild['permissions']) & ADMIN_PERMS) == ADMIN_PERMS:
