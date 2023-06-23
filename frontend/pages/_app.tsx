@@ -2,6 +2,7 @@ import { Footer } from '@/components/footer'
 import { Navbar } from '@/components/navbar'
 import { AuthProvider } from '@/contexts/auth'
 import { MenuProvider } from '@/contexts/menu'
+import { ToastProvider } from '@/contexts/toast'
 import { store } from '@/redux/store'
 import '@/styles/globals.css'
 import { NextPage } from 'next'
@@ -31,13 +32,15 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
   return(
     <div className={inter['className']}>
       <Provider store={store}>
-        <AuthProvider>
-          <MenuProvider>
-            {!isDashboard && <Navbar />}
-            {getLayout(<Component {...pageProps} />)}
-            {!isDashboard && <Footer />}
-          </MenuProvider>
-        </AuthProvider>
+        <ToastProvider>
+          <AuthProvider>
+            <MenuProvider>
+              {!isDashboard && <Navbar />}
+              {getLayout(<Component {...pageProps} />)}
+              {!isDashboard && <Footer />}
+            </MenuProvider>
+          </AuthProvider>
+        </ToastProvider>
       </Provider>
     </div>
   )
