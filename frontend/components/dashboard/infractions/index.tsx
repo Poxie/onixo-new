@@ -27,7 +27,8 @@ export const Infractions: NextPageWithLayout = () => {
     const guildId = useGuildId();
     const { get, token } = useAuth();
 
-    const [search, setSearch] = useState('');
+    const [target, setTarget] = useState('');
+    const [issuer, setIssuer] = useState('');
     const [action, setAction] = useState<string | null>(null);
 
     const infractions = useAppSelector(state => selectInfractions(state, guildId));
@@ -44,17 +45,18 @@ export const Infractions: NextPageWithLayout = () => {
     const filteredInfractions = useMemo(() => (
         infractions?.filter(infraction => {
             return(
-                (search !== '' ? (
-                    infraction.reason?.toLowerCase().includes(search.toLowerCase()) ||
-                    infraction.target.global_name.toLowerCase().includes(search.toLowerCase()) ||
-                    infraction.issuer.global_name.toLowerCase().includes(search.toLowerCase())
-                ) : true) &&
                 (action ? (
                     infraction.action === action
-                ) : true
-            ))
+                ) : true) &&
+                (target !== '' ? (
+                    infraction.target.global_name.toLowerCase().includes(target.toLowerCase())
+                ) : true) &&
+                (issuer !== '' ? (
+                    infraction.issuer.global_name.toLowerCase().includes(issuer.toLowerCase())
+                ) : true)
+            )
         })
-    ), [search, action, infractions?.length])
+    ), [action, target, issuer, infractions?.length])
     return(
         <>
         <ModuleHeader 
@@ -72,11 +74,17 @@ export const Infractions: NextPageWithLayout = () => {
                     onChange={setAction}
                     active={action}
                 />
+                <Input 
+                    placeholder={'Search by target'}
+                    containerClassName={styles['filter-input']}
+                    onChange={setTarget}
+                />
+                <Input 
+                    placeholder={'Search by issuer'}
+                    containerClassName={styles['filter-input']}
+                    onChange={setIssuer}
+                />
             </div>
-            <Input 
-                placeholder={'Search'}
-                onChange={setSearch}
-            />
         </div>
         {filteredInfractions && filteredInfractions?.length !== 0 && (
             <span className={styles['label']}>

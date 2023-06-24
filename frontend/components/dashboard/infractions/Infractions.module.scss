@@ -8,6 +8,14 @@
 }
 .flex {
     display: flex;
+    gap: var(--spacing-senary);
+}
+.filter-input {
+    background-color: transparent !important;
+    
+    input {
+        padding: var(--spacing-quinary) !important;
+    }
 }
 .label {
     font-size: 14px;
