@@ -6,6 +6,9 @@
     display: grid;
     gap: var(--spacing-quinary);
 }
+.flex {
+    display: flex;
+}
 .label {
     font-size: 14px;
     color: var(--text-secondary);
@@ -18,7 +21,7 @@
     margin-top: var(--spacing-quaternary);
 }
 .item {
-    --size: 20px;
+    --size: 25px;
     --spacing: 3px;
     position: relative;
     padding: var(--spacing-quaternary);
@@ -79,4 +82,14 @@
 }
 .muted {
     color: var(--text-secondary);
+}
+
+.text-skeleton {
+    height: 20px;
+    width: 170px;
+    background-color: var(--background-tertiary);
+    border-radius: 4px;
+}
+.item-skeleton {
+    height: 201px;
 }
