@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styles from './Dropdown.module.scss';
 import { ArrowIcon } from '@/assets/icons/ArrowIcon';
 import { CloseIcon } from '@/assets/icons/CloseIcon';
@@ -13,10 +13,23 @@ export const Dropdown: React.FC<{
     placeholder?: string;
 }> = ({ items, active, onChange, placeholder }) => {
     const [open, setOpen] = useState(false);
+    const ref = useRef<HTMLDivElement>(null);
+
+    // Closing on click outside component
+    useEffect(() => {
+        const checkForClickOutside = (e: MouseEvent) => {
+            // @ts-ignore: this works
+            if(ref.current && !ref.current.contains(e.target)) {
+                setOpen(false);
+            }
+        }
+        document.addEventListener('mousedown', checkForClickOutside);
+        return () => document.removeEventListener('mousedown', checkForClickOutside);
+    }, []);
     
     const activeItem = items.find(item => item.id === active);
     return(
-        <div className={styles['container']}>
+        <div className={styles['container']} ref={ref}>
             <span className={styles['selected']}>
                 <button 
                     className={styles['toggle-button']} 
