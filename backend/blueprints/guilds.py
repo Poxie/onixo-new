@@ -1,7 +1,7 @@
 import os, requests, json, base64
 from database import database
 from operator import itemgetter
-from utils.constants import GET_TOP_ROLE, ALLOWED_ANTILINK_SITES, ALLOWED_LOGGING_ACTIONS, ALLOWED_MOD_SETTINGS_PROPERTIES, SEND_EMBED, ALLOWED_WELCOME_PROPERTIES, ALLOWED_GOODBYE_PROPERTIES, AUTO_ROLE_PROPERTIES
+from utils.constants import GET_TOP_ROLE, ALLOWED_ANTILINK_SITES, ALLOWED_LOGGING_ACTIONS, ALLOWED_MOD_SETTINGS_PROPERTIES, SEND_EMBED, ALLOWED_WELCOME_PROPERTIES, ALLOWED_GOODBYE_PROPERTIES, AUTO_ROLE_PROPERTIES, GET_INFRACTIONS
 from flask import Blueprint, request, jsonify, abort
 from utils.auth import get_access_token, check_admin
 from utils.websockets import send_message
@@ -484,3 +484,9 @@ def update_goodbye_setting(guild_id: int, user_id: int):
             })
 
     return jsonify({})
+
+@guilds.get('/guilds/<int:guild_id>/infractions')
+@check_admin
+def get_guild_infractions(guild_id: int, user_id: int):
+    infractions = send_message(GET_INFRACTIONS, { 'guild_id': guild_id })
+    return jsonify(infractions)

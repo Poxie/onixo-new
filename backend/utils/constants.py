@@ -6,3 +6,4 @@ ALLOWED_LOGGING_ACTIONS=['all', 'ban', 'kick', 'mute', 'warn']
 ALLOWED_MOD_SETTINGS_PROPERTIES=['ephemeral', 'confirmation', 'sendDMs', 'incName', 'incReason']
 SEND_EMBED='SEND_EMBED'
 GET_TOP_ROLE='GET_TOP_ROLE'
+GET_INFRACTIONS='GET_INFRACTIONS'
