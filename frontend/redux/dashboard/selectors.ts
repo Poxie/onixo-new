@@ -94,3 +94,9 @@ export const selectGoodbyeSettings = createSelector(
     [selectGoodbye, selectId],
     (goodbyes, guildId) => goodbyes.find(bye => bye.guildId === guildId)
 )
+
+const selectAllInfractions = (state: RootState) => state.dashboard.infractions;
+export const selectInfractions = createSelector(
+    [selectAllInfractions, selectId],
+    (infractions, guildId) => infractions.find(item => item.guildId === guildId)?.infractions
+)

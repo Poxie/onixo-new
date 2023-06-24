@@ -1,8 +1,8 @@
 import { AnyAction } from "redux";
 import { DashboardState } from "./types";
 import { createReducer, updateItemInArray, updateObject } from "../utils";
-import { ADD_ACTION_LOGS, ADD_AUTOMOD, SET_GOODBYE_SETTINGS, SET_GUILDS, SET_GUILD_CHANNELS, SET_GUILD_ROLES, SET_MOD_SETTINGS, SET_WELCOME_SETTINGS, UPDATE_ACTION_LOG, UPDATE_ANTILINK, UPDATE_GOODBYE_SETTING, UPDATE_MOD_SETTING, UPDATE_WELCOME_SETTING } from "./constants";
-import { ReduxActionLogs, ReduxGoodbyeSettings, ReduxModSettings, ReduxWelcomeSettings } from "@/types";
+import { ADD_ACTION_LOGS, ADD_AUTOMOD, SET_GOODBYE_SETTINGS, SET_GUILDS, SET_GUILD_CHANNELS, SET_GUILD_ROLES, SET_INFRACTIONS, SET_MOD_SETTINGS, SET_WELCOME_SETTINGS, UPDATE_ACTION_LOG, UPDATE_ANTILINK, UPDATE_GOODBYE_SETTING, UPDATE_MOD_SETTING, UPDATE_WELCOME_SETTING } from "./constants";
+import { Infraction, ReduxActionLogs, ReduxGoodbyeSettings, ReduxModSettings, ReduxWelcomeSettings } from "@/types";
 
 // Reducer actions
 type ReducerAction = (state: DashboardState, action: AnyAction) => DashboardState;
@@ -205,6 +205,22 @@ const updateGoodbyeSetting: ReducerAction = (state, action) => {
     })
 }
 
+const setInfractions: ReducerAction = (state, action) => {
+    const { guildId, infractions }: {
+        guildId: string;
+        infractions: Infraction[];
+    } = action.payload;
+
+    return updateObject(state, {
+        infractions: (
+            state.infractions.filter(item => item.guildId !== guildId).concat({
+                guildId,
+                infractions
+            })
+        )
+    })
+}
+
 export const dashboardReducer = createReducer({
     guilds: null,
     automod: [],
@@ -214,6 +230,7 @@ export const dashboardReducer = createReducer({
     modSettings: [],
     welcome: [],
     goodbye: [],
+    infractions: [],
 }, {
     [SET_GUILDS]: setGuilds,
     [ADD_AUTOMOD]: addAutomod,
@@ -228,4 +245,5 @@ export const dashboardReducer = createReducer({
     [UPDATE_WELCOME_SETTING]: updateWelcomeSetting,
     [SET_GOODBYE_SETTINGS]: setGoodbyeSettings,
     [UPDATE_GOODBYE_SETTING]: updateGoodbyeSetting,
+    [SET_INFRACTIONS]: setInfractions,
 })

@@ -122,3 +122,7 @@ export type ReduxGoodbyeSettings = {
         channel: string;
     }
 }
+export type ReduxInfractions = {
+    guildId: string;
+    infractions: Infraction[];
+}

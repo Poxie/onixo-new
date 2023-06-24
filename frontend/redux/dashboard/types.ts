@@ -1,4 +1,4 @@
-import { AutoMod, Guild, ReduxActionLogs, ReduxChannel, ReduxGoodbyeSettings, ReduxModSettings, ReduxRole, ReduxWelcomeSettings } from "@/types"
+import { AutoMod, Guild, ReduxActionLogs, ReduxChannel, ReduxGoodbyeSettings, ReduxInfractions, ReduxModSettings, ReduxRole, ReduxWelcomeSettings } from "@/types"
 
 export type DashboardState = {
     guilds: Guild[] | null;
@@ -9,4 +9,5 @@ export type DashboardState = {
     modSettings: ReduxModSettings[];
     welcome: ReduxWelcomeSettings[];
     goodbye: ReduxGoodbyeSettings[];
+    infractions: ReduxInfractions[];
 }
