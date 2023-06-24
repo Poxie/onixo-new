@@ -20,7 +20,8 @@ const GROUPS: {
     {
         title: 'Utilities',
         tabs: [
-            { text: 'Embed Messages', path: '/embeds', icon: <OverviewIcon /> }
+            { text: 'Embed Messages', path: '/embeds', icon: <OverviewIcon /> },
+            { text: 'Infractions', path: '/infractions', icon: <OverviewIcon /> }
         ]
     }
 ]

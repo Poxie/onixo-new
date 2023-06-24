@@ -6,19 +6,19 @@ import { useGuildId } from '@/hooks/useGuildId';
 import { useAppSelector } from '@/redux/store';
 import { selectGuildById } from '@/redux/dashboard/selectors';
 
-export const Embed: React.FC<EmbedType> = ({ color, thumbnail, image, fields, author, footer, url, title, description }) => {
+export const Embed: React.FC<Partial<EmbedType>> = ({ color, thumbnail, image, fields, author, footer, url, title, description }) => {
     const { user } = useAuth();
     const guildId = useGuildId();
     const guild = useAppSelector(state => selectGuildById(state, guildId));
 
     if(!user || !guild) return null;
 
-    const validFields = fields.filter(field => field.name || field.value);
+    const validFields = fields?.filter(field => field.name || field.value);
     return(
         <div className={styles['container']} style={{ borderColor: color }}>
             <div className={styles['main']}>
                 <div>
-                    {author.text && (
+                    {author?.text && (
                         <span className={styles['author']}>
                             {author.icon && (
                                 <img 
@@ -47,7 +47,7 @@ export const Embed: React.FC<EmbedType> = ({ color, thumbnail, image, fields, au
                             {replaceVariables(description, user, guild)}
                         </span>
                     )}
-                    {validFields.length !== 0 && (
+                    {validFields && validFields.length !== 0 && (
                         <div className={styles['fields']}>
                             {validFields.map((field, index) => (
                                 <div 
@@ -82,7 +82,7 @@ export const Embed: React.FC<EmbedType> = ({ color, thumbnail, image, fields, au
                     alt="" 
                 />
             )}
-            {footer.text && (
+            {footer?.text && (
                 <span className={styles['footer']}>
                     {footer.icon && (
                         <img 

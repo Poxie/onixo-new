@@ -53,6 +53,17 @@ export type Embed = {
         inline: boolean;
     }[];
 }
+export type Infraction = {
+    _id: string;
+    guild_id: number;
+    case_id: number;
+    duration: null | number;
+    date: number;
+    reason: string | null;
+    issuer: User;
+    target: User;
+    action: 'ban' | 'kick' | 'mute' | 'warn';
+}
 
 export type AutoMod = {
     guild_id: string;

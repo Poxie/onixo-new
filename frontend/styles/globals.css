@@ -8,6 +8,11 @@
   --color-primary: #5943ff;
   --color-secondary: #4837c8;
 
+  --ban-color: #8b0000;
+  --kick-color: #707070;
+  --mute-color: #ffc300;
+  --warn-color: #ffc300;
+
   --menu-background: var(--background-tertiary);
   --menu-separator-background: var(--background-quaternary);
   --menu-item-background-hover: var(--background-quaternary);
