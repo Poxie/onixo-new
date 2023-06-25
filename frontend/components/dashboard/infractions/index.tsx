@@ -69,6 +69,8 @@ export const Infractions: NextPageWithLayout = () => {
             </span>
             <div className={styles['flex']}>
                 <Dropdown 
+                    containerClassName={styles['dd-container']}
+                    itemsClassName={styles['dd-items']}
                     placeholder={'Filter by action'}
                     items={ACTION_FILTERS}
                     onChange={setAction}

@@ -8,6 +8,7 @@
 }
 .flex {
     display: flex;
+    flex-wrap: wrap;
     gap: var(--spacing-senary);
 }
 .filter-input {
@@ -100,4 +101,24 @@
 }
 .item-skeleton {
     height: 201px;
+}
+
+@media (max-width: 1200px) {
+    .list {
+        --row-amount: 2;
+    }
+}
+@media (max-width: 600px) {
+    .list {
+        --row-amount: 1;
+    }
+    .filters .flex>div {
+        width: 100%;
+    }
+    .dd-container>span {
+        justify-content: space-between;
+    }
+    .dd-items {
+        width: 100%;
+    }
 }
