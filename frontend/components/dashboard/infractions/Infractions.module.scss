@@ -38,6 +38,12 @@
     border: var(--spacing) solid var(--background-tertiary);
     border-radius: var(--border-radius-tertiary);
 
+    &:hover {
+        .edit-button {
+            opacity: 1;
+        }
+    }
+
     &:before, &::after {
         content: '';
         position: absolute;
@@ -57,6 +63,28 @@
         background-color: var(--background-secondary);
         top: 0;
         left: 0;
+    }
+}
+.edit-button {
+    padding: 6px;
+    position: absolute;
+    right: var(--spacing-quinary);
+    top: var(--spacing-quinary);
+    background-color: transparent;
+    border: 1px solid var(--background-quaternary);
+    transition: opacity .2s, background-color .2s;
+    border-radius: 50%;
+    cursor: pointer;
+    opacity: 0;
+
+    svg {
+        width: 16px;
+        fill: var(--text-secondary);
+        display: block;
+    }
+
+    &:hover {
+        background-color: var(--background-tertiary);
     }
 }
 .header {
@@ -106,6 +134,11 @@
 @media (max-width: 1200px) {
     .list {
         --row-amount: 2;
+    }
+}
+@media (max-width: 900px) {
+    .edit-button {
+        opacity: 1 !important;
     }
 }
 @media (max-width: 600px) {

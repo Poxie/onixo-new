@@ -56,7 +56,7 @@ export const Infractions: NextPageWithLayout = () => {
                 ) : true)
             )
         })
-    ), [action, target, issuer, infractions?.length])
+    ), [action, target, issuer, infractions])
     return(
         <>
         <ModuleHeader 
@@ -103,6 +103,7 @@ export const Infractions: NextPageWithLayout = () => {
                 {filteredInfractions?.map(infraction => (
                     <Infraction 
                         {...infraction}
+                        editable
                         key={infraction._id}
                     />
                 ))}

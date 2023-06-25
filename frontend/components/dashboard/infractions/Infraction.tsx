@@ -2,16 +2,42 @@ import Image from 'next/image';
 import styles from './Infractions.module.scss';
 import { Embed as EmbedType, Infraction as InfractionType } from "@/types";
 import { CSSProperties } from 'react';
+import { useModal } from '@/contexts/modal';
+import { InfractionModal } from '@/modals/infraction';
+import { useGuildId } from '@/hooks/useGuildId';
+import { EditIcon } from '@/assets/icons/EditIcon';
 
 const firstLetterUppercase = (text: string) => text.slice(0, 1).toUpperCase() + text.slice(1);
-export const Infraction: React.FC<InfractionType> = ({
-    issuer, target, action, case_id, reason, date
+export const Infraction: React.FC<InfractionType & {
+    editable?: boolean;
+}> = ({
+    _id, issuer, target, action, case_id, reason, date, editable
 }) => {
+    const guildId = useGuildId();
+    const { setModal } = useModal();
+
+    const openModal = () => (
+        setModal(
+            <InfractionModal 
+                guildId={guildId}
+                infractionId={_id}
+            />
+        )
+    )
+
     return(
         <div 
             className={styles['item']}
             style={{ '--action-color': `var(--${action}-color)` } as CSSProperties}
         >
+            {editable && (
+                <button
+                    className={styles['edit-button']}
+                    onClick={openModal}
+                >
+                    <EditIcon />
+                </button>
+            )}
             <span className={styles['header']}>
                 {firstLetterUppercase(action)} - Case {case_id}
             </span>
