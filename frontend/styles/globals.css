@@ -1,4 +1,5 @@
 :root {
+  --tooltip-background: #161a22;
   --background-primary: #0e1015;
   --background-secondary: #101318;
   --background-tertiary: #13151b;
@@ -76,4 +77,31 @@ ul {
 }
 .underline {
   text-decoration: underline;
+}
+
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + var(--spacing-quinary));
+  left: 50%;
+  transform: translateX(-50%) scale(.9);
+  white-space: nowrap;
+  z-index: 14141414;
+  padding: var(--spacing-quinary);
+  background-color: var(--background-primary);
+  border-radius: var(--border-radius-tertiary);
+  box-shadow: rgba(0, 0, 0, 0.6) 0px 0px 0px 1px;
+  pointer-events: none;
+  transition: opacity .2s, transform .2s;
+  opacity: 0;
+}
+[data-tooltip]:hover::after {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
+
+@media (max-width: 600px) {
+  [data-tooltip]::after {
+    display: none;
+  }
 }

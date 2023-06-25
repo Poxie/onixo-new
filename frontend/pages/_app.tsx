@@ -4,6 +4,7 @@ import { AuthProvider } from '@/contexts/auth'
 import { MenuProvider } from '@/contexts/menu'
 import { ModalProvider } from '@/contexts/modal'
 import { ToastProvider } from '@/contexts/toast'
+import { TooltipProvider } from '@/contexts/tooltip'
 import { store } from '@/redux/store'
 import '@/styles/globals.css'
 import { NextPage } from 'next'
@@ -35,13 +36,15 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
       <Provider store={store}>
         <ToastProvider>
           <AuthProvider>
-            <ModalProvider>
-              <MenuProvider>
-                {!isDashboard && <Navbar />}
-                {getLayout(<Component {...pageProps} />)}
-                {!isDashboard && <Footer />}
-              </MenuProvider>
-            </ModalProvider>
+            <TooltipProvider>
+              <ModalProvider>
+                <MenuProvider>
+                  {!isDashboard && <Navbar />}
+                  {getLayout(<Component {...pageProps} />)}
+                  {!isDashboard && <Footer />}
+                </MenuProvider>
+              </ModalProvider>
+            </TooltipProvider>
           </AuthProvider>
         </ToastProvider>
       </Provider>
