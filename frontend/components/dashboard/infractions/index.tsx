@@ -115,7 +115,10 @@ export const Infractions: NextPageWithLayout = () => {
             <div className={styles['text-skeleton']} />
             <div className={styles['list']}>
                 {Array.from(Array(PLACEHOLDER_COUNT)).map((_, key) => (
-                    <div className={`${styles['item']} ${styles['item-skeleton']}`} />
+                    <div 
+                        className={`${styles['item']} ${styles['item-skeleton']}`}
+                        key={key}
+                    />
                 ))}
             </div>
             </>
