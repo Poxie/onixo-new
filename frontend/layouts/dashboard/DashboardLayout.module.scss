@@ -87,8 +87,9 @@
     cursor: pointer;
 
     svg {
-        min-width: 22px;
-        width: 22px;
+        --width: 18px;
+        min-width: var(--width);
+        width: var(--width);
         aspect-ratio: 1;
         fill: var(--text-secondary);
         transition: fill .3s;
@@ -214,7 +215,7 @@
 @media (max-width: 1000px) {
     .main {
         --sidebar-width: 90px;
-        --tab-width: 44px;
+        --tab-width: 40px;
     }
     .sidebar {
         z-index: 14;
