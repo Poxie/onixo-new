@@ -233,27 +233,22 @@ def get_guild_mod_settings(guild_id: int, user_id: int):
 def update_guild_mod_settings(guild_id: int, user_id: int):
     db = database['settings']
 
-    property = request.form.get('property')
-    value = request.form.get('value')
+    for prop, val in request.form.items():
+        if prop not in ALLOWED_MOD_SETTINGS_PROPERTIES:
+            continue
 
-    if not property or not value:
-        abort(400, 'Property and value are required')
+        print(prop, val)
+        db.update_one({ '_id': guild_id }, {
+            '$set': {
+                f'moderation.{prop}': 0 if val == 'false' else 1
+            }
+        })
 
-    if property not in ALLOWED_MOD_SETTINGS_PROPERTIES:
-        abort(400, 'Unsupported property')
+    # Fetching updated settings
+    settings = db.find_one({ '_id': guild_id })
+    moderation = settings['moderation']
 
-    if value not in ['true', 'false']:
-        abort(400, 'Unsupported value')
-
-    value = value == 'true'
-
-    db.update_one({ '_id': guild_id }, {
-        '$set': {
-            f'moderation.{property}': value
-        }
-    })
-
-    return jsonify({})
+    return jsonify(moderation)
 
 @guilds.post('/guilds/<int:guild_id>/embeds')
 @check_admin

@@ -10,8 +10,9 @@ export const SettingsItem: React.FC<{
     id: keyof ReduxModSettings['settings'];
     title: string;
     description: string;
+    onChange: (property: keyof ReduxModSettings['settings'], state: boolean) => void;
     checked?: boolean;
-}> = ({ id, title, description, checked }) => {
+}> = ({ id, title, description, checked, onChange }) => {
     const guildId = useGuildId();
     const { patch } = useAuth();
 
@@ -37,8 +38,8 @@ export const SettingsItem: React.FC<{
                 </p>
             </div>
             <Checkbox 
+                onChange={state => onChange(id, state)}
                 defaultChecked={checked}
-                onChange={toggleState}
                 loading={checked === undefined}
             />
         </div>
