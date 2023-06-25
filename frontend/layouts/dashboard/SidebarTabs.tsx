@@ -4,6 +4,8 @@ import { HammerIcon } from '@/assets/icons/HammerIcon';
 import { HandIcon } from '@/assets/icons/HandIcon';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { InfractionIcon } from '@/assets/icons/InfractionIcon';
+import { EmbedIcon } from '@/assets/icons/EmbedIcon';
 
 const GROUPS: {
     title: string | undefined;
@@ -20,8 +22,8 @@ const GROUPS: {
     {
         title: 'Utilities',
         tabs: [
-            { text: 'Embed Messages', path: '/embeds', icon: <OverviewIcon /> },
-            { text: 'Infractions', path: '/infractions', icon: <OverviewIcon /> }
+            { text: 'Embed Messages', path: '/embeds', icon: <EmbedIcon /> },
+            { text: 'Infractions', path: '/infractions', icon: <InfractionIcon /> }
         ]
     }
 ]
