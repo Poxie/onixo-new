@@ -100,3 +100,7 @@ export const selectInfractions = createSelector(
     [selectAllInfractions, selectId],
     (infractions, guildId) => infractions.find(item => item.guildId === guildId)?.infractions
 )
+export const selectInfractionById = createSelector(
+    [selectInfractions, _selectId],
+    (infractions, infractionId) => infractions?.find(infraction => infraction._id === infractionId)
+)

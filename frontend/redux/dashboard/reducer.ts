@@ -1,7 +1,7 @@
 import { AnyAction } from "redux";
 import { DashboardState } from "./types";
 import { createReducer, updateItemInArray, updateObject } from "../utils";
-import { ADD_ACTION_LOGS, ADD_AUTOMOD, SET_GOODBYE_SETTINGS, SET_GUILDS, SET_GUILD_CHANNELS, SET_GUILD_ROLES, SET_INFRACTIONS, SET_MOD_SETTINGS, SET_WELCOME_SETTINGS, UPDATE_ACTION_LOG, UPDATE_ANTILINK, UPDATE_GOODBYE_SETTING, UPDATE_MOD_SETTING, UPDATE_WELCOME_SETTING } from "./constants";
+import { ADD_ACTION_LOGS, ADD_AUTOMOD, SET_GOODBYE_SETTINGS, SET_GUILDS, SET_GUILD_CHANNELS, SET_GUILD_ROLES, SET_INFRACTIONS, SET_MOD_SETTINGS, SET_WELCOME_SETTINGS, UPDATE_ACTION_LOG, UPDATE_ANTILINK, UPDATE_GOODBYE_SETTING, UPDATE_INFRACTION, UPDATE_MOD_SETTING, UPDATE_WELCOME_SETTING } from "./constants";
 import { Infraction, ReduxActionLogs, ReduxGoodbyeSettings, ReduxModSettings, ReduxWelcomeSettings } from "@/types";
 
 // Reducer actions
@@ -221,6 +221,28 @@ const setInfractions: ReducerAction = (state, action) => {
     })
 }
 
+const updateInfraction: ReducerAction = (state, action) => {
+    const { guildId, infraction }: {
+        guildId: string;
+        infraction: Infraction;
+    } = action.payload;
+
+    return updateObject(state, {
+        infractions: (
+            state.infractions.map(setting => {
+                if(setting.guildId !== guildId) return setting;
+
+                return updateObject(setting, {
+                    infractions: setting.infractions.map(i => {
+                        if(i.case_id !== infraction.case_id) return i;
+                        return infraction;
+                    })
+                })
+            })
+        )
+    })
+}
+
 export const dashboardReducer = createReducer({
     guilds: null,
     automod: [],
@@ -246,4 +268,5 @@ export const dashboardReducer = createReducer({
     [SET_GOODBYE_SETTINGS]: setGoodbyeSettings,
     [UPDATE_GOODBYE_SETTING]: updateGoodbyeSetting,
     [SET_INFRACTIONS]: setInfractions,
+    [UPDATE_INFRACTION]: updateInfraction,
 })
