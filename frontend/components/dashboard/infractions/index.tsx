@@ -29,6 +29,7 @@ export const Infractions: NextPageWithLayout = () => {
 
     const [target, setTarget] = useState('');
     const [issuer, setIssuer] = useState('');
+    const [reason, setReason] = useState('');
     const [action, setAction] = useState<string | null>(null);
 
     const infractions = useAppSelector(state => selectInfractions(state, guildId));
@@ -53,10 +54,13 @@ export const Infractions: NextPageWithLayout = () => {
                 ) : true) &&
                 (issuer !== '' ? (
                     infraction.issuer.global_name.toLowerCase().includes(issuer.toLowerCase())
+                ) : true) &&
+                (reason !== '' ? (
+                    infraction.reason?.toLowerCase().includes(reason.toLowerCase())
                 ) : true)
             )
         })
-    ), [action, target, issuer, infractions])
+    ), [action, target, issuer, reason, infractions])
     return(
         <>
         <ModuleHeader 
@@ -85,6 +89,11 @@ export const Infractions: NextPageWithLayout = () => {
                     placeholder={'Search by issuer'}
                     containerClassName={styles['filter-input']}
                     onChange={setIssuer}
+                />
+                <Input 
+                    placeholder={'Search by reason'}
+                    containerClassName={styles['filter-input']}
+                    onChange={setReason}
                 />
             </div>
         </div>
