@@ -34,6 +34,7 @@ export const Infraction: React.FC<InfractionType & {
                 <button
                     className={styles['edit-button']}
                     onClick={openModal}
+                    aria-label={'Edit infraction'}
                 >
                     <EditIcon />
                 </button>
