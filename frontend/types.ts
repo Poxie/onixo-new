@@ -65,18 +65,6 @@ export type Infraction = {
     action: 'ban' | 'kick' | 'mute' | 'warn';
 }
 
-export type AutoMod = {
-    guild_id: string;
-    antilink: {
-        discord: boolean;
-        youtube: boolean;
-        twitch: boolean;
-        instagram: boolean;
-        twitter: boolean;
-        facebook: boolean;
-        custom: string[]
-    }
-}
 export type ReduxChannel = {
     guildId: string;
     items: Channel[];
@@ -125,4 +113,16 @@ export type ReduxGoodbyeSettings = {
 export type ReduxInfractions = {
     guildId: string;
     infractions: Infraction[];
+}
+export type ReduxAntiLink = {
+    guildId: string;
+    antiLink: {
+        discord: boolean;
+        youtube: boolean;
+        twitch: boolean;
+        instagram: boolean;
+        twitter: boolean;
+        facebook: boolean;
+        custom: string[]
+    }
 }

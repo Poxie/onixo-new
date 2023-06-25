@@ -6,9 +6,9 @@ import { selectAntilinkById } from '@/redux/dashboard/selectors';
 import { useEffect, useMemo, useRef } from 'react';
 import { LinkPresetItemSkeleton } from './LinkPresetItemSkeleton';
 import { useAuth } from '@/contexts/auth';
-import { AutoMod } from '@/types';
-import { addAutomod, updateAntilink } from '@/redux/dashboard/actions';
+import { setAntiLink, updateAntilink } from '@/redux/dashboard/actions';
 import { useConfirmation } from '@/contexts/confirmation';
+import { ReduxAntiLink } from '@/types';
 
 const ID_TO_TEXT: {[key: string]: any} = {
     'discord': 'Discord',
@@ -20,7 +20,7 @@ const ID_TO_TEXT: {[key: string]: any} = {
 }
 const PLACEHOLDER_COUNT = Object.keys(ID_TO_TEXT).length;
 
-const getPropertiesToUpdate = (tempSettings: AutoMod['antilink'], prevSettings: AutoMod['antilink']) => {
+const getPropertiesToUpdate = (tempSettings: ReduxAntiLink['antiLink'], prevSettings: ReduxAntiLink['antiLink']) => {
     const propertiesToUpdate: {[key: string]: boolean | string[]} = {};
     Object.entries(tempSettings).forEach(([key, value]) => {
         if(!prevSettings) return;
@@ -46,11 +46,11 @@ export const LinkPresets = () => {
     useEffect(() => {
         if(!token || !guildId) return;
 
-        get<AutoMod>(`/guilds/${guildId}/automod`, 'backend')
+        get<ReduxAntiLink['antiLink']>(`/guilds/${guildId}/anti-link`, 'backend')
             .then(automod => {
-                dispatch(addAutomod(automod))
-                tempAntiLink.current = structuredClone(automod.antilink);
-                prevAntiLink.current = structuredClone(automod.antilink);
+                dispatch(setAntiLink(guildId, automod))
+                tempAntiLink.current = structuredClone(automod);
+                prevAntiLink.current = structuredClone(automod);
             })
     }, [get, token, guildId]);
 
@@ -59,9 +59,10 @@ export const LinkPresets = () => {
 
         setIsLoading(true);
         const properties = getPropertiesToUpdate(tempAntiLink.current, prevAntiLink.current);
-        patch(`/guilds/${guildId}/antilink`, properties)
-            .then(() => {
+        patch<ReduxAntiLink['antiLink']>(`/guilds/${guildId}/anti-link`, properties)
+            .then(antiLink => {
                 prevAntiLink.current = structuredClone(tempAntiLink.current);
+                dispatch(setAntiLink(guildId, antiLink));
             })
             .catch(() => {
 
@@ -80,15 +81,15 @@ export const LinkPresets = () => {
 
     const updateProperty = (id: string, value: any) => {
         if(!tempAntiLink.current || !prevAntiLink.current) return;
-        tempAntiLink.current[id as keyof AutoMod['antilink']] = value;
+        tempAntiLink.current[id as keyof ReduxAntiLink['antiLink']] = value;
         dispatch(updateAntilink(guildId, id, value));
 
         const propertiesToUpdate = getPropertiesToUpdate(tempAntiLink.current, prevAntiLink.current);
         if(!Object.keys(propertiesToUpdate).length) {
-            removeChanges('antilink');
+            removeChanges('antiLink');
         } else {
             addChanges({
-                id: 'antilink',
+                id: 'antiLink',
                 onCancel: revertChanges,
                 onConfirm: sendUpdateRequest
             })

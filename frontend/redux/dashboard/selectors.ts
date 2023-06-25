@@ -5,7 +5,7 @@ const selectId = (_:RootState, id: string) => id;
 const _selectId = (_:RootState, __:any, id: string) => id;
 
 export const selectGuilds = (state: RootState) => state.dashboard.guilds;
-export const selectAutomods = (state: RootState) => state.dashboard.automod;
+export const selectAutomods = (state: RootState) => state.dashboard.antiLink;
 export const selectChannels = (state: RootState) => state.dashboard.channels;
 export const selectRoles = (state: RootState) => state.dashboard.roles;
 export const selectActionLogs = (state: RootState) => state.dashboard.actionLogs;
@@ -22,11 +22,11 @@ export const selectGuildById = createSelector(
 
 export const selectAutomodFetched = createSelector(
     [selectAutomods, selectId],
-    (automods, guildId) => automods.find(automod => automod.guild_id === guildId) !== undefined
+    (automods, guildId) => automods.find(automod => automod.guildId === guildId) !== undefined
 )
 export const selectAntilinkById = createSelector(
     [selectAutomods, selectId],
-    (automods, guildId) => automods.find(automod => automod.guild_id === guildId)?.antilink
+    (automods, guildId) => automods.find(automod => automod.guildId === guildId)?.antiLink
 )
 
 export const selectGuildChannels = createSelector(

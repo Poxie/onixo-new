@@ -73,9 +73,9 @@ def get_guild_roles(guild_id: int, user_id: int):
 
     return jsonify(sorted_roles)
 
-@guilds.get('/guilds/<int:guild_id>/automod')
+@guilds.get('/guilds/<int:guild_id>/anti-link')
 @check_admin
-def get_guild_automod(guild_id: int, user_id: int):
+def get_guild_anti_link(guild_id: int, user_id: int):
     db = database['settings']
 
     # Fetching guild's bot settings
@@ -88,30 +88,28 @@ def get_guild_automod(guild_id: int, user_id: int):
     for key, val in settings['antilink'].items():
         antilink[key] = bool(val)
 
-    # Creating a dict with automod values to return
-    automod_settings = {
-        'guild_id': str(guild_id),
-        'antilink': antilink
-    }
+    return jsonify(antilink)
 
-    return jsonify(automod_settings)
-
-@guilds.patch('/guilds/<int:guild_id>/antilink')
+@guilds.patch('/guilds/<int:guild_id>/anti-link')
 @check_admin
 def update_guild_antilink(guild_id: int, user_id: int):
     db = database['settings']
 
-    for property in request.form.items():
-        if property[0] not in ALLOWED_ANTILINK_SITES:
+    for prop, val in request.form.items():
+        if prop not in ALLOWED_ANTILINK_SITES:
             continue
 
         db.update_one({ '_id': guild_id }, {
             '$set': {
-                f'antilink.{property[0]}': 0 if property[1] == 'false' else 1
+                f'antilink.{prop}': 0 if val == 'false' else 1
             }
         })
 
-    return jsonify({})
+    # Fetching updated settings
+    settings = db.find_one({ '_id': guild_id })
+    antilink = settings['antilink']
+
+    return jsonify(antilink)
 
 @guilds.get('/guilds/<int:guild_id>/action-logs')
 @check_admin

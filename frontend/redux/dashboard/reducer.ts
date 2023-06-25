@@ -1,8 +1,8 @@
 import { AnyAction } from "redux";
 import { DashboardState } from "./types";
 import { createReducer, updateItemInArray, updateObject } from "../utils";
-import { ADD_ACTION_LOGS, ADD_AUTOMOD, SET_GOODBYE_SETTINGS, SET_GUILDS, SET_GUILD_CHANNELS, SET_GUILD_ROLES, SET_INFRACTIONS, SET_MOD_SETTINGS, SET_WELCOME_SETTINGS, UPDATE_ACTION_LOG, UPDATE_ANTILINK, UPDATE_GOODBYE_SETTING, UPDATE_INFRACTION, UPDATE_MOD_SETTING, UPDATE_WELCOME_SETTING } from "./constants";
-import { Infraction, ReduxActionLogs, ReduxGoodbyeSettings, ReduxModSettings, ReduxWelcomeSettings } from "@/types";
+import { ADD_ACTION_LOGS, SET_ANTI_LINK, SET_GOODBYE_SETTINGS, SET_GUILDS, SET_GUILD_CHANNELS, SET_GUILD_ROLES, SET_INFRACTIONS, SET_MOD_SETTINGS, SET_WELCOME_SETTINGS, UPDATE_ACTION_LOG, UPDATE_ANTILINK, UPDATE_GOODBYE_SETTING, UPDATE_INFRACTION, UPDATE_MOD_SETTING, UPDATE_WELCOME_SETTING } from "./constants";
+import { Infraction, ReduxActionLogs, ReduxAntiLink, ReduxGoodbyeSettings, ReduxModSettings, ReduxWelcomeSettings } from "@/types";
 
 // Reducer actions
 type ReducerAction = (state: DashboardState, action: AnyAction) => DashboardState;
@@ -13,25 +13,30 @@ const setGuilds: ReducerAction = (state, action) => {
     })
 }
 
-const addAutomod: ReducerAction = (state, action) => {
+const setAntiLink: ReducerAction = (state, action) => {
+    const { guildId, antiLink }: ReduxAntiLink = action.payload;
+
     return updateObject(state, {
-        automod: state.automod.concat(action.payload)
+        antiLink: state.antiLink.filter(item => item.guildId !== guildId).concat({
+            guildId,
+            antiLink
+        })
     })
 }
 
 const updateAntilink: ReducerAction = (state, action) => {
-    const { guildId, property, value } = action.payload as {
+    const { guildId, property, value }: {
         guildId: string;
         property: string;
         value: boolean;
-    }
+    } = action.payload;
 
     return updateObject(state, {
-        automod: state.automod.map(automod => {
-            if(automod.guild_id !== guildId) return automod;
+        antiLink: state.antiLink.map(antilink => {
+            if(antilink.guildId !== guildId) return antilink;
 
-            return updateObject(automod, {
-                antilink: updateObject(automod.antilink, {
+            return updateObject(antilink, {
+                antiLink: updateObject(antilink.antiLink, {
                     [property]: value
                 })
             })
@@ -245,7 +250,7 @@ const updateInfraction: ReducerAction = (state, action) => {
 
 export const dashboardReducer = createReducer({
     guilds: null,
-    automod: [],
+    antiLink: [],
     channels: [],
     roles: [],
     actionLogs: [],
@@ -255,7 +260,7 @@ export const dashboardReducer = createReducer({
     infractions: [],
 }, {
     [SET_GUILDS]: setGuilds,
-    [ADD_AUTOMOD]: addAutomod,
+    [SET_ANTI_LINK]: setAntiLink,
     [UPDATE_ANTILINK]: updateAntilink,
     [SET_GUILD_CHANNELS]: setGuildChannels,
     [SET_GUILD_ROLES]: setGuildRoles,
