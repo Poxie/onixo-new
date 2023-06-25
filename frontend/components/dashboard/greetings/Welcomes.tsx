@@ -12,10 +12,24 @@ import { useAppDispatch, useAppSelector } from "@/redux/store"
 import { useAuth } from "@/contexts/auth"
 import { selectChannelById, selectGuildById, selectWelcomeSettings } from "@/redux/dashboard/selectors"
 import { RoleList } from '../role-list';
+import { useConfirmation } from '@/contexts/confirmation';
 
+const getPropertiesToUpdate = (tempSettings: ReduxWelcomeSettings['settings'], prevSettings: ReduxWelcomeSettings['settings']) => {
+    const propertiesToUpdate: {[key: string]: string | string[]} = {};
+    Object.entries(tempSettings).forEach(([key, value]) => {
+        if(!prevSettings) return;
+        
+        const isSame = JSON.stringify(prevSettings[key as keyof typeof prevSettings]) === JSON.stringify(value);
+        if(!isSame) {
+            propertiesToUpdate[key] = value;
+        }
+    });
+    return propertiesToUpdate;
+}
 export const Welcomes = () => {
     const guildId = useGuildId();
     const dispatch = useAppDispatch();
+    const { addChanges, removeChanges, setIsLoading, reset } = useConfirmation();
     const { get, patch, token, user } = useAuth();
 
     const welcome = useAppSelector(state => selectWelcomeSettings(state, guildId))
@@ -39,20 +53,12 @@ export const Welcomes = () => {
         if(!prevSettings.current || !tempSettings.current) return;
 
         // Determining what properties need to update
-        const propertiesToUpdate: {[key: string]: string | string[]} = {};
-        Object.entries(tempSettings.current).forEach(([key, value]) => {
-            if(!prevSettings.current) return;
-            
-            const isSame = JSON.stringify(prevSettings.current[key as keyof typeof prevSettings.current]) === JSON.stringify(value);
-            if(!isSame) {
-                propertiesToUpdate[key] = value;
-            }
-        });
+        const propertiesToUpdate = getPropertiesToUpdate(tempSettings.current, prevSettings.current);
 
-        // Checking if there are any properties to update
         if(!Object.keys(propertiesToUpdate).length) return;
 
         // Updating properties
+        setIsLoading(true);
         patch(`/guilds/${guildId}/welcome`, propertiesToUpdate)
             .then(() => {
                 prevSettings.current = structuredClone(tempSettings.current);
@@ -64,20 +70,38 @@ export const Welcomes = () => {
                 dispatch(setWelcomeSettings(guildId, tempSettings.current));
                 tempSettings.current = structuredClone(prevSettings.current);
             })
+            .finally(reset);
     }
-    const updateProperty = (property: keyof ReduxWelcomeSettings['settings'], value: any, shouldUpdateNow?: boolean) => {
+    const revertChanges = () => {
+        if(!prevSettings.current) return;
+        tempSettings.current = structuredClone(prevSettings.current);
+        dispatch(setWelcomeSettings(guildId, structuredClone(prevSettings.current)));
+    }
+    const updateProperty = (property: keyof ReduxWelcomeSettings['settings'], value: any) => {
+        if(!tempSettings.current || !prevSettings.current) return;
+        
         // Updating current settings
         if(tempSettings.current) {
             tempSettings.current[property] = value;
         }
 
+        // Determining what properties need to update
+        const propertiesToUpdate = getPropertiesToUpdate(tempSettings.current, prevSettings.current);
+
+        // Checking if there are any changes
+        const isEmpty = Object.keys(propertiesToUpdate).length === 0;
+        if(isEmpty) {
+            removeChanges('welcome')
+        } else {
+            addChanges({
+                id: 'welcome',
+                onCancel: revertChanges,
+                onConfirm: sendUpdateRequest,
+            })
+        }
+
         // Updating UI
         dispatch(updateWelcomeSetting(guildId, property, value));
-
-        // If update request should be sent instantly
-        if(shouldUpdateNow) {
-            sendUpdateRequest();
-        }
     }
 
     return(
@@ -94,7 +118,7 @@ export const Welcomes = () => {
                         Welcome channel
                     </ModuleSubheader>
                     <ItemList 
-                        onChange={channelId => updateProperty('channel', channelId, true)}
+                        onChange={channelId => updateProperty('channel', channelId)}
                         defaultActive={welcome?.settings.channel}
                         loading={welcome === undefined}
                     />
@@ -109,7 +133,6 @@ export const Welcomes = () => {
                         placeholder={'Welcome message'}
                         onChange={message => updateProperty('message', message)}
                         defaultValue={welcome?.settings.message}
-                        onBlur={sendUpdateRequest}
                         textArea
                     />
                 </div>
@@ -132,7 +155,6 @@ export const Welcomes = () => {
                         placeholder={'Direct Message'}
                         onChange={message => updateProperty('dm', message)}
                         defaultValue={welcome?.settings.dm}
-                        onBlur={sendUpdateRequest}
                         textArea
                     />
                 </div>
@@ -152,7 +174,7 @@ export const Welcomes = () => {
                     </ModuleSubheader>
                     <RoleList 
                         active={welcome?.settings.users || []}
-                        onChange={ids => updateProperty('users', ids, true)}
+                        onChange={ids => updateProperty('users', ids)}
                         loading={welcome === undefined}
                     />
                 </div>
@@ -164,7 +186,7 @@ export const Welcomes = () => {
                     </ModuleSubheader>
                     <RoleList 
                         active={welcome?.settings.bots || []}
-                        onChange={ids => updateProperty('bots', ids, true)}
+                        onChange={ids => updateProperty('bots', ids)}
                         loading={welcome === undefined}
                     />
                 </div>

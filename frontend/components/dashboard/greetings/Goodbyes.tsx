@@ -11,8 +11,22 @@ import { selectChannelById, selectGoodbyeSettings } from '@/redux/dashboard/sele
 import { useEffect, useRef } from 'react';
 import { useAuth } from '@/contexts/auth';
 import { setGoodbyeSettings, updateGoodbyeSetting } from '@/redux/dashboard/actions';
+import { useConfirmation } from '@/contexts/confirmation';
 
+const getPropertiesToUpdate = (tempSettings: ReduxGoodbyeSettings['settings'], prevSettings: ReduxGoodbyeSettings['settings']) => {
+    const propertiesToUpdate: {[key: string]: string | string[]} = {};
+    Object.entries(tempSettings).forEach(([key, value]) => {
+        if(!prevSettings) return;
+        
+        const isSame = JSON.stringify(prevSettings[key as keyof typeof prevSettings]) === JSON.stringify(value);
+        if(!isSame) {
+            propertiesToUpdate[key] = value;
+        }
+    });
+    return propertiesToUpdate;
+}
 export const Goodbyes = () => {
+    const { addChanges, removeChanges, setIsLoading, reset } = useConfirmation();
     const { token, patch, get } = useAuth();
     const guildId = useGuildId();
     const dispatch = useAppDispatch();
@@ -21,52 +35,73 @@ export const Goodbyes = () => {
     const channel = useAppSelector(state => selectChannelById(state, guildId, goodbye?.settings.channel as string));
 
     const tempSettings = useRef(goodbye?.settings);
+    const prevSettings = useRef(goodbye?.settings);
 
     useEffect(() => {
         if(!token || !guildId) return;
 
         get<ReduxGoodbyeSettings['settings']>(`/guilds/${guildId}/goodbye`, 'backend')
             .then(settings => {
-                dispatch(setGoodbyeSettings(guildId, settings));
-                tempSettings.current = settings;
+                dispatch(setGoodbyeSettings(guildId, structuredClone(settings)));
+                tempSettings.current = structuredClone(settings);
+                prevSettings.current = structuredClone(settings);
             })
     }, [token, get, guildId]);
 
-    const sendUpdateRequest = (channelId?: string) => {
-        if(!goodbye || !tempSettings.current) return;
+    const sendUpdateRequest = () => {
+        if(!prevSettings.current || !tempSettings.current) return;
 
         // Determining what properties need to update
-        const propertiesToUpdate: {[key: string]: string} = {};
-        Object.entries(tempSettings.current).forEach(([key, value]) => {
-            const isSame = goodbye.settings[key as keyof typeof goodbye.settings] === value;
-            if(!isSame) {
-                propertiesToUpdate[key] = goodbye.settings[key as keyof typeof goodbye.settings];
-            }
-        });
-        
-        // If channelId is present
-        if(channelId !== undefined && (typeof channelId === 'string' || channelId === null)) propertiesToUpdate['channel'] = channelId as string;
+        const propertiesToUpdate = getPropertiesToUpdate(tempSettings.current, prevSettings.current);
 
-        // Checking if there are any properties to update
         if(!Object.keys(propertiesToUpdate).length) return;
 
         // Updating properties
+        setIsLoading(true);
         patch(`/guilds/${guildId}/goodbye`, propertiesToUpdate)
             .then(() => {
-                tempSettings.current = goodbye.settings;
+                prevSettings.current = structuredClone(tempSettings.current);
+                reset();
             })
             .catch(() => {
                 if(!tempSettings.current) return;
 
                 // If request fails, restore to previous settings
-                dispatch(setGoodbyeSettings(guildId, tempSettings.current))
+                dispatch(setGoodbyeSettings(guildId, tempSettings.current));
+                tempSettings.current = structuredClone(prevSettings.current);
             })
+            .finally(reset);
+    }
+    const revertChanges = () => {
+        if(!prevSettings.current) return;
+        tempSettings.current = structuredClone(prevSettings.current);
+        dispatch(setGoodbyeSettings(guildId, structuredClone(prevSettings.current)));
     }
     const updateProperty = (property: keyof ReduxGoodbyeSettings['settings'], value: any) => {
-        dispatch(updateGoodbyeSetting(guildId, property, value));
-        if(property === 'channel') {
-            sendUpdateRequest(value);
+        if(!tempSettings.current || !prevSettings.current) return;
+        
+        // Updating current settings
+        if(tempSettings.current) {
+            tempSettings.current[property] = value;
         }
+
+        // Determining what properties need to update
+        const propertiesToUpdate = getPropertiesToUpdate(tempSettings.current, prevSettings.current);
+
+        // Checking if there are any changes
+        const isEmpty = Object.keys(propertiesToUpdate).length === 0;
+        if(isEmpty) {
+            removeChanges('goodbye');
+        } else {
+            addChanges({
+                id: 'goodbye',
+                onCancel: revertChanges,
+                onConfirm: sendUpdateRequest,
+            })
+        }
+
+        // Updating UI
+        dispatch(updateGoodbyeSetting(guildId, property, value));
     }
 
     return(
@@ -98,7 +133,6 @@ export const Goodbyes = () => {
                         placeholder={'Goodbye message'}
                         onChange={message => updateProperty('message', message)}
                         defaultValue={goodbye?.settings.message}
-                        onBlur={sendUpdateRequest}
                         textArea
                     />
                 </div>
