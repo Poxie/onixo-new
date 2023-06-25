@@ -128,9 +128,8 @@ def get_action_logs(guild_id: int, user_id: int):
             else:
                 channels[key] = None
     else:
-        for action in ['all', 'ban', 'kick', 'warn', 'mute']:
-            key = f'{action}_logs_channel' if action == 'all' else f'{action}_log_channel'
-            channels[key] = None
+        for action in ALLOWED_LOGGING_ACTIONS:
+            channels[action] = None
 
     return jsonify(channels)
 
@@ -139,96 +138,81 @@ def get_action_logs(guild_id: int, user_id: int):
 @check_admin
 def update_action_logs(guild_id: int, user_id: int):
     db = database['logging']
-
-    action = request.form.get('action')
-    channel_id = request.form.get('channel_id')
-
-    if not action:
-        abort(400, 'action is required properties')
-
-    if action not in ALLOWED_LOGGING_ACTIONS:
-        abort(400, 'action is unsupported')
-
-    try:
-        if channel_id != 'null':
-            channel_id = int(channel_id)
-        else:
-            channel_id = None
-    except:
-        abort(400, 'channel_id must be an integer')
-
-    # Determining log key
-    if action == 'all':
-        key = 'all_logs_channel'
-    else:
-        key = f'{action}_log_channel'
-
-    # Removing previous webhook
     log_settings = db.find_one({ '_id': guild_id })
 
     # If server has not used logging previous, create first instance
     if not log_settings:
         new_logging_settings = {'_id': guild_id}
         for action in ALLOWED_LOGGING_ACTIONS:
-            if action == 'all':
-                new_logging_settings[f'{action}_logs_channel'] = []
-            else:
-                new_logging_settings[f'{action}_log_channel'] = []
+            new_logging_settings[action] = []
 
         # Inserting initial logging object
         db.insert_one(new_logging_settings)
 
-        # After creating, update with newly created settings
-        log_settings = db.find_one({ '_id': guild_id })
+    # Updating channgels
+    for action, channel_id in request.form.items():
+        if action not in ALLOWED_LOGGING_ACTIONS:
+            continue
 
-    # Updating correct log setting
-    if log_settings[f'{key}'] and len(log_settings[f'{key}']) >= 2:
-        prev_action = log_settings[f'{key}']
-        prev_channel_id = prev_action[0]
-        prev_webhook_id = prev_action[1]
-        prev_webhook_token = prev_action[2]
+        # Updating correct log setting
+        if log_settings[action] and len(log_settings[action]) >= 2:
+            prev_action = log_settings[action]
+            prev_channel_id = prev_action[0]
+            prev_webhook_id = prev_action[1]
+            prev_webhook_token = prev_action[2]
 
-        r = requests.delete(f'{API_ENDPOINT}/webhooks/{prev_webhook_id}/{prev_webhook_token}')
+            r = requests.delete(f'{API_ENDPOINT}/webhooks/{prev_webhook_id}/{prev_webhook_token}')
 
-    # Creating new webhook for new channel
-    if channel_id:
-        headers = {
-            'Authorization': f'Bot {os.getenv("BOT_TOKEN")}',
-            'Content-Type': 'application/json'
-        }
-        data = {
-            'name': 'Onixo'
-        }
-        r2 = requests.post(f'{API_ENDPOINT}/channels/{channel_id}/webhooks', json=data, headers=headers)
-        data = r2.json()
-
-        webhook_id = data['id']
-        webhook_token = data['token']
-
-        # Updating db with new webhook and channel
-        db.update_one({ '_id': guild_id }, {
-            '$set': {
-                f'{key}': [channel_id, webhook_id, webhook_token]
+        # Creating new webhook for new channel
+        if channel_id != 'null':
+            headers = {
+                'Authorization': f'Bot {os.getenv("BOT_TOKEN")}',
+                'Content-Type': 'application/json'
             }
-        })
-    else:
-        # Resetting log channel
-        db.update_one({ '_id': guild_id }, {
-            '$set': {
-                f'{key}': []
+            data = {
+                'name': 'Onixo'
             }
-        })
+            r2 = requests.post(f'{API_ENDPOINT}/channels/{channel_id}/webhooks', json=data, headers=headers)
+            data = r2.json()
 
-    # Getting new channel id
+            # If we are being ratelimited
+            if 'retry_after' in data:
+                abort(429, {'retry_after': data['retry_after']})
+
+            webhook_id = data['id']
+            webhook_token = data['token']
+
+            # Updating db with new webhook and channel
+            db.update_one({ '_id': guild_id }, {
+                '$set': {
+                    f'{action}': [int(channel_id), webhook_id, webhook_token]
+                }
+            })
+        else:
+            # Resetting log channel
+            db.update_one({ '_id': guild_id }, {
+                '$set': {
+                    f'{action}': []
+                }
+            })
+
+    # Fetching new settings
     new_settings = db.find_one({ '_id': guild_id })
-    new_action_settings = new_settings[key]
+    
+    channels = {}
+    if new_settings:
+        for key, value in new_settings.items():
+            if key == '_id': continue
 
-    # Getting new channel_id
-    new_channel_id = None
-    if new_action_settings and len(new_action_settings) >= 2:
-        new_channel_id = str(new_action_settings[0])
+            if value:
+                channels[key] = str(value[0])
+            else:
+                channels[key] = None
+    else:
+        for action in ALLOWED_LOGGING_ACTIONS:
+            channels[action] = None
 
-    return jsonify(new_channel_id)
+    return jsonify(channels)
 
 @guilds.get('/guilds/<int:guild_id>/mod-settings')
 @check_admin
