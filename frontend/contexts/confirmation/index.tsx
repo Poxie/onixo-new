@@ -48,12 +48,12 @@ export const ConfimationProvider: React.FC<{
             throw `Route change to "${url}" was aborted (this error can be safely ignored).`;
         }
 
-        if(hasChanges) {
+        if(hasChanges.length) {
             router.events.on('routeChangeStart', routeChangeStart);
         }
 
         return () => router.events.off('routeChangeStart', routeChangeStart);
-    }, [hasChanges]);
+    }, [hasChanges.length]);
 
     const addChanges = (callback: Callback) => {
         setHasChanges(prev => prev.filter(change => change.id !== callback.id).concat(callback));
