@@ -6,6 +6,7 @@ import { useModal } from '@/contexts/modal';
 import { InfractionModal } from '@/modals/infraction';
 import { useGuildId } from '@/hooks/useGuildId';
 import { EditIcon } from '@/assets/icons/EditIcon';
+import { HasTooltip } from '@/contexts/tooltip/HasTooltip';
 
 const firstLetterUppercase = (text: string) => text.slice(0, 1).toUpperCase() + text.slice(1);
 export const Infraction: React.FC<InfractionType & {
@@ -31,13 +32,13 @@ export const Infraction: React.FC<InfractionType & {
             style={{ '--action-color': `var(--${action}-color)` } as CSSProperties}
         >
             {editable && (
-                <button
+                <HasTooltip
+                    tooltip={'Edit infraction'}
                     className={styles['edit-button']}
                     onClick={openModal}
-                    aria-label={'Edit infraction'}
                 >
                     <EditIcon />
-                </button>
+                </HasTooltip>
             )}
             <span className={styles['header']}>
                 {firstLetterUppercase(action)} - Case {case_id}
