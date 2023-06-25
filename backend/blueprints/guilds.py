@@ -101,31 +101,15 @@ def get_guild_automod(guild_id: int, user_id: int):
 def update_guild_antilink(guild_id: int, user_id: int):
     db = database['settings']
 
-    property = request.form.get('property')
-    value = request.form.get('value')
+    for property in request.form.items():
+        if property[0] not in ALLOWED_ANTILINK_SITES:
+            continue
 
-    if not property or not value:
-        abort(400, 'Property or value is missing')
-    
-    if property not in ALLOWED_ANTILINK_SITES:
-        abort(400, 'Unsupported site')
-    
-    if value != 'custom':
-        if value not in ['false', 'true']:
-            abort(400, 'Value must be a boolean')
-
-        value = value == 'true'
-    else:
-        try:
-            value = list(value)
-        except:
-            abort(400, 'Value must be a list')
-
-    db.update_one({ '_id': guild_id }, {
-        '$set': {
-            f'antilink.{property}': value
-        }
-    })
+        db.update_one({ '_id': guild_id }, {
+            '$set': {
+                f'antilink.{property[0]}': 0 if property[1] == 'false' else 1
+            }
+        })
 
     return jsonify({})
 
