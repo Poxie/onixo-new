@@ -41,6 +41,7 @@ export const DashboardLayout: React.FC<{
         <Head>
             <title>Onixo - Dashboard</title>
             <meta name="og:title" content="Onixo - Dashboard" />
+            <meta name="viewport" content="width=device-width, maximum-scale=1"></meta>
         </Head>
 
         <div className={styles['dashboard']}>
