@@ -11,7 +11,9 @@ export const Dropdown: React.FC<{
     active: string | null;
     onChange: (id: string | null) => void;
     placeholder?: string;
-}> = ({ items, active, onChange, placeholder }) => {
+    containerClassName?: string;
+    itemsClassName?: string;
+}> = ({ items, active, onChange, placeholder, containerClassName, itemsClassName }) => {
     const [open, setOpen] = useState(false);
     const ref = useRef<HTMLDivElement>(null);
 
@@ -26,10 +28,23 @@ export const Dropdown: React.FC<{
         document.addEventListener('mousedown', checkForClickOutside);
         return () => document.removeEventListener('mousedown', checkForClickOutside);
     }, []);
+
+    // Setting up classNames
+    containerClassName = [
+        styles['container'],
+        containerClassName
+    ].join(' ');
+    itemsClassName = [
+        styles['items'],
+        itemsClassName
+    ].join(' ');
     
     const activeItem = items.find(item => item.id === active);
     return(
-        <div className={styles['container']} ref={ref}>
+        <div 
+            className={containerClassName} 
+            ref={ref}
+        >
             <span className={styles['selected']}>
                 <button 
                     className={styles['toggle-button']} 
@@ -52,7 +67,7 @@ export const Dropdown: React.FC<{
                 )}
             </span>
             {open && (
-                <ul className={styles['items']}>
+                <ul className={itemsClassName}>
                     {items.map(item => (
                         <li key={item.id}>
                             <button 
