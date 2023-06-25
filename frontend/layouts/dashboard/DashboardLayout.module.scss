@@ -56,7 +56,6 @@
 }
 .tabs {
     display: grid;
-    gap: 4px;
 
     &:before {
         margin-left: var(--spacing-quinary);
@@ -69,6 +68,7 @@
     }
     &:not(:first-child):before {
         margin-top: var(--spacing-tertiary);
+        margin-bottom: var(--spacing-senary);
     }
 }
 .tab {
