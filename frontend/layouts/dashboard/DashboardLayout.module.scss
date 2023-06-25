@@ -1,7 +1,3 @@
-.dashboard {
-    --navbar-height: 72px;
-    --sidebar-width: 275px;
-}
 .navbar {
     display: flex;
     align-items: center;
@@ -214,7 +210,6 @@
 
 @media (max-width: 1000px) {
     .main {
-        --sidebar-width: 90px;
         --tab-width: 40px;
     }
     .sidebar {
@@ -260,10 +255,6 @@
     }
 }
 @media (max-width: 500px) {
-    .main {
-        --sidebar-width: 100%;
-        --sidebar-height: 158px;
-    }
     .sidebar {
         height: var(--sidebar-height);
         top: calc(100dvh - var(--sidebar-height));

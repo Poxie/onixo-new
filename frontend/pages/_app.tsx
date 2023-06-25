@@ -1,6 +1,7 @@
 import { Footer } from '@/components/footer'
 import { Navbar } from '@/components/navbar'
 import { AuthProvider } from '@/contexts/auth'
+import { ConfimationProvider } from '@/contexts/confirmation'
 import { MenuProvider } from '@/contexts/menu'
 import { ModalProvider } from '@/contexts/modal'
 import { ToastProvider } from '@/contexts/toast'
@@ -37,13 +38,15 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
         <ToastProvider>
           <AuthProvider>
             <TooltipProvider>
-              <ModalProvider>
-                <MenuProvider>
-                  {!isDashboard && <Navbar />}
-                  {getLayout(<Component {...pageProps} />)}
-                  {!isDashboard && <Footer />}
-                </MenuProvider>
-              </ModalProvider>
+              <ConfimationProvider>
+                <ModalProvider>
+                  <MenuProvider>
+                    {!isDashboard && <Navbar />}
+                    {getLayout(<Component {...pageProps} />)}
+                    {!isDashboard && <Footer />}
+                  </MenuProvider>
+                </ModalProvider>
+              </ConfimationProvider>
             </TooltipProvider>
           </AuthProvider>
         </ToastProvider>

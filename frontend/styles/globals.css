@@ -19,8 +19,9 @@
   --menu-item-background-hover: var(--background-quaternary);
   --menu-item-background-active: var(--background-quaternary);
 
-  --navbar-height: 104px;
   --footer-height: 92px;
+  --navbar-height: 72px;
+  --sidebar-width: 275px;
 
   --width-main: 1100px;
   --width-main-max: 90%;
@@ -100,8 +101,19 @@ ul {
   transform: translateX(-50%) scale(1);
 }
 
+@media (max-width: 1000px) {
+  :root {
+    --sidebar-width: 90px;
+  }
+}
 @media (max-width: 600px) {
   [data-tooltip]::after {
     display: none;
+  }
+}
+@media (max-width: 500px) {
+  :root {
+    --sidebar-width: 100%;
+    --sidebar-height: 158px;
   }
 }
