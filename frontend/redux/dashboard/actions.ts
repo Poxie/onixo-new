@@ -1,5 +1,5 @@
 import { Channel, Guild, Infraction, ReduxActionLogs, ReduxAntiLink, ReduxGoodbyeSettings, ReduxModSettings, ReduxWelcomeSettings, Role } from "@/types";
-import { ADD_ACTION_LOGS, SET_ANTI_LINK, SET_GOODBYE_SETTINGS, SET_GUILDS, SET_GUILD_CHANNELS, SET_GUILD_ROLES, SET_INFRACTIONS, SET_MOD_SETTINGS, SET_WELCOME_SETTINGS, UPDATE_ACTION_LOG, UPDATE_ANTILINK, UPDATE_GOODBYE_SETTING, UPDATE_INFRACTION, UPDATE_MOD_SETTING, UPDATE_WELCOME_SETTING } from "./constants";
+import { SET_ACTION_LOGS, SET_ANTI_LINK, SET_GOODBYE_SETTINGS, SET_GUILDS, SET_GUILD_CHANNELS, SET_GUILD_ROLES, SET_INFRACTIONS, SET_MOD_SETTINGS, SET_WELCOME_SETTINGS, UPDATE_ACTION_LOG, UPDATE_ANTILINK, UPDATE_GOODBYE_SETTING, UPDATE_INFRACTION, UPDATE_MOD_SETTING, UPDATE_WELCOME_SETTING } from "./constants";
 
 export const setGuilds = (guilds: Guild[]) => ({
     type: SET_GUILDS,
@@ -21,11 +21,11 @@ export const setGuildRoles = (guildId: string, roles: Role[]) => ({
     type: SET_GUILD_ROLES,
     payload: { guildId, roles }
 })
-export const addActionLogs = (guildId: string, logChannels: ReduxActionLogs['logChannels']) => ({
-    type: ADD_ACTION_LOGS,
+export const setActionLogs = (guildId: string, logChannels: ReduxActionLogs['logChannels']) => ({
+    type: SET_ACTION_LOGS,
     payload: { guildId, logChannels }
 })
-export const updateActionLog = (guildId: string, action: string, channelId: ReduxActionLogs['logChannels']['all_logs_channel']) => ({
+export const updateActionLog = (guildId: string, action: keyof ReduxActionLogs['logChannels'], channelId: ReduxActionLogs['logChannels']['all_logs_channel']) => ({
     type: UPDATE_ACTION_LOG,
     payload: { guildId, action, channelId }
 })

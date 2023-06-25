@@ -10,7 +10,7 @@ import { useModuleSection } from '../module-section';
 
 export const ItemList: React.FC<{
     onChange?: (itemId: string | null) => void;
-    defaultActive?: string;
+    defaultActive?: string | null;
     loading?: boolean;
 }> = ({ defaultActive=null, onChange, loading=false }) => {
     const guildId = useGuildId();
