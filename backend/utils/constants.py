@@ -1,3 +1,4 @@
+ALLOWED_INFRACTION_PROPERTIES=['reason']
 ALLOWED_GOODBYE_PROPERTIES=['message', 'channel']
 ALLOWED_WELCOME_PROPERTIES=['message', 'dm', 'channel']
 AUTO_ROLE_PROPERTIES=['bots', 'users']

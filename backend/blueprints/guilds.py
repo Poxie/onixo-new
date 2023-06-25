@@ -1,7 +1,7 @@
 import os, requests, json, base64
 from database import database
 from operator import itemgetter
-from utils.constants import GET_TOP_ROLE, ALLOWED_ANTILINK_SITES, ALLOWED_LOGGING_ACTIONS, ALLOWED_MOD_SETTINGS_PROPERTIES, SEND_EMBED, ALLOWED_WELCOME_PROPERTIES, ALLOWED_GOODBYE_PROPERTIES, AUTO_ROLE_PROPERTIES, GET_INFRACTIONS
+from utils.constants import GET_TOP_ROLE, ALLOWED_ANTILINK_SITES, ALLOWED_LOGGING_ACTIONS, ALLOWED_MOD_SETTINGS_PROPERTIES, SEND_EMBED, ALLOWED_WELCOME_PROPERTIES, ALLOWED_GOODBYE_PROPERTIES, AUTO_ROLE_PROPERTIES, GET_INFRACTIONS, ALLOWED_INFRACTION_PROPERTIES
 from flask import Blueprint, request, jsonify, abort
 from utils.auth import get_access_token, check_admin
 from utils.websockets import send_message
@@ -490,3 +490,20 @@ def update_goodbye_setting(guild_id: int, user_id: int):
 def get_guild_infractions(guild_id: int, user_id: int):
     infractions = send_message(GET_INFRACTIONS, { 'guild_id': guild_id })
     return jsonify(infractions)
+
+@guilds.patch('/guilds/<int:guild_id>/infractions/<int:case_id>')
+@check_admin
+def update_guild_infraction(guild_id: int, case_id: int, user_id: int):
+    infractions = database['infractions']
+
+    for property in request.form.items():
+        if property[0] not in ALLOWED_INFRACTION_PROPERTIES:
+            continue
+
+        infractions.update_one({ 'case_id': case_id, 'guild_id': guild_id }, {
+            '$set': {
+                f'{property[0]}': property[1]
+            }
+        })
+
+    return jsonify({})
