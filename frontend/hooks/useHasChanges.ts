@@ -63,7 +63,7 @@ export const useHasChanges = <T>({ id, guildId, endpoint, onConfirm, dispatchAct
             })
     }, [patch, prevSettings, tempSettings, endpoint]);
     const revertChanges = useCallback(() => {
-        if(!tempSettings || !prevSettings) return
+        if(!tempSettings.current || !prevSettings.current) return
 
         tempSettings.current = structuredClone(prevSettings.current);
         dispatch(dispatchAction(guildId, structuredClone(prevSettings.current)));
