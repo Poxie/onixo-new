@@ -42,10 +42,10 @@ export const useHasChanges = <T>({ id, guildId, endpoint, onConfirm, dispatchAct
         if(!token || !guildId || settings) return;
 
         get<T>(endpoint, 'backend')
-            .then(settings => {
-                prevSettings.current = structuredClone(settings);
-                tempSettings.current = structuredClone(settings);
-                dispatch(dispatchAction(guildId, settings));
+            .then(data => {
+                prevSettings.current = structuredClone(data);
+                tempSettings.current = structuredClone(data);
+                dispatch(dispatchAction(guildId, data));
             })
     }, [get, token, endpoint, guildId, settings]);
 
