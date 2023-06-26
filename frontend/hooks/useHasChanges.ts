@@ -35,8 +35,8 @@ export const useHasChanges = <T>({ id, guildId, endpoint, onConfirm, dispatchAct
 
     const settings = useAppSelector(state => selector(state, guildId));
 
-    const prevSettings = useRef<T>(settings);
-    const tempSettings = useRef<T>(settings);
+    const prevSettings = useRef<T>(typeof window !== 'undefined' ? structuredClone(settings) : undefined);
+    const tempSettings = useRef<T>(typeof window !== 'undefined' ? structuredClone(settings) : undefined);
 
     useEffect(() => {
         if(!token || !guildId || settings) return;
