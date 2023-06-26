@@ -1,3 +1,4 @@
+import { ReduxAntiLink } from '@/types';
 import styles from './Automod.module.scss';
 import Button from "@/components/button"
 

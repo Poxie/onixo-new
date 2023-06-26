@@ -6,37 +6,34 @@ import { ModuleSubheader } from "../module-subheader"
 import { MessagePreview } from "../message-preview"
 import { ReduxWelcomeSettings } from "@/types"
 import { setWelcomeSettings, updateWelcomeSetting } from "@/redux/dashboard/actions"
-import { useEffect, useRef, useState } from "react"
+import { MutableRefObject, Reducer, RefObject, useEffect, useRef, useState } from "react"
 import { useGuildId } from "@/hooks/useGuildId"
 import { useAppDispatch, useAppSelector } from "@/redux/store"
 import { useAuth } from "@/contexts/auth"
 import { selectChannelById, selectGuildById, selectWelcomeSettings } from "@/redux/dashboard/selectors"
 import { RoleList } from '../role-list';
-import { useConfirmation } from '@/contexts/confirmation';
+import { useHasChanges } from '@/hooks/useHasChanges';
 
-const getPropertiesToUpdate = (tempSettings: ReduxWelcomeSettings['settings'], prevSettings: ReduxWelcomeSettings['settings']) => {
-    const propertiesToUpdate: {[key: string]: string | string[]} = {};
-    Object.entries(tempSettings).forEach(([key, value]) => {
-        if(!prevSettings) return;
-        
-        const isSame = JSON.stringify(prevSettings[key as keyof typeof prevSettings]) === JSON.stringify(value);
-        if(!isSame) {
-            propertiesToUpdate[key] = value;
-        }
-    });
-    return propertiesToUpdate;
-}
 export const Welcomes = () => {
     const guildId = useGuildId();
     const dispatch = useAppDispatch();
-    const { addChanges, removeChanges, setIsLoading, reset } = useConfirmation();
-    const { get, patch, token, user } = useAuth();
+    const { get, token, user } = useAuth();
 
     const welcome = useAppSelector(state => selectWelcomeSettings(state, guildId))
     const channel = useAppSelector(state => selectChannelById(state, guildId, welcome?.settings.channel as string));
-
+    
     const tempSettings = useRef(welcome?.settings);
     const prevSettings = useRef(welcome?.settings);
+    
+    const { updateProperty } = useHasChanges<ReduxWelcomeSettings['settings']>({
+        guildId,
+        id: 'welcome',
+        endpoint: `/guilds/${guildId}/welcome`,
+        dispatchAction: setWelcomeSettings,
+        updateAction: updateWelcomeSetting,
+        prevSettings: prevSettings as MutableRefObject<ReduxWelcomeSettings['settings']>,
+        tempSettings: tempSettings as MutableRefObject<ReduxWelcomeSettings['settings']>,
+    });
 
     useEffect(() => {
         if(!token || !guildId) return;
@@ -48,61 +45,6 @@ export const Welcomes = () => {
                 prevSettings.current = structuredClone(settings);
             })
     }, [token, get, guildId]);
-
-    const sendUpdateRequest = () => {
-        if(!prevSettings.current || !tempSettings.current) return;
-
-        // Determining what properties need to update
-        const propertiesToUpdate = getPropertiesToUpdate(tempSettings.current, prevSettings.current);
-
-        if(!Object.keys(propertiesToUpdate).length) return;
-
-        // Updating properties
-        setIsLoading(true);
-        patch(`/guilds/${guildId}/welcome`, propertiesToUpdate)
-            .then(() => {
-                prevSettings.current = structuredClone(tempSettings.current);
-            })
-            .catch(() => {
-                if(!tempSettings.current) return;
-
-                // If request fails, restore to previous settings
-                dispatch(setWelcomeSettings(guildId, tempSettings.current));
-                tempSettings.current = structuredClone(prevSettings.current);
-            })
-            .finally(reset);
-    }
-    const revertChanges = () => {
-        if(!prevSettings.current) return;
-        tempSettings.current = structuredClone(prevSettings.current);
-        dispatch(setWelcomeSettings(guildId, structuredClone(prevSettings.current)));
-    }
-    const updateProperty = (property: keyof ReduxWelcomeSettings['settings'], value: any) => {
-        if(!tempSettings.current || !prevSettings.current) return;
-        
-        // Updating current settings
-        if(tempSettings.current) {
-            tempSettings.current[property] = value;
-        }
-
-        // Determining what properties need to update
-        const propertiesToUpdate = getPropertiesToUpdate(tempSettings.current, prevSettings.current);
-
-        // Checking if there are any changes
-        const isEmpty = Object.keys(propertiesToUpdate).length === 0;
-        if(isEmpty) {
-            removeChanges('welcome')
-        } else {
-            addChanges({
-                id: 'welcome',
-                onCancel: revertChanges,
-                onConfirm: sendUpdateRequest,
-            })
-        }
-
-        // Updating UI
-        dispatch(updateWelcomeSetting(guildId, property, value));
-    }
 
     return(
         <ModuleSection
