@@ -6,23 +6,16 @@ import { Input } from '@/components/input';
 import { MessagePreview } from '../message-preview';
 import { ReduxGoodbyeSettings } from '@/types';
 import { useGuildId } from '@/hooks/useGuildId';
-import { useAppDispatch, useAppSelector } from '@/redux/store';
+import { useAppSelector } from '@/redux/store';
 import { selectChannelById, selectGoodbyeSettings } from '@/redux/dashboard/selectors';
-import { MutableRefObject, useEffect, useRef } from 'react';
-import { useAuth } from '@/contexts/auth';
 import { setGoodbyeSettings, updateGoodbyeSetting } from '@/redux/dashboard/actions';
 import { useHasChanges } from '@/hooks/useHasChanges';
 
 export const Goodbyes = () => {
-    const { token, get } = useAuth();
     const guildId = useGuildId();
-    const dispatch = useAppDispatch();
 
     const goodbye = useAppSelector(state => selectGoodbyeSettings(state, guildId));
     const channel = useAppSelector(state => selectChannelById(state, guildId, goodbye?.settings.channel as string));
-
-    const tempSettings = useRef(goodbye?.settings);
-    const prevSettings = useRef(goodbye?.settings);
 
     const { updateProperty } = useHasChanges<ReduxGoodbyeSettings['settings']>({
         guildId,
@@ -30,20 +23,8 @@ export const Goodbyes = () => {
         endpoint: `/guilds/${guildId}/goodbye`,
         dispatchAction: setGoodbyeSettings,
         updateAction: updateGoodbyeSetting,
-        prevSettings: prevSettings as MutableRefObject<ReduxGoodbyeSettings['settings']>,
-        tempSettings: tempSettings as MutableRefObject<ReduxGoodbyeSettings['settings']>,
+        selector: selectGoodbyeSettings,
     })
-
-    useEffect(() => {
-        if(!token || !guildId) return;
-
-        get<ReduxGoodbyeSettings['settings']>(`/guilds/${guildId}/goodbye`, 'backend')
-            .then(settings => {
-                dispatch(setGoodbyeSettings(guildId, structuredClone(settings)));
-                tempSettings.current = structuredClone(settings);
-                prevSettings.current = structuredClone(settings);
-            })
-    }, [token, get, guildId]);
 
     return(
         <ModuleSection

@@ -6,24 +6,19 @@ import { ModuleSubheader } from "../module-subheader"
 import { MessagePreview } from "../message-preview"
 import { ReduxWelcomeSettings } from "@/types"
 import { setWelcomeSettings, updateWelcomeSetting } from "@/redux/dashboard/actions"
-import { MutableRefObject, Reducer, RefObject, useEffect, useRef, useState } from "react"
 import { useGuildId } from "@/hooks/useGuildId"
-import { useAppDispatch, useAppSelector } from "@/redux/store"
-import { useAuth } from "@/contexts/auth"
+import { useAppSelector } from "@/redux/store"
 import { selectChannelById, selectGuildById, selectWelcomeSettings } from "@/redux/dashboard/selectors"
 import { RoleList } from '../role-list';
 import { useHasChanges } from '@/hooks/useHasChanges';
+import { useAuth } from '@/contexts/auth';
 
 export const Welcomes = () => {
     const guildId = useGuildId();
-    const dispatch = useAppDispatch();
-    const { get, token, user } = useAuth();
+    const { user } = useAuth();
 
     const welcome = useAppSelector(state => selectWelcomeSettings(state, guildId))
     const channel = useAppSelector(state => selectChannelById(state, guildId, welcome?.settings.channel as string));
-    
-    const tempSettings = useRef(welcome?.settings);
-    const prevSettings = useRef(welcome?.settings);
     
     const { updateProperty } = useHasChanges<ReduxWelcomeSettings['settings']>({
         guildId,
@@ -31,20 +26,8 @@ export const Welcomes = () => {
         endpoint: `/guilds/${guildId}/welcome`,
         dispatchAction: setWelcomeSettings,
         updateAction: updateWelcomeSetting,
-        prevSettings: prevSettings as MutableRefObject<ReduxWelcomeSettings['settings']>,
-        tempSettings: tempSettings as MutableRefObject<ReduxWelcomeSettings['settings']>,
+        selector: selectWelcomeSettings,
     });
-
-    useEffect(() => {
-        if(!token || !guildId) return;
-
-        get<ReduxWelcomeSettings['settings']>(`/guilds/${guildId}/welcome`, 'backend')
-            .then(settings => {
-                dispatch(setWelcomeSettings(guildId, settings));
-                tempSettings.current = structuredClone(settings);
-                prevSettings.current = structuredClone(settings);
-            })
-    }, [token, get, guildId]);
 
     return(
         <ModuleSection

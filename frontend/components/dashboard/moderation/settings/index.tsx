@@ -2,10 +2,7 @@ import { ModuleSection } from '../../module-section';
 import { ModuleSubheader } from '../../module-subheader';
 import styles from './ModSettings.module.scss';
 import { SettingsItem } from './SettingsItem';
-import { MutableRefObject, useCallback, useEffect, useRef } from 'react';
-import { useAuth } from '@/contexts/auth';
 import { useGuildId } from '@/hooks/useGuildId';
-import { useAppDispatch, useAppSelector } from '@/redux/store';
 import { selectGuildModSettings, selectModSettingsFetched } from '@/redux/dashboard/selectors';
 import { ReduxModSettings } from '@/types';
 import { setModSettings, updateModSetting } from '@/redux/dashboard/actions';
@@ -14,37 +11,21 @@ import { DashboardLayout } from '@/layouts/dashboard';
 import { ModerationLayout } from '@/layouts/moderation';
 import { NextPageWithLayout } from '@/pages/_app';
 import { useHasChanges } from '@/hooks/useHasChanges';
+import { useAppSelector } from '@/redux/store';
 
 export const ModSettings: NextPageWithLayout = () => {
     const guildId = useGuildId();
-    const { token, get } = useAuth();
 
-    const dispatch = useAppDispatch();
     const settings = useAppSelector(state => selectGuildModSettings(state, guildId));
-
-    const tempSettings = useRef(settings);
-    const prevSettings = useRef(settings);
 
     const { updateProperty } = useHasChanges<ReduxModSettings['settings']>({
         guildId,
         id: 'mod-settings',
         dispatchAction: setModSettings,
         updateAction: updateModSetting,
+        selector: selectGuildModSettings,
         endpoint: `/guilds/${guildId}/mod-settings`,
-        prevSettings: prevSettings as MutableRefObject<ReduxModSettings['settings']>,
-        tempSettings: tempSettings as MutableRefObject<ReduxModSettings['settings']>,
     })
-
-    useEffect(() => {
-        if(!token || settings || !guildId) return;
-
-        get<ReduxModSettings['settings']>(`/guilds/${guildId}/mod-settings`, 'backend')
-            .then(settings => {
-                dispatch(setModSettings(guildId, settings));
-                tempSettings.current = structuredClone(settings);
-                prevSettings.current = structuredClone(settings);
-            })
-    }, [token, get, guildId, settings]);
 
     return(
         <ModuleSection

@@ -1,7 +1,7 @@
 import { useAuth } from "@/contexts/auth";
 import { useConfirmation } from "@/contexts/confirmation"
-import { AppDispatch, useAppDispatch } from "@/redux/store";
-import { MutableRefObject, useCallback } from "react";
+import { AppDispatch, useAppDispatch, useAppSelector } from "@/redux/store";
+import { MutableRefObject, useCallback, useEffect, useRef } from "react";
 
 const getPropertiesToUpdate: <T>(tempSettings: MutableRefObject<T>, prevSettings: MutableRefObject<T>) => Partial<T> = (tempSettings, prevSettings) => {
     if(!tempSettings.current || !prevSettings.current) return {};
@@ -21,17 +21,32 @@ const getPropertiesToUpdate: <T>(tempSettings: MutableRefObject<T>, prevSettings
 type Props<T> = {
     id: string;
     guildId: string;
-    tempSettings: MutableRefObject<T> | undefined;
-    prevSettings: MutableRefObject<T> | undefined;
     endpoint: string;
     dispatchAction: any;
     updateAction: any;
+    selector: any;
     onConfirm?: (data: T) => void;
 }
-export const useHasChanges = <T>({ id, guildId, tempSettings, prevSettings, endpoint, onConfirm, dispatchAction, updateAction }: Props<T>) => {
+export const useHasChanges = <T>({ id, guildId, endpoint, onConfirm, dispatchAction, updateAction, selector }: Props<T>) => {
     const { addChanges, removeChanges, setIsLoading, reset } = useConfirmation();
-    const { patch } = useAuth();
+    const { get, patch, token } = useAuth();
     const dispatch = useAppDispatch();
+
+    const settings = useAppSelector(state => selector(state, guildId));
+
+    const prevSettings = useRef<T>(settings);
+    const tempSettings = useRef<T>(settings);
+
+    useEffect(() => {
+        if(!token || !guildId) return;
+
+        get<T>(endpoint, 'backend')
+            .then(settings => {
+                prevSettings.current = structuredClone(settings);
+                tempSettings.current = structuredClone(settings);
+                dispatch(dispatchAction(guildId, settings));
+            })
+    }, [get, token, endpoint, guildId]);
 
     const updateChanges = useCallback(() => {
         if(!tempSettings?.current || !prevSettings?.current) return
@@ -46,7 +61,7 @@ export const useHasChanges = <T>({ id, guildId, tempSettings, prevSettings, endp
                 if(onConfirm) onConfirm(data);
                 reset();
             })
-    }, [prevSettings, tempSettings, endpoint]);
+    }, [patch, prevSettings, tempSettings, endpoint]);
     const revertChanges = useCallback(() => {
         if(!tempSettings || !prevSettings) return
 
