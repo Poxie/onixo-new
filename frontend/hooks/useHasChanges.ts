@@ -24,9 +24,9 @@ type Props<T> = {
     tempSettings: MutableRefObject<T> | undefined;
     prevSettings: MutableRefObject<T> | undefined;
     endpoint: string;
-    onConfirm: (data: T) => void;
     dispatchAction: any;
     updateAction: any;
+    onConfirm?: (data: T) => void;
 }
 export const useHasChanges = <T>({ id, guildId, tempSettings, prevSettings, endpoint, onConfirm, dispatchAction, updateAction }: Props<T>) => {
     const { addChanges, removeChanges, setIsLoading, reset } = useConfirmation();
@@ -43,7 +43,7 @@ export const useHasChanges = <T>({ id, guildId, tempSettings, prevSettings, endp
         patch<T>(endpoint, properties)
             .then((data: T) => {
                 prevSettings.current = structuredClone(tempSettings.current);
-                onConfirm(data);
+                if(onConfirm) onConfirm(data);
                 reset();
             })
     }, [prevSettings, tempSettings, endpoint]);
