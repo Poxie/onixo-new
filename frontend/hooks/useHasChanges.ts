@@ -38,7 +38,7 @@ export const useHasChanges = <T>({ id, guildId, endpoint, onConfirm, dispatchAct
     const tempSettings = useRef<T>(settings);
 
     useEffect(() => {
-        if(!token || !guildId) return;
+        if(!token || !guildId || settings) return;
 
         get<T>(endpoint, 'backend')
             .then(settings => {
@@ -46,13 +46,12 @@ export const useHasChanges = <T>({ id, guildId, endpoint, onConfirm, dispatchAct
                 tempSettings.current = structuredClone(settings);
                 dispatch(dispatchAction(guildId, settings));
             })
-    }, [get, token, endpoint, guildId]);
+    }, [get, token, endpoint, guildId, settings]);
 
     const updateChanges = useCallback(() => {
         if(!tempSettings?.current || !prevSettings?.current) return
 
         const properties = getPropertiesToUpdate(tempSettings, prevSettings);
-        console.log(properties);
         
         setIsLoading(true);
         patch<T>(endpoint, properties)
