@@ -2,6 +2,7 @@ import { useAuth } from "@/contexts/auth";
 import { useConfirmation } from "@/contexts/confirmation"
 import { AppDispatch, useAppDispatch, useAppSelector } from "@/redux/store";
 import { MutableRefObject, useCallback, useEffect, useRef } from "react";
+import { AnyAction } from "redux";
 
 const getPropertiesToUpdate: <T>(tempSettings: MutableRefObject<T>, prevSettings: MutableRefObject<T>) => Partial<T> = (tempSettings, prevSettings) => {
     if(!tempSettings.current || !prevSettings.current) return {};
@@ -22,8 +23,8 @@ type Props<T> = {
     id: string;
     guildId: string;
     endpoint: string;
-    dispatchAction: any;
-    updateAction: any;
+    dispatchAction: (guildId: string, settings: T) => AnyAction;
+    updateAction: (guildId: string, property: keyof T, value: any) => AnyAction;
     selector: any;
     onConfirm?: (data: T) => void;
 }
