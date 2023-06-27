@@ -295,26 +295,26 @@ def update_welcome_setting(guild_id: int, user_id: int):
     settings = database['settings']
     properties = request.form.items()
 
-    for property in properties:
+    for property, value in properties:
         # If property is auto role
-        if property[0] in AUTO_ROLE_PROPERTIES:
+        if property in AUTO_ROLE_PROPERTIES:
             try:
-                roles = json.loads(property[1])
+                roles = json.loads(value)
             except:
-                abort(400, f'{property[0]} value must be a list of strings.')
+                abort(400, f'{property} value must be a list of strings.')
 
             settings.update_one({ '_id': guild_id }, {
                 '$set': {
-                    f'autorole.{property[0]}': [int(id) for id in roles]
+                    f'autorole.{property}': [int(id) for id in roles]
                 }
             })
 
         # Making sure not to update unwanted values
-        if property[0] not in ALLOWED_WELCOME_PROPERTIES:
+        if property not in ALLOWED_WELCOME_PROPERTIES:
             continue
 
         # Special interaction is needed if channel should update
-        if property[0] == 'channel':
+        if property == 'channel':
             guild = settings.find_one({ '_id': guild_id })
             channel = guild['welcome']['channel']
             
@@ -323,7 +323,7 @@ def update_welcome_setting(guild_id: int, user_id: int):
                 r = requests.delete(f'{API_ENDPOINT}/webhooks/{channel[1]}/{channel[2]}')
 
             # If new channel is selected
-            if property[1] != 'null':
+            if value != 'null':
                 # Creating encoded onixo avatar
                 dir = os.path.join(os.path.dirname(__file__), '../assets/avatars/onixo.png')
                 binary = open(dir, 'rb').read()
@@ -339,14 +339,14 @@ def update_welcome_setting(guild_id: int, user_id: int):
                     'name': 'Onixo',
                     'avatar': data_url
                 }
-                r2 = requests.post(f'{API_ENDPOINT}/channels/{property[1]}/webhooks', json=data, headers=headers)
+                r2 = requests.post(f'{API_ENDPOINT}/channels/{value}/webhooks', json=data, headers=headers)
                 webhook = r2.json()
                 print(webhook)
 
                 # Update database with new webhook data
                 settings.update_one({ '_id': guild_id }, {
                     '$set': {
-                        f'welcome.channel': [int(property[1]), webhook['id'], webhook['token']]
+                        f'welcome.channel': [int(value), webhook['id'], webhook['token']]
                     }
                 })
             
@@ -361,13 +361,18 @@ def update_welcome_setting(guild_id: int, user_id: int):
 
         # Else just update the database with the values
         else:
+            if value in ["false", "true"]:
+                value = False if value == "false" else True
+
             settings.update_one({ '_id': guild_id }, {
                 '$set': {
-                    f'welcome.{property[0]}': property[1]
+                    f'welcome.{property}': value
                 }
             })
 
-    return jsonify({})
+    # Fetching new settings
+    new_settings = settings.find_one({ '_id': guild_id })
+    return jsonify(new_settings['welcome'])
 
 @guilds.get('/guilds/<int:guild_id>/goodbye')
 @check_admin
@@ -388,11 +393,11 @@ def update_goodbye_setting(guild_id: int, user_id: int):
     settings = database['settings']
     properties = request.form.items()
 
-    for property in properties:
-        if property[0] not in ALLOWED_GOODBYE_PROPERTIES:
+    for property, value in properties:
+        if property not in ALLOWED_GOODBYE_PROPERTIES:
             continue
 
-        if property[0] == 'channel':
+        if property == 'channel':
             guild = settings.find_one({ '_id': guild_id })
             channel = guild['goodbye']['channel']
             
@@ -401,7 +406,7 @@ def update_goodbye_setting(guild_id: int, user_id: int):
                 r = requests.delete(f'{API_ENDPOINT}/webhooks/{channel[1]}/{channel[2]}')
 
             # If new channel is selected
-            if property[1] != 'null':
+            if value != 'null':
                 # Creating encoded onixo avatar
                 dir = os.path.join(os.path.dirname(__file__), '../assets/avatars/onixo.png')
                 binary = open(dir, 'rb').read()
@@ -417,13 +422,13 @@ def update_goodbye_setting(guild_id: int, user_id: int):
                     'name': 'Onixo',
                     'avatar': data_url
                 }
-                r2 = requests.post(f'{API_ENDPOINT}/channels/{property[1]}/webhooks', json=data, headers=headers)
+                r2 = requests.post(f'{API_ENDPOINT}/channels/{value}/webhooks', json=data, headers=headers)
                 webhook = r2.json()
 
                 # Update database with new webhook data
                 settings.update_one({ '_id': guild_id }, {
                     '$set': {
-                        f'goodbye.channel': [int(property[1]), webhook['id'], webhook['token']]
+                        f'goodbye.channel': [int(value), webhook['id'], webhook['token']]
                     }
                 })
             
@@ -438,9 +443,12 @@ def update_goodbye_setting(guild_id: int, user_id: int):
 
         # Else just update the database with the values
         else:
+            if value in ["false", "true"]:
+                value = False if value == "false" else True
+
             settings.update_one({ '_id': guild_id }, {
                 '$set': {
-                    f'goodbye.{property[0]}': property[1]
+                    f'goodbye.{property}': value
                 }
             })
 

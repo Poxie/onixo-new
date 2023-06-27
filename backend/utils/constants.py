@@ -1,6 +1,6 @@
 ALLOWED_INFRACTION_PROPERTIES=['reason']
-ALLOWED_GOODBYE_PROPERTIES=['message', 'channel']
-ALLOWED_WELCOME_PROPERTIES=['message', 'dm', 'channel']
+ALLOWED_GOODBYE_PROPERTIES=['message', 'channel', 'isEnabled']
+ALLOWED_WELCOME_PROPERTIES=['message', 'dm', 'channel', 'isEnabled']
 AUTO_ROLE_PROPERTIES=['bots', 'users']
 ALLOWED_ANTILINK_SITES=['discord', 'youtube', 'twitter', 'twitch', 'facebook', 'instagram']
 ALLOWED_LOGGING_ACTIONS=[f'{action}_{"logs" if action == "all" else "log"}_channel' for action in ['all', 'ban', 'kick', 'mute', 'warn', 'message', 'channel', 'user', 'server', 'voice']]
