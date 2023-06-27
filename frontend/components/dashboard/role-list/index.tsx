@@ -1,12 +1,13 @@
 import styles from './RoleList.module.scss'
 import { useGuildId } from "@/hooks/useGuildId"
-import { selectGuildRoleIds } from "@/redux/dashboard/selectors";
+import { selectGuildRoles } from "@/redux/dashboard/selectors";
 import { useAppSelector } from "@/redux/store";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { ArrowIcon } from '@/assets/icons/ArrowIcon';
 import { useModuleSection } from '../module-section';
 import { RoleItem } from './RoleItem';
 import { SelectedRole } from './SeletedRole';
+import { Input } from '@/components/input';
 
 export const RoleList: React.FC<{
     onChange: (itemIds: string[]) => void;
@@ -14,14 +15,16 @@ export const RoleList: React.FC<{
     active: string[];
 }> = ({ active, onChange, loading=false }) => {
     const guildId = useGuildId();
-    const roleIds = useAppSelector(state => selectGuildRoleIds(state, guildId));
+    const roles = useAppSelector(state => selectGuildRoles(state, guildId));
     const { ref: section } = useModuleSection();
 
     const [open, setOpen] = useState(false);
     const [direction, setDirection] = useState<'top' | 'bottom'>('top');
+    const [search, setSearch] = useState('');
+
     const container = useRef<HTMLDivElement>(null)
     const ref = useRef<HTMLButtonElement>(null);
-    const items = useRef<HTMLUListElement>(null);
+    const items = useRef<HTMLDivElement>(null);
 
     // If dropdown exceeds parent, change direction of popup items
     useLayoutEffect(() => {
@@ -65,6 +68,10 @@ export const RoleList: React.FC<{
         setOpen(prev => !prev);
     }
 
+    const filteredRoles = useMemo(() => roles?.filter(role => (
+        !search ? role : role.name.toLowerCase().includes(search.toLowerCase())
+    )), [roles, search]);
+
     const className = [
         styles['container'],
         open ? styles['expanded'] : '',
@@ -104,21 +111,29 @@ export const RoleList: React.FC<{
                 </div>
                 <ArrowIcon />
             </div>
-            <ul className={styles['items']} ref={items}>
-                {roleIds?.map(roleId => (
-                    <RoleItem 
-                        id={roleId}
-                        guildId={guildId}
-                        onClick={handleChange}
-                        key={roleId}
-                    />
-                ))}
-                {roleIds?.length === 0 && (
-                    <span className={styles['empty']}>
-                        This server does not seem to have any roles. Note that only roles below Onixo&apos;s highest role are displayed.
+            <div className={styles['items']} ref={items}>
+                <Input 
+                    placeholder={'Search'}
+                    containerClassName={styles['input']}
+                    onChange={setSearch}
+                    focusOnMount
+                />
+                <ul className={styles['item-list']}>
+                    {filteredRoles?.map(role => (
+                        <RoleItem 
+                            {...role}
+                            guildId={guildId}
+                            onClick={handleChange}
+                            key={role.id}
+                        />
+                    ))}
+                </ul>
+                {filteredRoles?.length === 0 && (
+                    <span className={styles['muted']}>
+                        No roles were found.
                     </span>
                 )}
-            </ul>
+            </div>
         </div>
     )
 }

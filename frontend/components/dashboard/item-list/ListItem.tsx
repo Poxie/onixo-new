@@ -1,8 +1,8 @@
 import { selectChannelById } from "@/redux/dashboard/selectors";
 import { useAppSelector } from "@/redux/store";
+import { Channel } from "@/types";
 
-export const ListItem: React.FC<{
-    id: string;
+export const ListItem: React.FC<Channel & {
     guildId: string;
     onClick: (itemId: string, e: React.MouseEvent) => void;
 }> = ({ id, guildId, onClick }) => {

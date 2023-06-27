@@ -137,12 +137,24 @@
         background-color: var(--background-primary);
         border-radius: 120px;
     }
-
+}
+.input {
+    margin-bottom: var(--spacing-senary);
+}
+.item-list {
     button {
         width: 100%;
+        padding: var(--spacing-quinary);
+        border-radius: var(--border-radius-tertiary);
+        transition: background-color .2s;
+        cursor: pointer;
 
         &:hover {
             background-color: var(--background-quaternary);
         }
     }
+}
+.muted {
+    font-size: 12px;
+    color: var(--text-secondary);
 }

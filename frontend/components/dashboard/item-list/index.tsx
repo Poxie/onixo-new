@@ -1,12 +1,13 @@
 import styles from './ItemList.module.scss'
 import { useGuildId } from "@/hooks/useGuildId"
-import { selectGuildChannelIds } from "@/redux/dashboard/selectors";
+import { selectGuildChannels } from "@/redux/dashboard/selectors";
 import { useAppSelector } from "@/redux/store";
 import { ListItem } from "./ListItem";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { SelectedItem } from './SelectedItem';
 import { ArrowIcon } from '@/assets/icons/ArrowIcon';
 import { useModuleSection } from '../module-section';
+import { Input } from '@/components/input';
 
 export const ItemList: React.FC<{
     onChange?: (itemId: string | null) => void;
@@ -14,15 +15,17 @@ export const ItemList: React.FC<{
     loading?: boolean;
 }> = ({ defaultActive=null, onChange, loading=false }) => {
     const guildId = useGuildId();
-    const channelIds = useAppSelector(state => selectGuildChannelIds(state, guildId));
+    const channels = useAppSelector(state => selectGuildChannels(state, guildId));
     const { ref: section } = useModuleSection();
 
     const [open, setOpen] = useState(false);
     const [direction, setDirection] = useState<'top' | 'bottom'>('top');
     const [activeId, setActiveId] = useState<string | null>(defaultActive);
+    const [search, setSearch] = useState('');
+
     const container = useRef<HTMLDivElement>(null)
     const ref = useRef<HTMLButtonElement>(null);
-    const items = useRef<HTMLUListElement>(null);
+    const items = useRef<HTMLDivElement>(null);
 
     // If default active changes, update active
     useEffect(() => setActiveId(defaultActive), [defaultActive]);
@@ -64,6 +67,10 @@ export const ItemList: React.FC<{
         setOpen(prev => !prev);
     }
 
+    const filteredChannels = useMemo(() => channels?.filter(channel => (
+        !search ? channel : channel.name.toLowerCase().includes(search.toLowerCase())
+    )), [channels, search]);
+
     const className = [
         styles['container'],
         open ? styles['expanded'] : '',
@@ -98,16 +105,29 @@ export const ItemList: React.FC<{
                 </div>
                 <ArrowIcon />
             </div>
-            <ul className={styles['items']} ref={items}>
-                {channelIds?.map(channelId => (
-                    <ListItem 
-                        id={channelId}
-                        guildId={guildId}
-                        onClick={handleChange}
-                        key={channelId}
-                    />
-                ))}
-            </ul>
+            <div className={styles['items']} ref={items}>
+                <Input 
+                    placeholder={'Search'}
+                    containerClassName={styles['input']}
+                    onChange={setSearch}
+                    focusOnMount
+                />
+                <ul className={styles['item-list']}>
+                    {filteredChannels?.map(channel => (
+                        <ListItem 
+                            {...channel}
+                            guildId={guildId}
+                            onClick={handleChange}
+                            key={channel.id}
+                        />
+                    ))}
+                </ul>
+                {filteredChannels?.length === 0 && (
+                    <span className={styles['muted']}>
+                        No channels were found.
+                    </span>
+                )}
+            </div>
         </div>
     )
 }

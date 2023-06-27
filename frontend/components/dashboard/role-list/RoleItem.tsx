@@ -1,9 +1,9 @@
 import { selectRoleById } from "@/redux/dashboard/selectors";
 import { useAppSelector } from "@/redux/store";
+import { Role } from "@/types";
 import { CSSProperties } from "react";
 
-export const RoleItem: React.FC<{
-    id: string;
+export const RoleItem: React.FC<Role & {
     guildId: string;
     onClick: (itemId: string, e: React.MouseEvent) => void;
 }> = ({ id, guildId, onClick }) => {
