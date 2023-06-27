@@ -5,6 +5,7 @@ from utils.constants import GET_TOP_ROLE, ALLOWED_ANTILINK_SITES, ALLOWED_LOGGIN
 from flask import Blueprint, request, jsonify, abort
 from utils.auth import get_access_token, check_admin
 from utils.websockets import send_message
+from utils.activity import add_activity
 
 guilds = Blueprint('guilds', __name__)
 
@@ -211,6 +212,8 @@ def update_action_logs(guild_id: int, user_id: int):
     else:
         for action in ALLOWED_LOGGING_ACTIONS:
             channels[action] = None
+
+    add_activity('action-logs', guild_id, log_settings, new_settings)
 
     return jsonify(channels)
 
