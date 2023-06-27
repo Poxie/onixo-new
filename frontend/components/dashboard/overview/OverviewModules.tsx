@@ -19,6 +19,7 @@ export const OverviewModules = () => {
                     <Link 
                         href={`/dashboard/${guildId}/${module.path}`}
                         className={styles['module-item']}
+                        aria-label={module.text}
                     >
                         {module.icon}
                         {module.text}
