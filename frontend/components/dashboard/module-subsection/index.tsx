@@ -8,18 +8,20 @@ export const ModuleSubsection: React.FC<{
 }> = ({ header, subHeader, className, children }) => {
     return(
         <div>
-            <div className={styles['header-container']}>
-                {header && (
-                    <span className={styles['header']}>
-                        {header}
-                    </span>
-                )}
-                {subHeader && (
-                    <span className={styles['subheader']}>
-                        {subHeader}
-                    </span>
-                )}
-            </div>
+            {(header || subHeader) && (
+                <div className={styles['header-container']}>
+                    {header && (
+                        <span className={styles['header']}>
+                            {header}
+                        </span>
+                    )}
+                    {subHeader && (
+                        <span className={styles['subheader']}>
+                            {subHeader}
+                        </span>
+                    )}
+                </div>
+            )}
             <div className={className}>
                 {children}
             </div>
