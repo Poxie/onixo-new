@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 
 const CHIPS = [
     { text: 'Automod', id: 'automod' },
-    { text: 'Action logs', id: 'action-logs' },
+    { text: 'Logging', id: 'logging' },
     { text: 'Settings', id: 'settings' },
 ]
 export const ModerationLayout: React.FC<{

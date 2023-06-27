@@ -81,6 +81,11 @@ export type ReduxActionLogs = {
         kick_log_channel?: string | null;
         mute_log_channel?: string | null;
         warn_log_channel?: string | null;
+        message_log_channel?: string | null;
+        channel_log_channel?: string | null;
+        user_log_channel?: string | null;
+        server_log_channel?: string | null;
+        voice_log_channel?: string | null;
     }
 }
 export type ReduxModSettings = {
