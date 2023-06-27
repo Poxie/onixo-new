@@ -1,20 +1,23 @@
 .container {
+    --padding: var(--spacing-tertiary);
     background-color: var(--background-secondary);
     border-radius: var(--border-radius-secondary);
     overflow: hidden;
 }
 .header {
+    --icon-width: 14px;
     width: 100%;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: var(--spacing-tertiary);
+    padding: var(--padding);
     border-bottom: 1px solid var(--background-quaternary);
     transition: background-color .2s;
+    position: relative;
 
     svg {
-        width: 14px;
+        width: var(--icon-width);
         fill: var(--text-secondary);
         transform: rotate(180deg);
         transition: transform .3s;
@@ -23,6 +26,19 @@
     &:hover {
         background-color: var(--background-tertiary);
     }
+
+    label {
+        z-index: 10;
+        font-size: 14px;
+    }
+}
+.toggle-collapse {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 .header-text {
     display: grid;
@@ -40,11 +56,30 @@
         color: var(--text-secondary);
     }
 }
+.header-options {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-tertiary);
+    color: var(--text-secondary);
+}
+.enable-toggle {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-quinary);
+}
 .content-wrapper {
     --transition-duration: .3s;
     display: grid;
     grid-template-rows: 1fr;
     transition: grid-template-rows var(--transition-duration);
+}
+.arrow-icon {
+    transition: margin .2s;
+}
+.disabled.enableable {
+    .arrow-icon {
+        margin-right: calc(-1 * (var(--padding) + var(--icon-width)));
+    }
 }
 .collapsed {
     .header {
@@ -56,12 +91,12 @@
         grid-template-rows: 0fr;
 
         .content {
-            padding: 0 var(--spacing-tertiary);
+            padding: 0 var(--padding);
         }
     }
 }
 .content {
-    padding: var(--spacing-tertiary);
+    padding: var(--padding);
     transition: padding var(--transition-duration);
     overflow: hidden;
     display: grid;

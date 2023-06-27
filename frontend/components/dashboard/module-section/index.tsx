@@ -1,7 +1,8 @@
-import React, { RefObject, useRef } from 'react';
+import React, { RefObject, useEffect, useRef } from 'react';
 import styles from './ModuleSection.module.scss';
 import { ArrowIcon } from '@/assets/icons/ArrowIcon';
 import { useState } from 'react';
+import { Checkbox } from '@/components/checkbox';
 
 export const ModuleContext = React.createContext({} as {
     open: boolean;
@@ -16,9 +17,24 @@ export const ModuleSection: React.FC<{
     description: string;
     children: any;
     className?: string;
-}> = ({ header, description, className, children }) => {
-    const [open, setOpen] = useState(true);
+    onEnableToggle?: (state: boolean) => void;
+    enabled?: boolean;
+}> = ({ header, description, className, onEnableToggle, enabled, children }) => {
+    const [open, setOpen] = useState(enabled !== undefined ? enabled : true);
     const ref = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if(enabled === undefined) return;
+        setOpen(enabled);
+    }, [enabled]);
+
+    const onChange = (state: boolean) => {
+        setOpen(state);
+        
+        if(onEnableToggle) {
+            onEnableToggle(state);
+        }
+    }
 
     const value = {
         setOpen,
@@ -29,15 +45,22 @@ export const ModuleSection: React.FC<{
     className = [
         styles['container'],
         !open ? styles['collapsed'] : '',
+        !enabled ? styles['disabled'] : '',
+        onEnableToggle ? styles['enableable'] : '',
         className
     ].join(' ');
     return(
         <ModuleContext.Provider value={value}>
             <div className={className} ref={ref}>
-                <button 
-                    className={styles['header']}
-                    onClick={() => setOpen(!open)}
-                >
+                <div className={styles['header']}>
+                    <button 
+                        className={styles['toggle-collapse']}
+                        aria-label={`${open ? 'Collapse' : 'Expand'} module section`}
+                        onClick={() => {
+                            if(!enabled && onEnableToggle) return;
+                            setOpen(!open);
+                        }}
+                    />
                     <div className={styles['header-text']}>
                         <h2>
                             {header}
@@ -46,8 +69,25 @@ export const ModuleSection: React.FC<{
                             {description}
                         </p>
                     </div>
-                    <ArrowIcon />
-                </button>
+                    <div className={styles['header-options']}>
+                        {onEnableToggle && (
+                            <div className={styles['enable-toggle']}>
+                                <label htmlFor={header.toLowerCase()}>
+                                    Enable this module
+                                </label>
+                                <Checkbox
+                                    loading={onEnableToggle !== undefined && enabled === undefined} 
+                                    defaultChecked={enabled}
+                                    onChange={onChange}
+                                    id={header.toLowerCase()}
+                                />
+                            </div>
+                        )}
+                        <div className={styles['arrow-icon']}>
+                            <ArrowIcon />
+                        </div>
+                    </div>
+                </div>
                 <div className={styles['content-wrapper']}>
                     <div className={styles['content']}>
                         {children}
