@@ -15,7 +15,7 @@ export const Goodbyes = () => {
     const guildId = useGuildId();
 
     const goodbye = useAppSelector(state => selectGoodbyeSettings(state, guildId));
-    const channel = useAppSelector(state => selectChannelById(state, guildId, goodbye?.settings.channel as string));
+    const channel = useAppSelector(state => selectChannelById(state, guildId, goodbye?.channel as string));
 
     const { updateProperty } = useHasChanges<ReduxGoodbyeSettings['settings']>({
         guildId,
@@ -31,7 +31,7 @@ export const Goodbyes = () => {
             header={'Goodbyes'}
             description={'Give your ex-members a farewell message.'}
             className={styles['section']}
-            enabled={goodbye?.settings.isEnabled}
+            enabled={goodbye?.isEnabled}
             onEnableToggle={state => updateProperty('isEnabled', state)}
         >
             <div className={styles['flex']}>
@@ -43,7 +43,7 @@ export const Goodbyes = () => {
                     </ModuleSubheader>
                     <ItemList 
                         onChange={channelId => updateProperty('channel', channelId)}
-                        defaultActive={goodbye?.settings.channel}
+                        defaultActive={goodbye?.channel}
                         loading={goodbye === undefined}
                     />
                     <ModuleSubheader
@@ -56,12 +56,12 @@ export const Goodbyes = () => {
                         loading={goodbye === undefined}
                         placeholder={'Goodbye message'}
                         onChange={message => updateProperty('message', message)}
-                        defaultValue={goodbye?.settings.message}
+                        defaultValue={goodbye?.message}
                         textArea
                     />
                 </div>
                 <MessagePreview 
-                    message={goodbye?.settings.message}
+                    message={goodbye?.message}
                     placeholder={'Enter a goodbye message.'}
                     channelName={`# ${channel?.name || 'channel-not-selected'}`}
                     loading={goodbye === undefined}

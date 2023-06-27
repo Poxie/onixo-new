@@ -84,13 +84,13 @@ export const selectModSettingsFetched = createSelector(
 const selectWelcome = (state: RootState) => state.dashboard.welcome;
 export const selectWelcomeSettings = createSelector(
     [selectWelcome, selectId],
-    (welcomes, guildId) => welcomes.find(welcome => welcome.guildId === guildId)
+    (welcomes, guildId) => welcomes.find(welcome => welcome.guildId === guildId)?.settings
 )
 
 const selectGoodbye = (state: RootState) => state.dashboard.goodbye;
 export const selectGoodbyeSettings = createSelector(
     [selectGoodbye, selectId],
-    (goodbyes, guildId) => goodbyes.find(bye => bye.guildId === guildId)
+    (goodbyes, guildId) => goodbyes.find(bye => bye.guildId === guildId)?.settings
 )
 
 const selectAllInfractions = (state: RootState) => state.dashboard.infractions;

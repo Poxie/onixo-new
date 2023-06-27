@@ -18,7 +18,7 @@ export const Welcomes = () => {
     const { user } = useAuth();
 
     const welcome = useAppSelector(state => selectWelcomeSettings(state, guildId))
-    const channel = useAppSelector(state => selectChannelById(state, guildId, welcome?.settings.channel as string));
+    const channel = useAppSelector(state => selectChannelById(state, guildId, welcome?.channel as string));
     
     const { updateProperty } = useHasChanges<ReduxWelcomeSettings['settings']>({
         guildId,
@@ -34,7 +34,7 @@ export const Welcomes = () => {
             header={'Welcomes'}
             description={'Greet your new members your way.'}
             className={styles['section']}
-            enabled={welcome?.settings.isEnabled}
+            enabled={welcome?.isEnabled}
             onEnableToggle={state => updateProperty('isEnabled', state)}
         >
             <div className={styles['flex']}>
@@ -46,7 +46,7 @@ export const Welcomes = () => {
                     </ModuleSubheader>
                     <ItemList 
                         onChange={channelId => updateProperty('channel', channelId)}
-                        defaultActive={welcome?.settings.channel}
+                        defaultActive={welcome?.channel}
                         loading={welcome === undefined}
                     />
                     <ModuleSubheader
@@ -59,12 +59,12 @@ export const Welcomes = () => {
                         loading={welcome === undefined}
                         placeholder={'Welcome message'}
                         onChange={message => updateProperty('message', message)}
-                        defaultValue={welcome?.settings.message}
+                        defaultValue={welcome?.message}
                         textArea
                     />
                 </div>
                 <MessagePreview 
-                    message={welcome?.settings.message}
+                    message={welcome?.message}
                     placeholder={'Enter a welcome message.'}
                     channelName={`# ${channel?.name || 'channel-not-selected'}`}
                     loading={welcome === undefined}
@@ -81,12 +81,12 @@ export const Welcomes = () => {
                         loading={welcome === undefined}
                         placeholder={'Direct Message'}
                         onChange={message => updateProperty('dm', message)}
-                        defaultValue={welcome?.settings.dm}
+                        defaultValue={welcome?.dm}
                         textArea
                     />
                 </div>
                 <MessagePreview 
-                    message={welcome?.settings.dm}
+                    message={welcome?.dm}
                     placeholder={'Enter a direct message.'}
                     channelName={`@ ${user?.global_name}`}
                     loading={welcome === undefined}
@@ -100,7 +100,7 @@ export const Welcomes = () => {
                         Welcome member roles
                     </ModuleSubheader>
                     <RoleList 
-                        active={welcome?.settings.users || []}
+                        active={welcome?.users || []}
                         onChange={ids => updateProperty('users', ids)}
                         loading={welcome === undefined}
                     />
@@ -112,7 +112,7 @@ export const Welcomes = () => {
                         Welcome bot roles
                     </ModuleSubheader>
                     <RoleList 
-                        active={welcome?.settings.bots || []}
+                        active={welcome?.bots || []}
                         onChange={ids => updateProperty('bots', ids)}
                         loading={welcome === undefined}
                     />
