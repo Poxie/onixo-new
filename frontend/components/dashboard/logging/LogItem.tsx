@@ -1,5 +1,5 @@
 import styles from './Logging.module.scss'
-import { ItemList } from "../../item-list";
+import { ItemList } from "../item-list";
 import { ReduxLogs } from '@/types';
 
 export const LogItem: React.FC<{

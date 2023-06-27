@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { InfractionIcon } from '@/assets/icons/InfractionIcon';
 import { EmbedIcon } from '@/assets/icons/EmbedIcon';
+import { LoggingIcon } from '@/assets/icons/LoggingIcon';
 
 const GROUPS: {
     title: string | undefined;
@@ -16,6 +17,7 @@ const GROUPS: {
         tabs: [
             { text: 'Overview', path: '', icon: <OverviewIcon /> },
             { text: 'Moderation', path: '/moderation', href: 'automod', icon: <HammerIcon /> },
+            { text: 'Logging', path: '/logging', icon: <LoggingIcon /> },
             { text: 'Welcomes & Goodbyes', path: '/greetings', icon: <HandIcon /> },
         ]
     },

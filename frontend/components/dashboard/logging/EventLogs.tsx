@@ -1,11 +1,11 @@
 import styles from './Logging.module.scss';
 import { ReduxLogs } from "@/types";
-import { ModuleSection } from "../../module-section"
+import { ModuleSection } from "../module-section"
 import { useHasChanges } from "@/hooks/useHasChanges";
 import { setActionLogs, updateActionLog } from "@/redux/dashboard/actions";
 import { selectLogs } from "@/redux/dashboard/selectors";
 import { useGuildId } from "@/hooks/useGuildId";
-import { ModuleSubsection } from "../../module-subsection";
+import { ModuleSubsection } from "../module-subsection";
 import { useAppSelector } from '@/redux/store';
 import { LogItem } from './LogItem';
 

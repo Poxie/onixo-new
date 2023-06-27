@@ -3,11 +3,15 @@ import { ActionLogs } from "./ActionLogs"
 import { DashboardLayout } from "@/layouts/dashboard"
 import { NextPageWithLayout } from "@/pages/_app"
 import { EventLogs } from "./EventLogs"
-import { ModerationLayout } from "@/layouts/moderation"
+import { ModuleHeader } from "../module-header"
 
 export const Logging: NextPageWithLayout = () => {
     return(
         <>
+        <ModuleHeader 
+            header={'Logging'}
+            subHeader={'Decide where the logs for your moderators\' actions and the events in your server appear.'}
+        />
         <ActionLogs />
         <EventLogs />
         </>
@@ -17,9 +21,7 @@ export const Logging: NextPageWithLayout = () => {
 Logging.getLayout = page => (
     <DashAuthLayout>
         <DashboardLayout>
-            <ModerationLayout>
-                {page}
-            </ModerationLayout>
+            {page}
         </DashboardLayout>
     </DashAuthLayout>
 )

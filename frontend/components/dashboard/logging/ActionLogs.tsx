@@ -1,7 +1,7 @@
 import styles from './Logging.module.scss';
-import { ModuleSection } from "../../module-section"
-import { ModuleSubsection } from '../../module-subsection';
-import { ItemList } from '../../item-list';
+import { ModuleSection } from "../module-section"
+import { ModuleSubsection } from '../module-subsection';
+import { ItemList } from '../item-list';
 import { useGuildId } from '@/hooks/useGuildId';
 import { useAppSelector } from '@/redux/store';
 import { setActionLogs, updateActionLog } from '@/redux/dashboard/actions';
