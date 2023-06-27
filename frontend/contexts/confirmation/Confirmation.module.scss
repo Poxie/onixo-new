@@ -11,6 +11,7 @@
     left: 50%;
     transform: translateX(-50%);
     max-width: var(--width-main-max);
+    font-size: 14px;
 
     &.error {
         animation: error .8s forwards;
