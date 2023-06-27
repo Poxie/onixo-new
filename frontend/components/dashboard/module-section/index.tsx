@@ -56,10 +56,8 @@ export const ModuleSection: React.FC<{
                     <button 
                         className={styles['toggle-collapse']}
                         aria-label={`${open ? 'Collapse' : 'Expand'} module section`}
-                        onClick={() => {
-                            if(!enabled && onEnableToggle) return;
-                            setOpen(!open);
-                        }}
+                        onClick={() => setOpen(!open)}
+                        disabled={!enabled && onEnableToggle !== undefined}
                     />
                     <div className={styles['header-text']}>
                         <h2>
