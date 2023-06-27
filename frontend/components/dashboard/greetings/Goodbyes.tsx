@@ -31,6 +31,8 @@ export const Goodbyes = () => {
             header={'Goodbyes'}
             description={'Give your ex-members a farewell message.'}
             className={styles['section']}
+            enabled={goodbye?.settings.isEnabled}
+            onEnableToggle={state => updateProperty('isEnabled', state)}
         >
             <div className={styles['flex']}>
                 <div>

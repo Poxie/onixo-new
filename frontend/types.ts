@@ -101,6 +101,7 @@ export type ReduxModSettings = {
 export type ReduxWelcomeSettings = {
     guildId: string;
     settings: {
+        isEnabled: boolean;
         dm: string;
         message: string;
         channel: string;
@@ -111,6 +112,7 @@ export type ReduxWelcomeSettings = {
 export type ReduxGoodbyeSettings = {
     guildId: string;
     settings: {
+        isEnabled: boolean;
         message: string;
         channel: string;
     }

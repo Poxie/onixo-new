@@ -34,6 +34,8 @@ export const Welcomes = () => {
             header={'Welcomes'}
             description={'Greet your new members your way.'}
             className={styles['section']}
+            enabled={welcome?.settings.isEnabled}
+            onEnableToggle={state => updateProperty('isEnabled', state)}
         >
             <div className={styles['flex']}>
                 <div>
