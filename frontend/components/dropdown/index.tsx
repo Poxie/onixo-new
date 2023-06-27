@@ -59,6 +59,7 @@ export const Dropdown: React.FC<{
                             onChange(null);
                             setOpen(false);
                         }}
+                        aria-label={`Reset item`}
                     >
                         <CloseIcon />
                     </button>
