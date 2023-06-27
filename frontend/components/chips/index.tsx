@@ -23,14 +23,14 @@ export const Chips: React.FC<{
         setActiveChip(defaultActive);
     }, [defaultActive]);
 
-    const handleChange = (chipId: string) => {
-        setActiveChip(chipId);
-        onChange && onChange(chipId);
-        
+    const handleChange = async (chipId: string) => {
         // If basepath, redirect user on chip click to correct path
         if(basePath) {
-            router.push(`${basePath}/${chipId}`);
+            await router.push(`${basePath}/${chipId}`);
         }
+
+        setActiveChip(chipId);
+        onChange && onChange(chipId);
     }
 
     className = [
