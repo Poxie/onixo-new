@@ -5,7 +5,8 @@ export const Checkbox: React.FC<{
     defaultChecked?: boolean;
     onChange?: (checked: boolean) => void;
     loading?: boolean;
-}> = ({ onChange, loading=false, defaultChecked=false }) => {
+    id?: string;
+}> = ({ onChange, loading=false, defaultChecked=false, id }) => {
     const [checked, setChecked] = useState(defaultChecked);
 
     // If default value change, update input
@@ -24,6 +25,7 @@ export const Checkbox: React.FC<{
     ].join(' ');
     return(
         <button 
+            id={id}
             className={className}
             onClick={handleChange}
             disabled={loading}
