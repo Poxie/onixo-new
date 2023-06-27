@@ -1,32 +1,32 @@
-import styles from './ActionLogs.module.scss';
+import styles from './Logging.module.scss';
 import { ModuleSection } from "../../module-section"
 import { ModuleSubsection } from '../../module-subsection';
 import { ItemList } from '../../item-list';
 import { useGuildId } from '@/hooks/useGuildId';
-import { ActionLog } from './ActionLog';
 import { useAppSelector } from '@/redux/store';
 import { setActionLogs, updateActionLog } from '@/redux/dashboard/actions';
-import { ReduxActionLogs } from '@/types';
-import { selectActionLogs, selectGuildActionLog } from '@/redux/dashboard/selectors';
+import { ReduxLogs } from '@/types';
+import { selectLogs } from '@/redux/dashboard/selectors';
 import { NextPageWithLayout } from '@/pages/_app';
 import { DashAuthLayout } from '@/layouts/dash-auth';
 import { DashboardLayout } from '@/layouts/dashboard';
 import { ModerationLayout } from '@/layouts/moderation';
 import { useHasChanges } from '@/hooks/useHasChanges';
+import { LogItem } from './LogItem';
 
 type Action = 'all' | 'ban' | 'kick' | 'mute' | 'warn';
-const SPECIFIC_LOG_CHANNELS = ['ban', 'kick', 'mute', 'warn'].map(type => `${type}_log_channel` as keyof Omit<ReduxActionLogs['logChannels'], 'all_logs_channel'>);
+const SPECIFIC_LOG_CHANNELS = ['ban', 'kick', 'mute', 'warn'].map(type => `${type}_log_channel` as keyof Omit<ReduxLogs['logChannels'], 'all_logs_channel'>);
 export const ActionLogs: NextPageWithLayout = () => {
     const guildId = useGuildId();
 
-    const actionLogs = useAppSelector(state => selectActionLogs(state, guildId));
+    const actionLogs = useAppSelector(state => selectLogs(state, guildId));
 
-    const { updateProperty } = useHasChanges<ReduxActionLogs['logChannels']>({
+    const { updateProperty } = useHasChanges<ReduxLogs['logChannels']>({
         guildId,
         id: 'action-logs',
         dispatchAction: setActionLogs,
         updateAction: updateActionLog,
-        selector: selectActionLogs,
+        selector: selectLogs,
         endpoint: `/guilds/${guildId}/action-logs`,
     })
 
@@ -51,7 +51,7 @@ export const ActionLogs: NextPageWithLayout = () => {
             </ModuleSubsection>
             <ModuleSubsection className={className}>
                 {SPECIFIC_LOG_CHANNELS.map(type => (
-                    <ActionLog 
+                    <LogItem 
                         type={type}
                         onChange={channelId => updateProperty(type, channelId)}
                         active={actionLogs ? actionLogs[type] : undefined}

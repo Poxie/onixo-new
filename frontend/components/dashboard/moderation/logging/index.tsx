@@ -3,6 +3,7 @@ import { ActionLogs } from "./ActionLogs"
 import { DashboardLayout } from "@/layouts/dashboard"
 import { NextPageWithLayout } from "@/pages/_app"
 import { EventLogs } from "./EventLogs"
+import { ModerationLayout } from "@/layouts/moderation"
 
 export const Logging: NextPageWithLayout = () => {
     return(
@@ -16,7 +17,9 @@ export const Logging: NextPageWithLayout = () => {
 Logging.getLayout = page => (
     <DashAuthLayout>
         <DashboardLayout>
-            {page}
+            <ModerationLayout>
+                {page}
+            </ModerationLayout>
         </DashboardLayout>
     </DashAuthLayout>
 )

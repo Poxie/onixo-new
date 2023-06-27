@@ -73,7 +73,7 @@ export type ReduxRole = {
     guildId: string;
     items: Role[];
 }
-export type ReduxActionLogs = {
+export type ReduxLogs = {
     guildId: string;
     logChannels: {
         all_logs_channel?: string | null;

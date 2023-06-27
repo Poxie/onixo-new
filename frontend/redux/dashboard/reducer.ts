@@ -1,8 +1,8 @@
 import { AnyAction } from "redux";
 import { DashboardState } from "./types";
 import { createReducer, updateItemInArray, updateObject } from "../utils";
-import { SET_ACTION_LOGS, SET_ANTI_LINK, SET_GOODBYE_SETTINGS, SET_GUILDS, SET_GUILD_CHANNELS, SET_GUILD_ROLES, SET_INFRACTIONS, SET_MOD_SETTINGS, SET_WELCOME_SETTINGS, UPDATE_ACTION_LOG, UPDATE_ANTILINK, UPDATE_GOODBYE_SETTING, UPDATE_INFRACTION, UPDATE_MOD_SETTING, UPDATE_WELCOME_SETTING } from "./constants";
-import { Infraction, ReduxActionLogs, ReduxAntiLink, ReduxGoodbyeSettings, ReduxModSettings, ReduxWelcomeSettings } from "@/types";
+import { SET_ANTI_LINK, SET_GOODBYE_SETTINGS, SET_GUILDS, SET_GUILD_CHANNELS, SET_GUILD_ROLES, SET_INFRACTIONS, SET_MOD_SETTINGS, SET_WELCOME_SETTINGS, UPDATE_ANTILINK, UPDATE_GOODBYE_SETTING, UPDATE_INFRACTION, UPDATE_MOD_SETTING, UPDATE_WELCOME_SETTING, UPDATE_LOG, SET_LOGS } from "./constants";
+import { Infraction, ReduxLogs, ReduxAntiLink, ReduxGoodbyeSettings, ReduxModSettings, ReduxWelcomeSettings } from "@/types";
 
 // Reducer actions
 type ReducerAction = (state: DashboardState, action: AnyAction) => DashboardState;
@@ -68,7 +68,7 @@ const setGuildRoles: ReducerAction = (state, action) => {
     })
 }
 
-const setActionLogs: ReducerAction = (state, action) => {
+const setLogs: ReducerAction = (state, action) => {
     const { guildId, logChannels } = action.payload;
 
     return updateObject(state, {
@@ -80,11 +80,11 @@ const setActionLogs: ReducerAction = (state, action) => {
     })
 }
 
-const updateActionLog: ReducerAction = (state, action) => {
+const updateLog: ReducerAction = (state, action) => {
     const { guildId, action: _action, channelId }: {
         guildId: string;
-        action: keyof ReduxActionLogs['logChannels'];
-        channelId: ReduxActionLogs['logChannels']['all_logs_channel'];
+        action: keyof ReduxLogs['logChannels'];
+        channelId: ReduxLogs['logChannels']['all_logs_channel'];
     } = action.payload;
 
     const newLogs = state.actionLogs.map(log => {
@@ -263,8 +263,8 @@ export const dashboardReducer = createReducer({
     [UPDATE_ANTILINK]: updateAntilink,
     [SET_GUILD_CHANNELS]: setGuildChannels,
     [SET_GUILD_ROLES]: setGuildRoles,
-    [SET_ACTION_LOGS]: setActionLogs,
-    [UPDATE_ACTION_LOG]: updateActionLog,
+    [SET_LOGS]: setLogs,
+    [UPDATE_LOG]: updateLog,
     [SET_MOD_SETTINGS]: setModSettings,
     [UPDATE_MOD_SETTING]: updateModSetting,
     [SET_WELCOME_SETTINGS]: setWelcomeSettings,

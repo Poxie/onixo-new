@@ -63,19 +63,13 @@ export const selectRoleById = createSelector(
     (roles, roleId) => roles?.find(role => role.id === roleId)
 )
 
-export const selectGuildActionLogs = createSelector(
-    [selectAllActionLogs, selectId],
-    (actionLogs, guildId) => (
-        actionLogs.find(item => item.guildId === guildId)?.logChannels
-    )
-)
-export const selectGuildActionLog = createSelector(
-    [selectGuildActionLogs, _selectId],
-    (channels, actionType) => (channels ? (channels as any)[`${actionType}_log${actionType === 'all' ? 's' : ''}_channel`] : undefined) as string | undefined
-)
-export const selectActionLogs = createSelector(
+export const selectLogs = createSelector(
     [selectAllActionLogs, selectId],
     (actionLogs, guildId) => actionLogs.find(log => log.guildId === guildId)?.logChannels
+)
+export const selectLog = createSelector(
+    [selectLogs, _selectId],
+    (channels, actionType) => (channels ? (channels as any)[`${actionType}_log${actionType === 'all' ? 's' : ''}_channel`] : undefined) as string | undefined
 )
 
 export const selectGuildModSettings = createSelector(

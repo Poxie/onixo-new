@@ -1,9 +1,9 @@
-import styles from './ActionLogs.module.scss'
+import styles from './Logging.module.scss'
 import { ItemList } from "../../item-list";
-import { ReduxActionLogs } from '@/types';
+import { ReduxLogs } from '@/types';
 
-export const ActionLog: React.FC<{
-    type: keyof ReduxActionLogs['logChannels'];
+export const LogItem: React.FC<{
+    type: keyof ReduxLogs['logChannels'];
     onChange: (channelId: string | null) => void;
     active?: string | null;
 }> = ({ type, onChange, active }) => {
