@@ -31,7 +31,7 @@ export const EventLogs = () => {
             description={'Decide where logs for certain events show up in your server.'}
             className={styles['container']}
         >
-            <ModuleSubsection className={styles['multi-section']}>
+            <ModuleSubsection className={`${styles['multi-section']} ${logs?.all_logs_channel ? styles['disabled'] : ''}`}>
                 {LOG_CHANNELS.map(type => (
                     <LogItem 
                         onChange={channelId => updateProperty(type, channelId)}
