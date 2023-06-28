@@ -18,7 +18,7 @@ const getLogType = (property: keyof ReduxLogs['logChannels']) => (
     property === 'all_logs_channel' ? 'general log channel' : `${property.split('_')[0]} log channel`
 )
 
-const PLACEHOLDER_COUNT = 4;
+const PLACEHOLDER_COUNT = 7;
 const getActionText = (actionId: Activity['action_id'], property: Activity['changes'][0]['property'], prevSettings: Activity['changes'][0]['previous_value'], newSettings: Activity['changes'][0]['new_value']) => {
     if(property.includes('channel')) {
         if(['logging', 'action-logs', 'event-logs'].includes(actionId)) {
