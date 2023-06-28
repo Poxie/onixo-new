@@ -63,6 +63,9 @@ const getActionText = (actionId: Activity['action_id'], property: Activity['chan
         if(property === 'incReason') {
             return `${prevSettings ? 'Disabled' : 'Enabled'} reason being included in punishment DMs.`
         }
+        if(property === 'confirmation') {
+            return `${prevSettings ? 'Disabled' : 'Enabled'} confirmation upon moderation actions.`
+        }
     }
     return 'Text not set: ' + `(${actionId}, ${property})`
 }
