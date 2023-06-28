@@ -168,6 +168,7 @@
 }
 .activity-flex, .activity-change {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: var(--spacing-senary);
 
@@ -200,6 +201,17 @@
     background-color: var(--background-quaternary);
 }
 
+@media (max-width: 550px) {
+    .activity-header {
+        padding-bottom: var(--spacing-secondary);
+        position: relative;
+    }
+    .activity-timestamp {
+        position: absolute;
+        bottom: var(--spacing-quaternary);
+        left: var(--spacing-secondary);
+    }
+}
 @media (max-width: 400px) {
     .module-list {
         flex-direction: column;
