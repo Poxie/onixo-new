@@ -134,7 +134,7 @@ export const OverviewActivity = () => {
                                         {activity.user.global_name}
                                     </span>
                                     {' '}
-                                    made {activity.changes.length} changes to the
+                                    made {activity.changes.length} change{activity.changes.length > 1 ? 's' : ''} to the
                                     {' '}
                                     <Link href={getModulePath(guildId, activity.action_id)}>
                                         {activity.action_id.split('-').join(' ')}
