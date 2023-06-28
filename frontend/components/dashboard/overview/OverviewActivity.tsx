@@ -18,7 +18,7 @@ const getLogType = (property: keyof ReduxLogs['logChannels']) => (
     property === 'all_logs_channel' ? 'general log channel' : `${property.split('_')[0]} log channel`
 )
 
-const PLACEHOLDER_COUNT = 3;
+const PLACEHOLDER_COUNT = 4;
 const getActionText = (actionId: Activity['action_id'], property: Activity['changes'][0]['property'], prevSettings: Activity['changes'][0]['previous_value'], newSettings: Activity['changes'][0]['new_value']) => {
     if(property.includes('channel')) {
         if(actionId === 'logging') {
@@ -113,6 +113,7 @@ export const OverviewActivity = () => {
         <div className={styles['activity']}>
             <ModuleSubheader
                 extraHeader={(!loading && activity.length === 0) ? 'There is no recent activity on this server.' : undefined}
+                className={styles['label']}
             >
                 Activity
             </ModuleSubheader>
