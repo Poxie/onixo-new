@@ -148,27 +148,32 @@ export const OverviewActivity = () => {
                             </div>
 
                             <div className={styles['activity-content']}>
-                                {activity.changes.map((change, index) => (
-                                    <div className={styles['activity-change']} key={index}>
-                                        {getActionIcon(activity.action_id)}
+                                {activity.changes.map((change, index) => {
+                                    const icon = getActionIcon(activity.action_id);
+                                    const text = getActionText(activity.action_id, change.property, change.previous_value, change.new_value);
 
-                                        {(index + 1).toString().padStart(2, '0')} -
-                                        {' '}
-                                        {getActionText(activity.action_id, change.property, change.previous_value, change.new_value)}
-                                        
-                                        {change.property.includes('channel') && (
-                                            <div className={styles['activity-flex']}>
-                                                <div className={styles['activity-highlight']}>
-                                                    # {(change.previous_value as Channel | null)?.name || <i>channel-unset</i>}
+                                    return(
+                                        <div className={styles['activity-change']} key={index}>
+                                            {icon}
+    
+                                            {(index + 1).toString().padStart(2, '0')} -
+                                            {' '}
+                                            {text instanceof Object ? (text as any[]).map((part, key) => <span key={key}>{part}</span>) : text}
+                                            
+                                            {change.property.includes('channel') && (
+                                                <div className={styles['activity-flex']}>
+                                                    <div className={styles['activity-highlight']}>
+                                                        # {(change.previous_value as Channel | null)?.name || <i>channel-unset</i>}
+                                                    </div>
+                                                    {' --> '}
+                                                    <div  className={styles['activity-highlight']}>
+                                                        # {(change.new_value as Channel | null)?.name || <i>channel-unset</i>}
+                                                    </div>
                                                 </div>
-                                                {' --> '}
-                                                <div  className={styles['activity-highlight']}>
-                                                    # {(change.new_value as Channel | null)?.name || <i>channel-unset</i>}
-                                                </div>
-                                            </div>
-                                        )}
-                                    </div>
-                                ))}
+                                            )}
+                                        </div>
+                                    )
+                                })}
                             </div>
                         </li>
                     ))}
