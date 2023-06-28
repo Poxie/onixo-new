@@ -31,7 +31,7 @@ const getActionText = (actionId: Activity['action_id'], property: Activity['chan
     if(property.includes('message')) {
         if(['welcome', 'goodbye'].includes(actionId)) {
             return [
-                <span key={0}>Changed ${actionId} message from </span>,
+                <span key={0}>Changed {actionId} message from </span>,
                 <span key={1} className={styles['activity-highlight']}>{(prevSettings as string | null) || <i>text unset</i>}</span>,
                 <span key={2}>to</span>,
                 <span key={3} className={styles['activity-highlight']}>{(newSettings as string | null) || <i>text unset</i>}</span>,
