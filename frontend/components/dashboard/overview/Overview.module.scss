@@ -103,6 +103,103 @@
     }
 }
 
+.activity {
+    padding: var(--spacing-quaternary);
+    background-color: var(--background-secondary);
+    border-radius: var(--border-radius-tertiary);
+}
+.activity-list {
+    display: grid;
+    gap: var(--spacing-quinary);
+    max-height: 300px;
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+        width: 15px;
+    }
+    &::-webkit-scrollbar-thumb {
+        border: 5px solid var(--background-secondary);
+        background-color: var(--background-primary);
+        border-radius: 120px;
+    }
+}
+.activity-item {
+    padding: var(--spacing-quinary);
+    background-color: var(--background-tertiary);
+    border-radius: var(--border-radius-tertiary);
+}
+.activity-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-quinary);
+    margin-bottom: var(--spacing-quinary);
+    padding-bottom: var(--spacing-quinary);
+    border-bottom: .5px solid var(--background-primary);
+
+    img {
+        border-radius: 50%;
+    }
+}
+.activity-text {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+.activity-username {
+    color: var(--text-primary);
+}
+.activity-user {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-senary);
+    font-size: 14px;
+}
+.activity-timestamp {
+    font-size: 10px;
+    color: var(--text-secondary);
+    margin-bottom: -2.5px;
+    margin-left: var(--spacing-senary);
+}
+.activity-content {
+    display: grid;
+    align-items: center;
+    gap: var(--spacing-quinary);
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+.activity-flex, .activity-change {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-senary);
+
+    svg {
+        width: 16px;
+        fill: var(--text-secondary);
+    }
+}
+.activity-highlight {
+    padding: var(--spacing-senary);
+    background-color: var(--background-quaternary);
+    border-radius: 6px;
+    font-size: 11px;
+    color: var(--text-primary);
+}
+
+.activity-skeleton {
+    height: 125px;
+}
+.activity-user-icon {
+    width: 28px;
+    height: 28px;
+    background-color: var(--background-quaternary);
+    border-radius: 50%;
+}
+.activity-text-skeleton {
+    height: 17px;
+    width: 120px;
+    border-radius: 4px;
+    background-color: var(--background-quaternary);
+}
+
 @media (max-width: 400px) {
     .module-list {
         flex-direction: column;

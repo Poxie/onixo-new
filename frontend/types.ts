@@ -64,6 +64,19 @@ export type Infraction = {
     target: User;
     action: 'ban' | 'kick' | 'mute' | 'warn';
 }
+export type ActivityChange = {
+    new_value: null | string | Channel | Role;
+    previous_value: null | string | Channel | Role;
+    property: string;
+}
+export type Activity = {
+    guild_id: string;
+    timestamp: number;
+    action_id: 'welcome' | 'goodbye' | 'logging' | 'moderation';
+    changes: ActivityChange[];
+    user_id: string;
+    user: User;
+}
 
 export type ReduxChannel = {
     guildId: string;

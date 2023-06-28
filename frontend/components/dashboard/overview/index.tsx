@@ -4,6 +4,7 @@ import { NextPageWithLayout } from "@/pages/_app"
 import { OverviewHeader } from './OverviewHeader';
 import { OverviewModules } from "./OverviewModules";
 import { OverviewUtilities } from "./OverviewUtilities";
+import { OverviewActivity } from "./OverviewActivity";
 
 export const Overview: NextPageWithLayout = () => {
     return(
@@ -11,6 +12,7 @@ export const Overview: NextPageWithLayout = () => {
         <OverviewHeader />
         <OverviewModules />
         <OverviewUtilities />
+        <OverviewActivity />
         </>
     )
 }
