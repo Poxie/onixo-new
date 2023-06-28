@@ -120,8 +120,8 @@ export const OverviewActivity = () => {
 
             {(loading || activity.length > 0) && (
                 <ul className={styles['activity-list']} ref={ref}>
-                    {activity?.map(activity => (
-                        <li className={styles['activity-item']} key={activity.timestamp}>
+                    {activity?.map((activity, idx) => (
+                        <li className={styles['activity-item']} key={idx}>
                             <div className={styles['activity-header']}>
                                 <Image 
                                     src={activity.user.avatar}
