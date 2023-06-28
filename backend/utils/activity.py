@@ -37,10 +37,10 @@ def add_activity(action_id: str, guild_id: int, user_id: int, prev_settings, new
 
     db.insert_one(activity)
 
-def get_activity(guild_id: int):
+def get_activity(guild_id: int, start_at: int, limit: int):
     db = database['activity']
 
-    activity = db.find({ 'guild_id': guild_id }).sort('timestamp', -1)
+    activity = db.find({ 'guild_id': guild_id }).limit(limit).skip(start_at).sort('timestamp', -1)
 
     hydrated_activity = []
     for act in activity:

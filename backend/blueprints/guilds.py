@@ -533,5 +533,9 @@ def update_guild_infraction(guild_id: int, case_id: int, user_id: int):
 @guilds.get('/guilds/<int:guild_id>/activity')
 @check_admin
 def get_guild_activity(guild_id: int, user_id: int):
-    activity = get_activity(guild_id)
+    start_at = int(request.args.get('start_at') or '0')
+    limit = int(request.args.get('limit') or '7')
+    
+    activity = get_activity(guild_id, start_at=start_at, limit=limit)
+
     return jsonify(activity)
