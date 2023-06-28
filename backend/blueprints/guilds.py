@@ -5,7 +5,7 @@ from utils.constants import GET_TOP_ROLE, ALLOWED_ANTILINK_SITES, ALLOWED_LOGGIN
 from flask import Blueprint, request, jsonify, abort
 from utils.auth import get_access_token, check_admin
 from utils.websockets import send_message
-from utils.activity import add_activity
+from utils.activity import add_activity, get_activity
 
 guilds = Blueprint('guilds', __name__)
 
@@ -95,6 +95,7 @@ def get_guild_anti_link(guild_id: int, user_id: int):
 @check_admin
 def update_guild_antilink(guild_id: int, user_id: int):
     db = database['settings']
+    prev_settings = db.find_one({ '_id': guild_id })['antilink']
 
     for prop, val in request.form.items():
         if prop not in ALLOWED_ANTILINK_SITES:
@@ -107,10 +108,18 @@ def update_guild_antilink(guild_id: int, user_id: int):
         })
 
     # Fetching updated settings
-    settings = db.find_one({ '_id': guild_id })
-    antilink = settings['antilink']
+    new_settings = db.find_one({ '_id': guild_id })['antilink']
 
-    return jsonify(antilink)
+    # Adding activity
+    add_activity(
+        action_id='moderation',
+        guild_id=guild_id,
+        user_id=user_id,
+        new_settings=new_settings,
+        prev_settings=prev_settings
+    )
+
+    return jsonify(new_settings)
 
 @guilds.get('/guilds/<int:guild_id>/action-logs')
 @check_admin
@@ -213,7 +222,13 @@ def update_action_logs(guild_id: int, user_id: int):
         for action in ALLOWED_LOGGING_ACTIONS:
             channels[action] = None
 
-    add_activity('action-logs', guild_id, log_settings, new_settings)
+    add_activity(
+        action_id='logging', 
+        guild_id=guild_id, 
+        user_id=user_id,
+        prev_settings=log_settings, 
+        new_settings=new_settings,
+    )
 
     return jsonify(channels)
 
@@ -235,6 +250,7 @@ def get_guild_mod_settings(guild_id: int, user_id: int):
 @check_admin
 def update_guild_mod_settings(guild_id: int, user_id: int):
     db = database['settings']
+    prev_settings = db.find_one({ '_id': guild_id })['moderation']
 
     for prop, val in request.form.items():
         if prop not in ALLOWED_MOD_SETTINGS_PROPERTIES:
@@ -248,10 +264,18 @@ def update_guild_mod_settings(guild_id: int, user_id: int):
         })
 
     # Fetching updated settings
-    settings = db.find_one({ '_id': guild_id })
-    moderation = settings['moderation']
+    new_settings = db.find_one({ '_id': guild_id })['moderation']
 
-    return jsonify(moderation)
+    # Adding activity
+    add_activity(
+        action_id='moderation',
+        guild_id=guild_id,
+        user_id=user_id,
+        new_settings=new_settings,
+        prev_settings=prev_settings,
+    )
+
+    return jsonify(new_settings)
 
 @guilds.post('/guilds/<int:guild_id>/embeds')
 @check_admin
@@ -297,6 +321,8 @@ def get_welcome_settings(guild_id: int, user_id: int):
 def update_welcome_setting(guild_id: int, user_id: int):
     settings = database['settings']
     properties = request.form.items()
+
+    prev_settings = settings.find_one({ '_id': guild_id })
 
     for property, value in properties:
         # If property is auto role
@@ -375,6 +401,16 @@ def update_welcome_setting(guild_id: int, user_id: int):
 
     # Fetching new settings
     new_settings = settings.find_one({ '_id': guild_id })
+
+    # Adding to activity
+    add_activity(
+        action_id='welcome', 
+        guild_id=guild_id,
+        user_id=user_id,
+        prev_settings=prev_settings['welcome'], 
+        new_settings=new_settings['welcome'],
+    )
+
     return jsonify(new_settings['welcome'])
 
 @guilds.get('/guilds/<int:guild_id>/goodbye')
@@ -395,6 +431,8 @@ def get_goodbye_settings(guild_id: int, user_id: int):
 def update_goodbye_setting(guild_id: int, user_id: int):
     settings = database['settings']
     properties = request.form.items()
+
+    prev_settings = settings.find_one({ '_id': guild_id })['goodbye']
 
     for property, value in properties:
         if property not in ALLOWED_GOODBYE_PROPERTIES:
@@ -455,7 +493,19 @@ def update_goodbye_setting(guild_id: int, user_id: int):
                 }
             })
 
-    return jsonify({})
+    # Fetching new settings
+    new_settings = settings.find_one({ '_id': guild_id })['goodbye']
+
+    # Adding to activity
+    add_activity(
+        action_id='goodbye', 
+        guild_id=guild_id, 
+        user_id=user_id,
+        prev_settings=prev_settings, 
+        new_settings=new_settings,
+    )
+
+    return jsonify(new_settings)
 
 @guilds.get('/guilds/<int:guild_id>/infractions')
 @check_admin
@@ -479,3 +529,9 @@ def update_guild_infraction(guild_id: int, case_id: int, user_id: int):
         })
 
     return jsonify({})
+
+@guilds.get('/guilds/<int:guild_id>/activity')
+@check_admin
+def get_guild_activity(guild_id: int, user_id: int):
+    activity = get_activity(guild_id)
+    return jsonify(activity)
