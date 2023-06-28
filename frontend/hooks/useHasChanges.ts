@@ -1,6 +1,9 @@
 import { useAuth } from "@/contexts/auth";
 import { useConfirmation } from "@/contexts/confirmation"
+import { prependActivity } from "@/redux/dashboard/actions";
 import { AppDispatch, useAppDispatch, useAppSelector } from "@/redux/store";
+import { Activity } from "@/types";
+import { getUserAvatar } from "@/utils/getImages";
 import { MutableRefObject, useCallback, useEffect, useRef } from "react";
 import { AnyAction } from "redux";
 
@@ -30,7 +33,7 @@ type Props<T> = {
 }
 export const useHasChanges = <T>({ id, guildId, endpoint, onConfirm, dispatchAction, updateAction, selector }: Props<T>) => {
     const { addChanges, removeChanges, setIsLoading, reset } = useConfirmation();
-    const { get, patch, token } = useAuth();
+    const { get, patch, token, user } = useAuth();
     const dispatch = useAppDispatch();
 
     const settings = useAppSelector(state => selector(state, guildId));
@@ -50,13 +53,30 @@ export const useHasChanges = <T>({ id, guildId, endpoint, onConfirm, dispatchAct
     }, [get, token, endpoint, guildId, settings]);
 
     const updateChanges = useCallback(() => {
-        if(!tempSettings?.current || !prevSettings?.current) return
+        if(!user || !tempSettings?.current || !prevSettings?.current) return
 
         const properties = getPropertiesToUpdate(tempSettings, prevSettings);
         
         setIsLoading(true);
         patch<T>(endpoint, properties)
             .then((data: T) => {
+                const activity: Activity = {
+                    user: {
+                        ...user,
+                        avatar: getUserAvatar(user.id, user.avatar)
+                    },
+                    user_id: user.id,
+                    guild_id: guildId,
+                    timestamp: Date.now() / 1000,
+                    action_id: id as Activity['action_id'],
+                    changes: Object.entries(properties).map(([key, value]) => ({
+                        new_value: tempSettings.current[key as keyof T],
+                        previous_value: prevSettings.current[key as keyof T],
+                        property: key,
+                    } as Activity['changes'][0]))
+                }
+                dispatch(prependActivity(activity));
+
                 prevSettings.current = structuredClone(tempSettings.current);
                 if(onConfirm) onConfirm(data);
                 reset();

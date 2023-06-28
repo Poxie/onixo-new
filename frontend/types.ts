@@ -65,8 +65,8 @@ export type Infraction = {
     action: 'ban' | 'kick' | 'mute' | 'warn';
 }
 export type ActivityChange = {
-    new_value: null | string | Channel | Role;
-    previous_value: null | string | Channel | Role;
+    new_value: null | string | number | boolean | Channel | Role;
+    previous_value: null | string | number | boolean | Channel | Role;
     property: string;
 }
 export type Activity = {

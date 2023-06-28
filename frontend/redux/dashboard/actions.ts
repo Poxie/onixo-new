@@ -1,5 +1,5 @@
 import { Channel, Guild, Infraction, ReduxLogs, ReduxAntiLink, ReduxGoodbyeSettings, ReduxModSettings, ReduxWelcomeSettings, Role, Activity } from "@/types";
-import { SET_LOGS, SET_ANTI_LINK, SET_GOODBYE_SETTINGS, SET_GUILDS, SET_GUILD_CHANNELS, SET_GUILD_ROLES, SET_INFRACTIONS, SET_MOD_SETTINGS, SET_WELCOME_SETTINGS, UPDATE_LOG, UPDATE_ANTILINK, UPDATE_GOODBYE_SETTING, UPDATE_INFRACTION, UPDATE_MOD_SETTING, UPDATE_WELCOME_SETTING, ADD_ACTIVITY } from "./constants";
+import { SET_LOGS, SET_ANTI_LINK, SET_GOODBYE_SETTINGS, SET_GUILDS, SET_GUILD_CHANNELS, SET_GUILD_ROLES, SET_INFRACTIONS, SET_MOD_SETTINGS, SET_WELCOME_SETTINGS, UPDATE_LOG, UPDATE_ANTILINK, UPDATE_GOODBYE_SETTING, UPDATE_INFRACTION, UPDATE_MOD_SETTING, UPDATE_WELCOME_SETTING, ADD_ACTIVITY, PREPEND_ACTIVITY } from "./constants";
 
 export const setGuilds = (guilds: Guild[]) => ({
     type: SET_GUILDS,
@@ -64,4 +64,8 @@ export const updateInfraction = (guildId: string, infraction: Infraction) => ({
 export const addActivity = (guildId: string, activity: Activity[]) => ({
     type: ADD_ACTIVITY,
     payload: { guildId, activity }
+})
+export const prependActivity = (activity: Activity) => ({
+    type: PREPEND_ACTIVITY,
+    payload: activity
 })
