@@ -25,9 +25,9 @@ export const getRelativeTime = (timestamp: number) => {
     // Adding prefix to date
     let prefix;
     if(isToday) {
-        prefix = 'Today';
+        prefix = 'Today at ';
     } else if(isYesterday) {
-        prefix = 'Yesterday';
+        prefix = 'Yesterday at ';
     } else {
         prefix = date.toLocaleString('en', { year: 'numeric', month: '2-digit', day: '2-digit' }).replaceAll('-', '/');
     }
