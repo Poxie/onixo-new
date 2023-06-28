@@ -1,7 +1,7 @@
 import styles from './Overview.module.scss';
 import { useGuildId } from "@/hooks/useGuildId";
 import { Activity, Channel, ReduxLogs } from "@/types";
-import {useRef } from "react"
+import React, {useRef } from "react"
 import { ModuleSubheader } from '../module-subheader';
 import { getRelativeTime } from '@/utils';
 import Image from 'next/image';
@@ -31,10 +31,10 @@ const getActionText = (actionId: Activity['action_id'], property: Activity['chan
     if(property.includes('message')) {
         if(['welcome', 'goodbye'].includes(actionId)) {
             return [
-                `Changed ${actionId} message from `,
-                <span className={styles['activity-highlight']}>{(prevSettings as string | null) || <i>text unset</i>}</span>,
-                'to',
-                <span className={styles['activity-highlight']}>{(newSettings as string | null) || <i>text unset</i>}</span>,
+                <span key={0}>Changed ${actionId} message from </span>,
+                <span key={1} className={styles['activity-highlight']}>{(prevSettings as string | null) || <i>text unset</i>}</span>,
+                <span key={2}>to</span>,
+                <span key={3} className={styles['activity-highlight']}>{(newSettings as string | null) || <i>text unset</i>}</span>,
             ]
         }
     }
@@ -43,10 +43,10 @@ const getActionText = (actionId: Activity['action_id'], property: Activity['chan
     }
     if(property === 'dm') {
         return [
-            `Changed welcome direct message from`,
-            <span className={styles['activity-highlight']}>{prevSettings as string}</span>,
-            'to',
-            <span className={styles['activity-highlight']}>{newSettings as string}</span>,
+            <span key={0}>Changed welcome direct message from</span>,
+            <span key={1} className={styles['activity-highlight']}>{prevSettings as string}</span>,
+            <span key={2}>to</span>,
+            <span key={3} className={styles['activity-highlight']}>{newSettings as string}</span>,
         ]
 
     }
@@ -158,7 +158,7 @@ export const OverviewActivity = () => {
     
                                             {(index + 1).toString().padStart(2, '0')} -
                                             {' '}
-                                            {text instanceof Object ? (text as any[]).map((part, key) => <span key={key}>{part}</span>) : text}
+                                            {text}
                                             
                                             {change.property.includes('channel') && (
                                                 <div className={styles['activity-flex']}>
