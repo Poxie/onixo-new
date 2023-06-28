@@ -1,6 +1,7 @@
 import { useAuth } from "@/contexts/auth";
 import { useConfirmation } from "@/contexts/confirmation"
 import { prependActivity } from "@/redux/dashboard/actions";
+import { selectGuildChannels, selectGuildRoles } from "@/redux/dashboard/selectors";
 import { AppDispatch, useAppDispatch, useAppSelector } from "@/redux/store";
 import { Activity } from "@/types";
 import { getUserAvatar } from "@/utils/getImages";
@@ -36,6 +37,8 @@ export const useHasChanges = <T>({ id, guildId, endpoint, onConfirm, dispatchAct
     const { get, patch, token, user } = useAuth();
     const dispatch = useAppDispatch();
 
+    const roles = useAppSelector(state => selectGuildRoles(state, guildId));
+    const channels = useAppSelector(state => selectGuildChannels(state, guildId));
     const settings = useAppSelector(state => selector(state, guildId));
 
     const prevSettings = useRef<T>(typeof window !== 'undefined' ? structuredClone(settings) : undefined);
@@ -60,6 +63,23 @@ export const useHasChanges = <T>({ id, guildId, endpoint, onConfirm, dispatchAct
         setIsLoading(true);
         patch<T>(endpoint, properties)
             .then((data: T) => {
+                const getChanges = () => {
+                    return Object.entries(properties).map(([key, value]: [key: string, value: any]) => {
+                        if(key.includes('channel')) {
+                            const change: Activity['changes'][0] = {
+                                previous_value: channels?.find(channel => channel.id === prevSettings.current[key as keyof T]),
+                                new_value: channels?.find(channel => channel.id === tempSettings.current[key as keyof T]),
+                                property: key
+                            };
+                            return change;
+                        }
+                        return {
+                            property: key,
+                            new_value: prevSettings.current[key as keyof T],
+                            previous_value: prevSettings.current[key as keyof T],
+                        } as Activity['changes'][0];
+                    })
+                }
                 const activity: Activity = {
                     user: {
                         ...user,
@@ -69,11 +89,7 @@ export const useHasChanges = <T>({ id, guildId, endpoint, onConfirm, dispatchAct
                     guild_id: guildId,
                     timestamp: Date.now() / 1000,
                     action_id: id as Activity['action_id'],
-                    changes: Object.entries(properties).map(([key, value]) => ({
-                        new_value: tempSettings.current[key as keyof T],
-                        previous_value: prevSettings.current[key as keyof T],
-                        property: key,
-                    } as Activity['changes'][0]))
+                    changes: getChanges()
                 }
                 dispatch(prependActivity(activity));
 

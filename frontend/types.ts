@@ -65,14 +65,14 @@ export type Infraction = {
     action: 'ban' | 'kick' | 'mute' | 'warn';
 }
 export type ActivityChange = {
-    new_value: null | string | number | boolean | Channel | Role;
-    previous_value: null | string | number | boolean | Channel | Role;
+    new_value: null | string | number | boolean | Channel | Role | undefined;
+    previous_value: null | string | number | boolean | Channel | Role | undefined;
     property: string;
 }
 export type Activity = {
     guild_id: string;
     timestamp: number;
-    action_id: 'welcome' | 'goodbye' | 'logging' | 'moderation';
+    action_id: 'welcome' | 'goodbye' | 'logging' | 'moderation' | 'anti-link' | 'action-logs' | 'event-logs';
     changes: ActivityChange[];
     user_id: string;
     user: User;

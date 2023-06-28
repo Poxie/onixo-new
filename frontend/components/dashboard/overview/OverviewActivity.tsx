@@ -21,7 +21,7 @@ const getLogType = (property: keyof ReduxLogs['logChannels']) => (
 const PLACEHOLDER_COUNT = 4;
 const getActionText = (actionId: Activity['action_id'], property: Activity['changes'][0]['property'], prevSettings: Activity['changes'][0]['previous_value'], newSettings: Activity['changes'][0]['new_value']) => {
     if(property.includes('channel')) {
-        if(actionId === 'logging') {
+        if(['logging', 'action-logs', 'event-logs'].includes(actionId)) {
             return `Updated ${getLogType(property as keyof ReduxLogs['logChannels'])}`;
         }
         if(actionId === 'welcome' || actionId === 'goodbye') {

@@ -26,7 +26,7 @@ export const LinkPresets = () => {
 
     const { updateProperty } = useHasChanges<ReduxAntiLink['antiLink']>({
         guildId,
-        id: 'anti-link',
+        id: 'moderation',
         dispatchAction: setAntiLink,
         updateAction: updateAntilink,
         selector: selectAntilinkById,
