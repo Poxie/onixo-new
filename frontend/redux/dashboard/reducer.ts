@@ -258,6 +258,9 @@ const addActivity: ReducerAction = (state, action) => {
 const prependActivity: ReducerAction = (state, action) => {
     const activity: Activity = action.payload;
 
+    // If activity is not fetched, dont prepend
+    if(!state.activity.find(act => act.guild_id === activity.guild_id)) return state;
+
     return updateObject(state, {
         activity: [...[activity], ...state.activity]
     })
