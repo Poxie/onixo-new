@@ -1,8 +1,7 @@
 import styles from './Overview.module.scss';
-import { useAuth } from "@/contexts/auth";
 import { useGuildId } from "@/hooks/useGuildId";
 import { Activity, Channel, ReduxLogs } from "@/types";
-import { useEffect, useState } from "react"
+import {useRef } from "react"
 import { ModuleSubheader } from '../module-subheader';
 import { getRelativeTime } from '@/utils';
 import Image from 'next/image';
@@ -10,6 +9,10 @@ import Link from 'next/link';
 import { LoggingIcon } from '@/assets/icons/LoggingIcon';
 import { HandIcon } from '@/assets/icons/HandIcon';
 import { HammerIcon } from '@/assets/icons/HammerIcon';
+import { useInfiniteScrolling } from '@/hooks/useInfiniteScrolling';
+import { useAppDispatch, useAppSelector } from '@/redux/store';
+import { selectActivity } from '@/redux/dashboard/selectors';
+import { addActivity } from '@/redux/dashboard/actions';
 
 const getLogType = (property: keyof ReduxLogs['logChannels']) => (
     property === 'all_logs_channel' ? 'general log channel' : `${property.split('_')[0]} log channel`
@@ -85,93 +88,108 @@ const getModulePath = (guildId: string, actionId: Activity['action_id']) => {
 
 export const OverviewActivity = () => {
     const guildId = useGuildId();
-    const { token, get } = useAuth();
 
-    const [activities, setActivities] = useState<Activity[] | null>(null);
-    
-    useEffect(() => {
-        if(!token || !guildId) return;
+    const dispatch = useAppDispatch();
+    const activity = useAppSelector(state => selectActivity(state, guildId));
 
-        get<Activity[]>(`/guilds/${guildId}/activity`, 'backend').then(setActivities);
-    }, [token, get, guildId]);
+    const ref = useRef<HTMLUListElement>(null);
+
+    const onRequestFinished = (activity: Activity[]) => (
+        dispatch(addActivity(guildId, activity))
+    )
+    const { loading } = useInfiniteScrolling<Activity[]>(
+        `/guilds/${guildId}/activity?start_at=${activity?.length || 0}`, 
+        onRequestFinished, 
+        {
+            fetchAmount: 7,
+            threshold: 300,
+            scrollContainer: ref,
+            fetchOnMount: true,
+            identifier: `${guildId}-activity`,
+        }
+    )
     
     return(
         <div className={styles['activity']}>
-            <ModuleSubheader>
+            <ModuleSubheader
+                extraHeader={(!loading && activity.length === 0) ? 'There is no recent activity on this server.' : undefined}
+            >
                 Activity
             </ModuleSubheader>
 
-            <ul className={styles['activity-list']}>
-                {!activities && (
-                    Array.from(Array(PLACEHOLDER_COUNT)).map((_, key) => (
-                        <li className={`${styles['activity-item']} ${styles['activity-skeleton']}`} key={key}>
+            {(loading || activity.length > 0) && (
+                <ul className={styles['activity-list']} ref={ref}>
+                    {activity?.map(activity => (
+                        <li className={styles['activity-item']} key={activity.timestamp}>
                             <div className={styles['activity-header']}>
-                                <div className={styles['activity-user-icon']} />
-                                <div className={styles['activity-text-skeleton']} />
-                            </div>
-                            <ul className={styles['activity-list']}>
-                                {Array.from(Array(2)).map((__, index) => (
-                                    <li key={index}>
-                                        <div className={styles['activity-text-skeleton']} />
-                                    </li>
-                                ))}
-                            </ul>
-                        </li>
-                    ))
-                )}
-                {activities?.map(activity => (
-                    <li className={styles['activity-item']} key={activity.timestamp}>
-                        <div className={styles['activity-header']}>
-                            <Image 
-                                src={activity.user.avatar}
-                                width={26}
-                                height={26}
-                                alt=""
-                            />
-                            <span className={styles['activity-text']}>
-                                <span className={styles['activity-username']}>
-                                    {activity.user.global_name}
-                                </span>
-                                {' '}
-                                made {activity.changes.length} changes to the
-                                {' '}
-                                <Link href={getModulePath(guildId, activity.action_id)}>
-                                    {activity.action_id.split('-').join(' ')}
-                                </Link>
-                                {' '}
-                                module.
-                            </span>
-                            <span className={styles['activity-timestamp']}>
-                                {getRelativeTime(activity.timestamp).readableDate}
-                            </span>
-                        </div>
-
-                        <div className={styles['activity-content']}>
-                            {activity.changes.map((change, index) => (
-                                <div className={styles['activity-change']}>
-                                    {getActionIcon(activity.action_id)}
-
-                                    {(index + 1).toString().padStart(2, '0')} -
+                                <Image 
+                                    src={activity.user.avatar}
+                                    width={26}
+                                    height={26}
+                                    alt=""
+                                />
+                                <span className={styles['activity-text']}>
+                                    <span className={styles['activity-username']}>
+                                        {activity.user.global_name}
+                                    </span>
                                     {' '}
-                                    {getActionText(activity.action_id, change.property, change.previous_value, change.new_value)}
-                                    
-                                    {change.property.includes('channel') && (
-                                        <div className={styles['activity-flex']}>
-                                            <div className={styles['activity-highlight']}>
-                                                # {(change.previous_value as Channel | null)?.name || <i>channel-unset</i>}
+                                    made {activity.changes.length} changes to the
+                                    {' '}
+                                    <Link href={getModulePath(guildId, activity.action_id)}>
+                                        {activity.action_id.split('-').join(' ')}
+                                    </Link>
+                                    {' '}
+                                    module.
+                                </span>
+                                <span className={styles['activity-timestamp']}>
+                                    {getRelativeTime(activity.timestamp).readableDate}
+                                </span>
+                            </div>
+
+                            <div className={styles['activity-content']}>
+                                {activity.changes.map((change, index) => (
+                                    <div className={styles['activity-change']} key={index}>
+                                        {getActionIcon(activity.action_id)}
+
+                                        {(index + 1).toString().padStart(2, '0')} -
+                                        {' '}
+                                        {getActionText(activity.action_id, change.property, change.previous_value, change.new_value)}
+                                        
+                                        {change.property.includes('channel') && (
+                                            <div className={styles['activity-flex']}>
+                                                <div className={styles['activity-highlight']}>
+                                                    # {(change.previous_value as Channel | null)?.name || <i>channel-unset</i>}
+                                                </div>
+                                                {' --> '}
+                                                <div  className={styles['activity-highlight']}>
+                                                    # {(change.new_value as Channel | null)?.name || <i>channel-unset</i>}
+                                                </div>
                                             </div>
-                                            {' --> '}
-                                            <div  className={styles['activity-highlight']}>
-                                                # {(change.new_value as Channel | null)?.name || <i>channel-unset</i>}
-                                            </div>
-                                        </div>
-                                    )}
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                        </li>
+                    ))}
+                    {loading && (
+                        Array.from(Array(PLACEHOLDER_COUNT)).map((_, key) => (
+                            <li className={`${styles['activity-item']} ${styles['activity-skeleton']}`} key={key}>
+                                <div className={styles['activity-header']}>
+                                    <div className={styles['activity-user-icon']} />
+                                    <div className={styles['activity-text-skeleton']} />
                                 </div>
-                            ))}
-                        </div>
-                    </li>
-                ))}
-            </ul>
+                                <ul className={styles['activity-list']}>
+                                    {Array.from(Array(2)).map((__, index) => (
+                                        <li key={index}>
+                                            <div className={styles['activity-text-skeleton']} />
+                                        </li>
+                                    ))}
+                                </ul>
+                            </li>
+                        ))
+                    )}
+                </ul>
+            )}
         </div>
     )
 }

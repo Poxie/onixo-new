@@ -1,8 +1,8 @@
 import { AnyAction } from "redux";
 import { DashboardState } from "./types";
 import { createReducer, updateItemInArray, updateObject } from "../utils";
-import { SET_ANTI_LINK, SET_GOODBYE_SETTINGS, SET_GUILDS, SET_GUILD_CHANNELS, SET_GUILD_ROLES, SET_INFRACTIONS, SET_MOD_SETTINGS, SET_WELCOME_SETTINGS, UPDATE_ANTILINK, UPDATE_GOODBYE_SETTING, UPDATE_INFRACTION, UPDATE_MOD_SETTING, UPDATE_WELCOME_SETTING, UPDATE_LOG, SET_LOGS } from "./constants";
-import { Infraction, ReduxLogs, ReduxAntiLink, ReduxGoodbyeSettings, ReduxModSettings, ReduxWelcomeSettings } from "@/types";
+import { SET_ANTI_LINK, SET_GOODBYE_SETTINGS, SET_GUILDS, SET_GUILD_CHANNELS, SET_GUILD_ROLES, SET_INFRACTIONS, SET_MOD_SETTINGS, SET_WELCOME_SETTINGS, UPDATE_ANTILINK, UPDATE_GOODBYE_SETTING, UPDATE_INFRACTION, UPDATE_MOD_SETTING, UPDATE_WELCOME_SETTING, UPDATE_LOG, SET_LOGS, ADD_ACTIVITY } from "./constants";
+import { Infraction, ReduxLogs, ReduxAntiLink, ReduxGoodbyeSettings, ReduxModSettings, ReduxWelcomeSettings, ReduxActivity } from "@/types";
 
 // Reducer actions
 type ReducerAction = (state: DashboardState, action: AnyAction) => DashboardState;
@@ -247,6 +247,14 @@ const updateInfraction: ReducerAction = (state, action) => {
     })
 }
 
+const addActivity: ReducerAction = (state, action) => {
+    const { guildId, activity }: ReduxActivity = action.payload;
+
+    return updateObject(state, {
+        activity: state.activity.concat(activity)
+    })
+}
+
 export const dashboardReducer = createReducer({
     guilds: null,
     antiLink: [],
@@ -257,6 +265,7 @@ export const dashboardReducer = createReducer({
     welcome: [],
     goodbye: [],
     infractions: [],
+    activity: [],
 }, {
     [SET_GUILDS]: setGuilds,
     [SET_ANTI_LINK]: setAntiLink,
@@ -273,4 +282,5 @@ export const dashboardReducer = createReducer({
     [UPDATE_GOODBYE_SETTING]: updateGoodbyeSetting,
     [SET_INFRACTIONS]: setInfractions,
     [UPDATE_INFRACTION]: updateInfraction,
+    [ADD_ACTIVITY]: addActivity,
 })

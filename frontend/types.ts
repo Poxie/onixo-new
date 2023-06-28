@@ -146,3 +146,7 @@ export type ReduxAntiLink = {
         custom: string[]
     }
 }
+export type ReduxActivity = {
+    guildId: string;
+    activity: Activity[];
+}

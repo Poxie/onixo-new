@@ -1,4 +1,4 @@
-import { Guild, ReduxLogs, ReduxAntiLink, ReduxChannel, ReduxGoodbyeSettings, ReduxInfractions, ReduxModSettings, ReduxRole, ReduxWelcomeSettings } from "@/types"
+import { Guild, ReduxLogs, ReduxAntiLink, ReduxChannel, ReduxGoodbyeSettings, ReduxInfractions, ReduxModSettings, ReduxRole, ReduxWelcomeSettings, ReduxActivity } from "@/types"
 
 export type DashboardState = {
     guilds: Guild[] | null;
@@ -10,4 +10,5 @@ export type DashboardState = {
     welcome: ReduxWelcomeSettings[];
     goodbye: ReduxGoodbyeSettings[];
     infractions: ReduxInfractions[];
+    activity: ReduxActivity['activity'];
 }
