@@ -1,6 +1,8 @@
 import os
 from time import time
 from pymongo import MongoClient
+from dotenv import load_dotenv
+load_dotenv()
 
 MONGO_USERNAME = os.getenv('MONGO_USERNAME')
 MONGO_PASSWORD = os.getenv('MONGO_PASSWORD')
