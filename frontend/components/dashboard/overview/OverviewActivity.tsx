@@ -121,7 +121,7 @@ export const OverviewActivity = () => {
                 Activity
             </ModuleSubheader>
 
-            {(loading || (activity?.length || 0) > 0) && (
+            {(loading || activity === undefined || (activity?.length || 0) > 0) && (
                 <ul className={styles['activity-list']} ref={ref}>
                     {activity?.map((activity, idx) => (
                         <li className={styles['activity-item']} key={idx}>
@@ -180,7 +180,7 @@ export const OverviewActivity = () => {
                             </div>
                         </li>
                     ))}
-                    {loading && (
+                    {(loading || activity === undefined) && (
                         Array.from(Array(PLACEHOLDER_COUNT)).map((_, key) => (
                             <li className={`${styles['activity-item']} ${styles['activity-skeleton']}`} key={key}>
                                 <div className={styles['activity-header']}>
