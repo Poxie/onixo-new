@@ -1,4 +1,5 @@
 import os
+from time import time
 from pymongo import MongoClient
 
 MONGO_USERNAME = os.getenv('MONGO_USERNAME')
@@ -17,3 +18,15 @@ client = MongoClient(
 )
 
 database = client[MONGO_DATABASE]
+
+# Checking if is activity supposed to be purged, PURGE_THRESHOLD is in seconds.
+PURGE_THRESHOLD = 604800
+activity_db = database['activity']
+
+for guild in activity_db.find({}):
+    diff = time() - guild['timestamp']
+    if diff > PURGE_THRESHOLD:
+        activity_db.delete_one({
+            'guild_id': guild['guild_id'],
+            'timestamp': guild['timestamp']
+        })
