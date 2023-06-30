@@ -65,7 +65,7 @@ export const addActivity = (guildId: string, activity: Activity[]) => ({
     type: ADD_ACTIVITY,
     payload: { guildId, activity }
 })
-export const prependActivity = (activity: Activity) => ({
+export const prependActivity = (guildId: string, activity: Activity) => ({
     type: PREPEND_ACTIVITY,
-    payload: activity
+    payload: { guildId, activity }
 })

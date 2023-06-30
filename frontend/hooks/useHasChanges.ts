@@ -91,7 +91,7 @@ export const useHasChanges = <T>({ id, guildId, endpoint, onConfirm, dispatchAct
                     action_id: id as Activity['action_id'],
                     changes: getChanges()
                 }
-                dispatch(prependActivity(activity));
+                dispatch(prependActivity(guildId, activity));
 
                 prevSettings.current = structuredClone(tempSettings.current);
                 if(onConfirm) onConfirm(data);

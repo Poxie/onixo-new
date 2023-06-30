@@ -273,7 +273,10 @@ const addActivity: ReducerAction = (state, action) => {
 }
 
 const prependActivity: ReducerAction = (state, action) => {
-    const { guildId, activity }: ReduxActivity = action.payload;
+    const { guildId, activity }: {
+        guildId: string;
+        activity: Activity;
+    } = action.payload;
 
     return updateObject(state, {
         activity: (
@@ -281,7 +284,7 @@ const prependActivity: ReducerAction = (state, action) => {
                 if(act.guildId !== guildId) return act;
 
                 return updateObject(act, {
-                    activity: [...activity, ...act.activity]
+                    activity: [...[activity], ...act.activity]
                 })
             })
         )
