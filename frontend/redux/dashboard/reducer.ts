@@ -250,19 +250,41 @@ const updateInfraction: ReducerAction = (state, action) => {
 const addActivity: ReducerAction = (state, action) => {
     const { guildId, activity }: ReduxActivity = action.payload;
 
+    if(!state.activity.find(act => act.guildId === guildId)) {
+        return updateObject(state, {
+            activity: state.activity.concat({
+                guildId,
+                activity
+            })
+        });
+    }
+
     return updateObject(state, {
-        activity: state.activity.concat(activity)
+        activity: (
+            state.activity.map(act => {
+                if(act.guildId !== guildId) return act;
+
+                return updateObject(act, {
+                    activity: act.activity.concat(activity)
+                })
+            })
+        )
     })
 }
 
 const prependActivity: ReducerAction = (state, action) => {
-    const activity: Activity = action.payload;
-
-    // If activity is not fetched, dont prepend
-    if(!state.activity.find(act => act.guild_id === activity.guild_id)) return state;
+    const { guildId, activity }: ReduxActivity = action.payload;
 
     return updateObject(state, {
-        activity: [...[activity], ...state.activity]
+        activity: (
+            state.activity.map(act => {
+                if(act.guildId !== guildId) return act;
+
+                return updateObject(act, {
+                    activity: [...activity, ...act.activity]
+                })
+            })
+        )
     })
 }
 

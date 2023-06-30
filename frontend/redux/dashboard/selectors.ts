@@ -106,5 +106,5 @@ export const selectInfractionById = createSelector(
 export const selectAllActivity = (state: RootState) => state.dashboard.activity;
 export const selectActivity = createSelector(
     [selectAllActivity, selectId],
-    (activity, guildId) => activity.filter(act => act.guild_id === guildId)
+    (activity, guildId) => activity.find(act => act.guildId === guildId)?.activity
 )

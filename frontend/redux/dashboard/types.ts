@@ -10,5 +10,5 @@ export type DashboardState = {
     welcome: ReduxWelcomeSettings[];
     goodbye: ReduxGoodbyeSettings[];
     infractions: ReduxInfractions[];
-    activity: ReduxActivity['activity'];
+    activity: ReduxActivity[];
 }

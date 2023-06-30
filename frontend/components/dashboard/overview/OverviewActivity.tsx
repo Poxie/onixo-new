@@ -115,13 +115,13 @@ export const OverviewActivity = () => {
     return(
         <div className={styles['activity']}>
             <ModuleSubheader
-                extraHeader={(!loading && activity.length === 0) ? 'There is no recent activity on this server.' : undefined}
+                extraHeader={(!loading && activity?.length === 0) ? 'There is no recent activity on this server.' : undefined}
                 className={styles['label']}
             >
                 Activity
             </ModuleSubheader>
 
-            {(loading || activity.length > 0) && (
+            {(loading || (activity?.length || 0) > 0) && (
                 <ul className={styles['activity-list']} ref={ref}>
                     {activity?.map((activity, idx) => (
                         <li className={styles['activity-item']} key={idx}>
