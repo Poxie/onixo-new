@@ -78,6 +78,7 @@
 }
 .list-item {
     display: flex;
+    align-items: center;
     white-space: nowrap;
     gap: var(--spacing-quinary);
     padding: var(--spacing-quinary);
