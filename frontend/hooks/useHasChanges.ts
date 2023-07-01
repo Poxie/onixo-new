@@ -88,7 +88,7 @@ export const useHasChanges = <T>({ id, guildId, endpoint, onConfirm, dispatchAct
                     user_id: user.id,
                     guild_id: guildId,
                     timestamp: Date.now() / 1000,
-                    action_id: id as Activity['action_id'],
+                    action_id: ['action-logs', 'event-logs'].includes(id) ? 'logging' : id as Activity['action_id'],
                     changes: getChanges()
                 }
                 dispatch(prependActivity(guildId, activity));
