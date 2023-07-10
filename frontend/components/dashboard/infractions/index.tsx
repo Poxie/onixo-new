@@ -35,13 +35,13 @@ export const Infractions: NextPageWithLayout = () => {
     const infractions = useAppSelector(state => selectInfractions(state, guildId));
     
     useEffect(() => {
-        if(!token || !guildId) return;
+        if(!token || !guildId || infractions) return;
 
         get<InfractionType[]>(`/guilds/${guildId}/infractions`, 'backend')
             .then(infractions => {
                 dispatch(setInfractions(guildId, infractions));
             });
-    }, [token, get, guildId]);
+    }, [token, get, guildId, infractions?.length]);
     
     const filteredInfractions = useMemo(() => (
         infractions?.filter(infraction => {
