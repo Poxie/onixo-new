@@ -32,8 +32,11 @@ export const PremiumPlan: React.FC<typeof plans[0]> = ({ id, type, header, descr
                 </div>
             </div>
             <div className={styles['perks']}>
-                {perks.map(perk => (
-                    <div className={styles['perk']}>
+                {perks.map((perk, key) => (
+                    <div 
+                        className={styles['perk']} 
+                        key={key}
+                    >
                         <CheckmarkIcon />
                         {perk}
                     </div>
