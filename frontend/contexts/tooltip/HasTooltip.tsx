@@ -43,7 +43,7 @@ export const HasTooltip: React.FC<{
         onMouseEnter,
         onMouseLeave,
         onClick: handleClick,
-        ariaLabel: tooltip,
+        'aria-label': tooltip,
         ref
     }
 
