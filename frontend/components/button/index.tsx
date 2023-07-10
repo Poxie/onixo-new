@@ -15,9 +15,10 @@ type ButtonProps = {
     disabled?: boolean;
     external?: boolean;
     icon?: ReactElement;
+    customAttributes?: Object;
 }
 
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({ children, style, onClick, href, ariaLabel, target, icon, buttonType='button', external=false, disabled=false, className='', type='primary' }, ref) => {
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({ children, style, onClick, href, ariaLabel, target, icon, customAttributes={}, buttonType='button', external=false, disabled=false, className='', type='primary' }, ref) => {
     className = [
         className,
         styles['container'],
@@ -31,7 +32,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({ children, sty
         onClick,
         disabled,
         'aria-label': ariaLabel,
-        ref: ref as any
+        ref: ref as any,
+        ...customAttributes
     }
 
     return href ? (
