@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { InfractionIcon } from '@/assets/icons/InfractionIcon';
 import { EmbedIcon } from '@/assets/icons/EmbedIcon';
 import { LoggingIcon } from '@/assets/icons/LoggingIcon';
+import { PremiumIcon } from '@/assets/icons/PremiumIcon';
 
 const GROUPS: {
     title: string | undefined;
@@ -19,6 +20,7 @@ const GROUPS: {
             { text: 'Moderation', path: '/moderation', href: 'automod', icon: <HammerIcon /> },
             { text: 'Logging', path: '/logging', icon: <LoggingIcon /> },
             { text: 'Welcomes & Goodbyes', path: '/greetings', icon: <HandIcon /> },
+            { text: 'Premium', path: '/premium', icon: <PremiumIcon /> }
         ]
     },
     {
