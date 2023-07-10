@@ -10,7 +10,7 @@ import { useEffect } from 'react';
 export const Premium: NextPageWithLayout = () => {
     // Making sure to register chargebee again due to react rendering
     useEffect(() => {
-        (window as any).Chargebee.registerAgain();
+        (window as any).Chargebee?.registerAgain();
     }, []);
 
     return(
