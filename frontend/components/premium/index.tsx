@@ -10,7 +10,6 @@ export const Premium = () => {
             <meta name="og:title" content="Onixo - Premium" />
             <meta name="description" content="We are currently working on delivering Onixo Premium. It will introduce many new features as well as improvements on current features." />
             <meta name="og:description" content="We are currently working on delivering Onixo Premium. It will introduce many new features as well as improvements on current features." />
-            <script src="https://js.chargebee.com/v2/chargebee.js" data-cb-site={process.env.NEXT_PUBLIC_CHARGEBEE_SITE} defer></script>
         </Head>
 
         <div className={styles['container']}>
