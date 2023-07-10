@@ -1,10 +1,29 @@
-import Link from 'next/link';
 import styles from './Premium.module.scss';
-import { PremiumTile } from "@/assets/tiles/PremiumTile"
-import Button from '../button';
 import Head from 'next/head';
+import { PremiumPlans } from './PremiumPlans';
+import React, { useCallback, useEffect, useState } from 'react';
+
+const PremiumContext = React.createContext({} as {
+    openCheckout: () => void;
+});
+
+export const usePremium = () => React.useContext(PremiumContext);
 
 export const Premium = () => {
+    useEffect(() => {
+        const script = document.createElement('script');
+
+        script.onload = () => {
+            (window as any).Chargebee.init({
+                site: 'onixo-test'
+            });
+            (window as any).Chargebee.registerAgain();
+        };
+
+        script.setAttribute('src', 'https://js.chargebee.com/v2/chargebee.js');
+        document.body.append(script)
+    }, []);
+
     return(
         <>
         <Head>
@@ -12,32 +31,14 @@ export const Premium = () => {
             <meta name="og:title" content="Onixo - Premium" />
             <meta name="description" content="We are currently working on delivering Onixo Premium. It will introduce many new features as well as improvements on current features." />
             <meta name="og:description" content="We are currently working on delivering Onixo Premium. It will introduce many new features as well as improvements on current features." />
+            <script src="https://js.chargebee.com/v2/chargebee.js" data-cb-site="onixo-test"></script>
         </Head>
 
         <div className={styles['container']}>
-            <div className={styles['text']}>
-                <h1>
-                    Onixo Premium is coming soon.
-                </h1>
-                <p>
-                    We are currently working on delivering Onixo Premium.
-                    It will introduce many new features as well as improvements on current features. Stay updated by joining our
-                    {' '}
-                    <Link href={'/support'}>
-                        support server
-                    </Link>
-                    !
-                </p>
-                <div className={styles['buttons']}>
-                    <Button href={'/support'}>
-                        Support Server
-                    </Button>
-                </div>
-            </div>
-            
-            <div className={styles['preview']} aria-hidden="true">
-                <PremiumTile />
-            </div>
+            <h1>
+                Time to boost your server?
+            </h1>
+            <PremiumPlans />
         </div>
         </>
     )

@@ -1,0 +1,35 @@
+[
+    {
+        "id": "premium-monthly",
+        "type": "monthly",
+        "header": "Monthly",
+        "description": "Onixo Premium for one server of your choice.",
+        "price": 7.99,
+        "priceDescription": "USD per month",
+        "sale": 0,
+        "isPopular": false,
+        "perks": ["Sticky messages", "Higher prune limit", "Access to new features before everyone else"]
+    },
+    {
+        "id": "premium-lifetime-USD-Daily",
+        "type": "lifetime",
+        "header": "Lifetime",
+        "description": "Onixo Premium for one server of your choice.",
+        "price": 59.99,
+        "priceDescription": "USD paid once",
+        "sale": 63,
+        "isPopular": true,
+        "perks": ["Sticky messages", "Higher prune limit", "Access to new features before everyone else"]
+    },
+    {
+        "id": "premium-yearly",
+        "type": "yearly",
+        "header": "Yearly",
+        "description": "Onixo Premium for one server of your choice.",
+        "price": 3.99,
+        "priceDescription": "USD per month - 47.99$ yearly",
+        "sale": 50,
+        "isPopular": false,
+        "perks": ["Sticky messages", "Higher prune limit", "Access to new features before everyone else"]
+    }
+]
