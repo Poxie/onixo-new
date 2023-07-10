@@ -5,8 +5,14 @@ import { DashboardLayout } from "@/layouts/dashboard"
 import { NextPageWithLayout } from "@/pages/_app"
 import { ModuleHeader } from "../module-header"
 import Head from 'next/head';
+import { useEffect } from 'react';
 
 export const Premium: NextPageWithLayout = () => {
+    // Making sure to register chargebee again due to react rendering
+    useEffect(() => {
+        (window as any).Chargebee.registerAgain();
+    }, []);
+
     return(
         <>
         <Head>
