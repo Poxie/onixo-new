@@ -6,6 +6,7 @@ declare global {
             NEXT_PUBLIC_DISCORD_API: string;
             NEXT_PUBLIC_CLIENT_ID: string;
             NEXT_PUBLIC_REDIRECT_URI: string;
+            NEXT_PUBLIC_CHARGEBEE_SITE: string;
         }
     }
 }

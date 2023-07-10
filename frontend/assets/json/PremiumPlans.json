@@ -11,7 +11,7 @@
         "perks": ["Sticky messages", "Higher prune limit", "Access to new features before everyone else"]
     },
     {
-        "id": "premium-lifetime-USD-Daily",
+        "id": "premium-life",
         "type": "lifetime",
         "header": "Lifetime",
         "description": "Onixo Premium for one server of your choice.",

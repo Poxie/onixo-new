@@ -17,7 +17,7 @@ def payment_created():
     plan_type = subscription['billing_period_unit'].title()
     embed = {
         'color': 58184,
-        'description': f'[{customer["first_name"]} {customer["last_name"]} has become a supporter](https://onixo-test.chargebee.com/d/subscriptions/{subscription["id"]})! :tada:',
+        'description': f'[{customer["first_name"]} {customer["last_name"]} has become a supporter](https://{os.getenv("CHARGEBEE_SITE")}.chargebee.com/d/subscriptions/{subscription["id"]})! :tada:',
         'fields': [
             { 'name': 'Plan Type', 'value': 'Lifetime' if plan_type == 'Day' else plan_type },
             { 'name': 'Payment Amount', 'value': f'{invoice["total"] / 100}$' },
