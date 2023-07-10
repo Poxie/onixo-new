@@ -5,12 +5,16 @@ import Button from '@/components/button';
 import { useAppSelector } from '@/redux/store';
 import { selectGuildById } from '@/redux/dashboard/selectors';
 import { getInviteLink } from '@/utils/getLinks';
+import { useRouter } from 'next/router';
 
 export const GuildItem: React.FC<{
     guildId: string;
 }> = ({ guildId }) => {
+    const { redirect } = useRouter().query as { redirect?: string };
+
     const guild = useAppSelector(state => selectGuildById(state, guildId));
-    if(!guild) return null;
+
+    if(!guild || (redirect && !guild.invited)) return null;
 
     const { id, name, icon, invited } = guild;
     return(
@@ -46,9 +50,9 @@ export const GuildItem: React.FC<{
                 {invited ? (
                     <Button 
                         type={'tertiary'}
-                        href={`/dashboard/${id}`}
+                        href={`/dashboard/${id}${redirect || ''}`}
                     >
-                        Go to Dashboard
+                        {redirect ? 'Choose Server' : 'Go to Dashboard'}
                     </Button>
                 ) : (
                     <Button href={getInviteLink(id)}>
