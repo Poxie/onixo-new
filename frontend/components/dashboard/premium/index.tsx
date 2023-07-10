@@ -14,7 +14,7 @@ export const Premium: NextPageWithLayout = () => {
         </Head>
         <ModuleHeader 
             header={'Premium'}
-            subHeader={'Boose your server with Onixo premium. '}
+            subHeader={'Boost your server with Onixo premium. '}
         />
         <div className={styles['plans']}>
             <PremiumPlans />
