@@ -24,7 +24,7 @@ export const PremiumPlan: React.FC<typeof plans[0]> = ({ id, type, header, descr
             <div className={styles['price-section']}>
                 <div className={styles['price']}>
                     <span className={styles['price-text']}>
-                        {price}$
+                        ${price}
                     </span>
                     <span className={styles['price-description']}>
                         {priceDescription}

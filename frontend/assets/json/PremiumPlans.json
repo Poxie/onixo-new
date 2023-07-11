@@ -16,7 +16,7 @@
         "header": "Yearly",
         "description": "Onixo Premium for one server of your choice.",
         "price": 3.99,
-        "priceDescription": "USD per month - 47.99$ yearly",
+        "priceDescription": "USD per month - $47.99 yearly",
         "sale": 50,
         "isPopular": true,
         "perks": ["Sticky messages", "Higher prune limit", "Access to new features before everyone else"]
