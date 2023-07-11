@@ -29,13 +29,15 @@
     border-radius: 4px;
 }
 
-.module-list {
-    display: flex;
-    gap: var(--spacing-quinary);
+.modules {
     padding: var(--spacing-tertiary);
     background-color: var(--background-secondary);
     border-radius: var(--border-radius-tertiary);
     margin-bottom: var(--spacing-quaternary);
+}
+.module-list {
+    display: flex;
+    gap: var(--spacing-quinary);
 
     li {
         flex: 1;
