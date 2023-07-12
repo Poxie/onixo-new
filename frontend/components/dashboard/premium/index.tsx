@@ -6,8 +6,27 @@ import { NextPageWithLayout } from "@/pages/_app"
 import { ModuleHeader } from "../module-header"
 import Head from 'next/head';
 import { useEffect } from 'react';
+import { useModal } from '@/contexts/modal';
+import { useRouter } from 'next/router';
+import { SubscriptionModal } from '@/modals/subscription';
+import { useGuildId } from '@/hooks/useGuildId';
 
 export const Premium: NextPageWithLayout = () => {
+    const guildId = useGuildId();
+    const { setModal } = useModal();
+    const { id: hostedPageId } = useRouter().query as { id?: string };
+
+    useEffect(() => {
+        if(!hostedPageId || !guildId) return;
+
+        setModal(
+            <SubscriptionModal 
+                guildId={guildId}
+                hostedPageId={hostedPageId}
+            />
+        );
+    }, [hostedPageId, guildId]);
+
     // Making sure to register chargebee again due to react rendering
     useEffect(() => {
         (window as any).Chargebee?.registerAgain();
