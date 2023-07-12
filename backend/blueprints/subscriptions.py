@@ -45,17 +45,15 @@ def get_subscription_url(guild_id: int):
 def cancel_subscription(guild_id: int):
     db = database['subscriptions']
     
-    subscription = db.find_one({ 'guild_id': guild_id })
+    subscription = db.find_one({ 'guild_id': guild_id, 'canceled': 0 })
     if not subscription:
         abort(404, 'This server does not have premium.')
 
-    result = chargebee.Subscription.cancel_for_items(subscription['subscription_id'], {
-        'end_of_term': True
-    })
+    result = chargebee.Subscription.cancel_for_items(subscription['subscription_id'])
     premium_ends_at = result.subscription.current_term_end
 
     settings = database['settings']
-    settings.update_one({ '_id': guild_id }, {
+    settings.update_one({ '_id': guild_id, 'canceled': 0 }, {
         '$set': {
             'premium_ends_at': premium_ends_at
         }
