@@ -49,7 +49,9 @@ def cancel_subscription(guild_id: int):
     if not subscription:
         abort(404, 'This server does not have premium.')
 
-    result = chargebee.Subscription.cancel_for_items(subscription['subscription_id'])
+    result = chargebee.Subscription.cancel_for_items(subscription['subscription_id'], {
+        'end_of_term': True
+    })
     premium_ends_at = result.subscription.current_term_end
 
     settings = database['settings']
