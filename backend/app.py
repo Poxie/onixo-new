@@ -54,7 +54,7 @@ def confirm_payment(data):
     if not 'hosted_page_id' in data or not 'guild_id' in data:
         return
     
-    guild_id = data['guild_id']
+    guild_id = int(data['guild_id'])
     hosted_page_id = data['hosted_page_id']
 
     try:
@@ -75,7 +75,7 @@ def confirm_payment(data):
     # Adding premium to guild
     settings = database['settings']
     settings.update_one({
-        '_id': int(guild_id)
+        '_id': guild_id
     }, {
         '$set': {
             'premium': 1
@@ -86,7 +86,8 @@ def confirm_payment(data):
     db.insert_one(dict(
         guild_id=guild_id,
         hosted_page_id=hosted_page_id,
-        subscription_id=result.hosted_page.content.subscription.id
+        subscription_id=result.hosted_page.content.subscription.id,
+        canceled=0
     ))
 
     emit(SUBSCRIPTION_ACCEPTED, None, room=request.sid)

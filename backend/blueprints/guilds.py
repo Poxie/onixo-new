@@ -35,6 +35,9 @@ def get_bot_guilds():
             for db_guild in db_guilds:
                 if db_guild['_id'] == int(guild['id']):
                     guild['premium'] = bool(db_guild['premium'])
+
+            if 'premium_ends_at' in db_guild:
+                guild['premium_ends_at'] = db_guild['premium_ends_at']
                 
             guild['invited'] = int(guild['id']) in guild_ids
             admin_guilds.append(guild)

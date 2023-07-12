@@ -1,4 +1,5 @@
 import chargebee, os
+from database import database
 from flask import Blueprint, jsonify, request, abort
 from dotenv import load_dotenv
 load_dotenv()
@@ -38,4 +39,28 @@ def get_subscription_url(guild_id: int):
         state=page.state,
         created_at=page.created_at,
         url=page.url,
+    ))
+
+@subscriptions.delete('/guilds/<int:guild_id>/subscriptions')
+def cancel_subscription(guild_id: int):
+    db = database['subscriptions']
+    
+    subscription = db.find_one({ 'guild_id': guild_id })
+    if not subscription:
+        abort(404, 'This server does not have premium.')
+
+    result = chargebee.Subscription.cancel_for_items(subscription['subscription_id'], {
+        'end_of_term': True
+    })
+    premium_ends_at = result.subscription.current_term_end
+
+    settings = database['settings']
+    settings.update_one({ '_id': guild_id }, {
+        '$set': {
+            'premium_ends_at': premium_ends_at
+        }
+    })
+    
+    return jsonify(dict(
+        premium_ends_at=premium_ends_at
     ))
