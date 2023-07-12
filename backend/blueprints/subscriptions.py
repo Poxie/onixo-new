@@ -3,8 +3,6 @@ from flask import Blueprint, jsonify, request, abort
 from dotenv import load_dotenv
 load_dotenv()
 
-chargebee.configure(os.getenv('CHARGEBEE_API_KEY'), os.getenv('CHARGEBEE_SITE'))
-
 subscriptions = Blueprint('subscriptions', __name__)
 
 @subscriptions.post('/guilds/<int:guild_id>/subscriptions/url')
