@@ -14,12 +14,6 @@ ADMIN_PERMS = 0x0000000000000020
 
 @guilds.get('/guilds')
 def get_bot_guilds():
-    # Fetching bot guilds
-    db = database['settings']
-    
-    guilds = db.find()
-    guild_ids = [int(guild['_id']) for guild in guilds]
-
     # Fetching user guilds
     access_token = get_access_token(request.headers)
 
@@ -31,10 +25,18 @@ def get_bot_guilds():
     if 'retry_after' in user_guilds:
         abort(429, {'retry_after': user_guilds['retry_after']})
 
+    db = database['settings']
+    db_guilds = [guild for guild in db.find()]
+    guild_ids = [guild['_id'] for guild in db_guilds]
+
     admin_guilds = []
     for guild in user_guilds:
-        if (int(guild['permissions']) & ADMIN_PERMS) == ADMIN_PERMS:
-            guild['invited'] = int(guild['id']) in guild_ids  
+        if(int(guild['permissions']) & ADMIN_PERMS) == ADMIN_PERMS:
+            for db_guild in db_guilds:
+                if db_guild['_id'] == int(guild['id']):
+                    guild['premium'] = bool(db_guild['premium'])
+                
+            guild['invited'] = int(guild['id']) in guild_ids
             admin_guilds.append(guild)
 
     # Sorting guilds based on invited property
