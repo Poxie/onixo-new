@@ -6,6 +6,7 @@ import { MenuProvider } from '@/contexts/menu'
 import { ModalProvider } from '@/contexts/modal'
 import { ToastProvider } from '@/contexts/toast'
 import { TooltipProvider } from '@/contexts/tooltip'
+import { WebsocketProvider } from '@/contexts/websocket'
 import { store } from '@/redux/store'
 import '@/styles/globals.css'
 import { NextPage } from 'next'
@@ -39,13 +40,15 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
           <AuthProvider>
             <TooltipProvider>
               <ConfimationProvider>
-                <ModalProvider>
-                  <MenuProvider>
-                    {!isDashboard && <Navbar />}
-                    {getLayout(<Component {...pageProps} />)}
-                    {!isDashboard && <Footer />}
-                  </MenuProvider>
-                </ModalProvider>
+                <WebsocketProvider>
+                  <ModalProvider>
+                    <MenuProvider>
+                      {!isDashboard && <Navbar />}
+                      {getLayout(<Component {...pageProps} />)}
+                      {!isDashboard && <Footer />}
+                    </MenuProvider>
+                  </ModalProvider>
+                </WebsocketProvider>
               </ConfimationProvider>
             </TooltipProvider>
           </AuthProvider>

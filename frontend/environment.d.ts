@@ -7,6 +7,8 @@ declare global {
             NEXT_PUBLIC_CLIENT_ID: string;
             NEXT_PUBLIC_REDIRECT_URI: string;
             NEXT_PUBLIC_CHARGEBEE_SITE: string;
+            NEXT_PUBLIC_SUPPORT_SERVER: string;
+            NEXT_PUBLIC_WEBSOCKET_ORIGIN: string;
         }
     }
 }
