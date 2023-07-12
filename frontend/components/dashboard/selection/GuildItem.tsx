@@ -14,7 +14,7 @@ export const GuildItem: React.FC<{
 
     const guild = useAppSelector(state => selectGuildById(state, guildId));
 
-    if(!guild || (redirect && !guild.invited)) return null;
+    if(!guild || (redirect && (!guild.invited || guild.premium))) return null;
 
     const { id, name, icon, invited } = guild;
     return(

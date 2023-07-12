@@ -13,6 +13,7 @@ export type Guild = {
     owner_id: string;
     splash?: string;
     invited: boolean;
+    premium: boolean;
 }
 export type Role = {
     id: string;
