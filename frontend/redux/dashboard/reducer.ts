@@ -1,8 +1,8 @@
 import { AnyAction } from "redux";
 import { DashboardState } from "./types";
 import { createReducer, updateItemInArray, updateObject } from "../utils";
-import { SET_ANTI_LINK, SET_GOODBYE_SETTINGS, SET_GUILDS, SET_GUILD_CHANNELS, SET_GUILD_ROLES, SET_INFRACTIONS, SET_MOD_SETTINGS, SET_WELCOME_SETTINGS, UPDATE_ANTILINK, UPDATE_GOODBYE_SETTING, UPDATE_INFRACTION, UPDATE_MOD_SETTING, UPDATE_WELCOME_SETTING, UPDATE_LOG, SET_LOGS, ADD_ACTIVITY, PREPEND_ACTIVITY } from "./constants";
-import { Infraction, ReduxLogs, ReduxAntiLink, ReduxGoodbyeSettings, ReduxModSettings, ReduxWelcomeSettings, ReduxActivity, Activity } from "@/types";
+import { SET_ANTI_LINK, SET_GOODBYE_SETTINGS, SET_GUILDS, SET_GUILD_CHANNELS, SET_GUILD_ROLES, SET_INFRACTIONS, SET_MOD_SETTINGS, SET_WELCOME_SETTINGS, UPDATE_ANTILINK, UPDATE_GOODBYE_SETTING, UPDATE_INFRACTION, UPDATE_MOD_SETTING, UPDATE_WELCOME_SETTING, UPDATE_LOG, SET_LOGS, ADD_ACTIVITY, PREPEND_ACTIVITY, UPDATE_GUILD } from "./constants";
+import { Infraction, ReduxLogs, ReduxAntiLink, ReduxGoodbyeSettings, ReduxModSettings, ReduxWelcomeSettings, ReduxActivity, Activity, Guild } from "@/types";
 
 // Reducer actions
 type ReducerAction = (state: DashboardState, action: AnyAction) => DashboardState;
@@ -10,6 +10,22 @@ type ReducerAction = (state: DashboardState, action: AnyAction) => DashboardStat
 const setGuilds: ReducerAction = (state, action) => {
     return updateObject(state, {
         guilds: action.payload
+    })
+}
+
+const updateGuild: ReducerAction = (state, action) => {
+    const { guildId, property, value }: {
+        guildId: string;
+        property: keyof Guild;
+        value: any;
+    } = action.payload;
+
+    return updateObject(state, {
+        guilds: updateItemInArray(state.guilds || [], guildId, guild => (
+            updateObject(guild, {
+                [property]: value
+            })
+        ))
     })
 }
 
@@ -304,6 +320,7 @@ export const dashboardReducer = createReducer({
     activity: [],
 }, {
     [SET_GUILDS]: setGuilds,
+    [UPDATE_GUILD]: updateGuild,
     [SET_ANTI_LINK]: setAntiLink,
     [UPDATE_ANTILINK]: updateAntilink,
     [SET_GUILD_CHANNELS]: setGuildChannels,

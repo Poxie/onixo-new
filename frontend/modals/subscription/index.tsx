@@ -12,7 +12,8 @@ const TEXT_ANIMATION_DURATION = 3;
 export const SubscriptionModal: React.FC<{
     guildId: string;
     hostedPageId: string;
-}> = ({ guildId, hostedPageId }) => {
+    onSubscriptionConfimed: () => void;
+}> = ({ guildId, hostedPageId, onSubscriptionConfimed }) => {
     const router = useRouter();
     const { socket } = useWebsocket();
 
@@ -43,6 +44,7 @@ export const SubscriptionModal: React.FC<{
         // Listening to subscription events
         socket.on('SUBSCRIPTION_ACCEPTED', () => {
             setLoading(false);
+            onSubscriptionConfimed();
         });
         socket.on('SUBSCRIPTION_DENIED', error => {
             setError(error);

@@ -1,4 +1,5 @@
 export const SET_GUILDS = 'SET_GUILDS';
+export const UPDATE_GUILD = 'UPDATE_GUILD';
 export const SET_ANTI_LINK = 'SET_ANTI_LINK';
 export const UPDATE_ANTILINK = 'UPDATE_ANTILINK';
 export const SET_GUILD_CHANNELS = 'SET_GUILD_CHANNELS';

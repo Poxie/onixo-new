@@ -1,9 +1,13 @@
 import { Channel, Guild, Infraction, ReduxLogs, ReduxAntiLink, ReduxGoodbyeSettings, ReduxModSettings, ReduxWelcomeSettings, Role, Activity } from "@/types";
-import { SET_LOGS, SET_ANTI_LINK, SET_GOODBYE_SETTINGS, SET_GUILDS, SET_GUILD_CHANNELS, SET_GUILD_ROLES, SET_INFRACTIONS, SET_MOD_SETTINGS, SET_WELCOME_SETTINGS, UPDATE_LOG, UPDATE_ANTILINK, UPDATE_GOODBYE_SETTING, UPDATE_INFRACTION, UPDATE_MOD_SETTING, UPDATE_WELCOME_SETTING, ADD_ACTIVITY, PREPEND_ACTIVITY } from "./constants";
+import { SET_LOGS, SET_ANTI_LINK, SET_GOODBYE_SETTINGS, SET_GUILDS, SET_GUILD_CHANNELS, SET_GUILD_ROLES, SET_INFRACTIONS, SET_MOD_SETTINGS, SET_WELCOME_SETTINGS, UPDATE_LOG, UPDATE_ANTILINK, UPDATE_GOODBYE_SETTING, UPDATE_INFRACTION, UPDATE_MOD_SETTING, UPDATE_WELCOME_SETTING, ADD_ACTIVITY, PREPEND_ACTIVITY, UPDATE_GUILD } from "./constants";
 
 export const setGuilds = (guilds: Guild[]) => ({
     type: SET_GUILDS,
     payload: guilds
+})
+export const updateGuild = (guildId: string, property: keyof Guild, value: any) => ({
+    type: UPDATE_GUILD,
+    payload: { guildId, property, value }
 })
 export const setAntiLink = (guildId: string, antiLink: ReduxAntiLink['antiLink']) => ({
     type: SET_ANTI_LINK,

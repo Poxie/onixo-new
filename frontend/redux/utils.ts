@@ -4,7 +4,7 @@ import { AnyAction } from "redux";
 export function updateObject<T>(oldObject: T, newObject: Partial<T>): T {
     return Object.assign({}, oldObject, newObject);
 }
-export function updateItemInArray<T>(array: (T & { id: number })[], itemId: number, updateItemCallback: (item: T) => T) {
+export function updateItemInArray<T>(array: (T & { id: string })[], itemId: string, updateItemCallback: (item: T) => T) {
     const updatedItems = array.map(item => {
         if(item.id !== itemId) return item;
 

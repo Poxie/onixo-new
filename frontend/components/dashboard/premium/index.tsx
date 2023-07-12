@@ -10,26 +10,33 @@ import { useModal } from '@/contexts/modal';
 import { useRouter } from 'next/router';
 import { SubscriptionModal } from '@/modals/subscription';
 import { useGuildId } from '@/hooks/useGuildId';
-import { useAppSelector } from '@/redux/store';
+import { useAppDispatch, useAppSelector } from '@/redux/store';
 import { selectGuildById } from '@/redux/dashboard/selectors';
 import { GuildIcon } from '@/components/guild-icon';
 import { CancelSubscriptionModal } from '@/modals/cancel-subscription';
 import { getRelativeTime } from '@/utils';
+import { updateGuild } from '@/redux/dashboard/actions';
 
 export const Premium: NextPageWithLayout = () => {
     const guildId = useGuildId();
     const { setModal } = useModal();
     const { id: hostedPageId } = useRouter().query as { id?: string };
 
+    const dispatch = useAppDispatch();
     const guild = useAppSelector(state => selectGuildById(state, guildId));
 
     useEffect(() => {
         if(!hostedPageId || !guildId) return;
 
+        const onSubscriptionConfimed = () => {
+            dispatch(updateGuild(guildId, 'premium', true));
+        }
+
         setModal(
             <SubscriptionModal 
                 guildId={guildId}
                 hostedPageId={hostedPageId}
+                onSubscriptionConfimed={onSubscriptionConfimed}
             />
         );
     }, [hostedPageId, guildId]);
