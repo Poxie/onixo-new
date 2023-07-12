@@ -3,3 +3,32 @@
     background-color: var(--background-secondary);
     border-radius: var(--border-radius-tertiary);
 }
+.icon {
+    --border-radius: var(--border-radius-tertiary) !important;
+}
+.active {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-quinary);
+    background: #8546c7;
+    background: linear-gradient(-90deg, #8546c7 0%, #b05c8c 100%);
+    border-radius: var(--border-radius-tertiary);
+    padding: var(--spacing-quinary);
+}
+.active-main {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-quinary);
+    font-size: 14px;
+}
+.cancel-button {
+    cursor: pointer;
+}
+
+@media (max-width: 500px) {
+    .active {
+        flex-direction: column;
+        align-items: unset !important;
+    }
+}

@@ -10,11 +10,16 @@ import { useModal } from '@/contexts/modal';
 import { useRouter } from 'next/router';
 import { SubscriptionModal } from '@/modals/subscription';
 import { useGuildId } from '@/hooks/useGuildId';
+import { useAppSelector } from '@/redux/store';
+import { selectGuildById } from '@/redux/dashboard/selectors';
+import { GuildIcon } from '@/components/guild-icon';
 
 export const Premium: NextPageWithLayout = () => {
     const guildId = useGuildId();
     const { setModal } = useModal();
     const { id: hostedPageId } = useRouter().query as { id?: string };
+
+    const guild = useAppSelector(state => selectGuildById(state, guildId));
 
     useEffect(() => {
         if(!hostedPageId || !guildId) return;
@@ -37,13 +42,37 @@ export const Premium: NextPageWithLayout = () => {
         <Head>
             <script src="https://js.chargebee.com/v2/chargebee.js" data-cb-site={process.env.NEXT_PUBLIC_CHARGEBEE_SITE} defer></script>
         </Head>
-        <ModuleHeader 
-            header={'Premium'}
-            subHeader={'Boost your server with Onixo premium. '}
-        />
-        <div className={styles['plans']}>
-            <PremiumPlans />
-        </div>
+        {!guild?.premium && (
+            <>
+            <ModuleHeader 
+                header={'Premium'}
+                subHeader={'Boost your server with Onixo premium. '}
+            />
+            <div className={styles['plans']}>
+                <PremiumPlans />
+            </div>
+            </>
+        )}
+        {guild?.premium && (
+            <div className={styles['active']}>
+                <div className={styles['active-main']}>
+                    <GuildIcon 
+                        guildId={guildId}
+                        icon={guild.icon}
+                        name={guild.name}
+                        className={styles['icon']}
+                    />
+                    <span>
+                        {guild.name} has premium enabled.
+                    </span>
+                </div>
+                <button 
+                    className={styles['cancel-button']}
+                >
+                    Cancel subscription
+                </button>
+            </div>
+        )}
         </>
     )
 }
