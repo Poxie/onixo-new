@@ -2,12 +2,12 @@
     border: 1px solid var(--background-quaternary);
     background-color: var(--background-secondary);
     border-radius: var(--border-radius-tertiary);
-    padding: var(--spacing-quaternary);
+    padding: var(--spacing-tertiary);
     margin: var(--spacing-quaternary);
     margin-top: 0;
     display: grid;
     place-items: center;
-    gap: var(--spacing-tertiary);
+    gap: var(--spacing-quaternary);
 
     span {
         font-size: 14px;
