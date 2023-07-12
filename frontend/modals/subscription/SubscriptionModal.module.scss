@@ -1,0 +1,30 @@
+.content {
+    border: 1px solid var(--background-quaternary);
+    background-color: var(--background-secondary);
+    border-radius: var(--border-radius-tertiary);
+    padding: var(--spacing-quaternary);
+    margin: var(--spacing-quaternary);
+    margin-top: 0;
+    display: grid;
+    place-items: center;
+    gap: var(--spacing-tertiary);
+
+    span {
+        font-size: 14px;
+        color: var(--text-secondary);
+    }
+}
+.header + span {
+    margin-bottom: 0 !important;
+}
+.info {
+    padding: var(--spacing-quaternary);
+    display: block;
+    padding-top: 0;
+    font-size: 11px;
+    color: var(--text-secondary);
+
+    a:hover {
+        color: var(--text-primary);
+    }
+}
