@@ -150,3 +150,10 @@ export type ReduxActivity = {
     guildId: string;
     activity: Activity[];
 }
+
+export type HostedPage = {
+    created_at: number;
+    id: string;
+    state: string;
+    url: string;
+}
