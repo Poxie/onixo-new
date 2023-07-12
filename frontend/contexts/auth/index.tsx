@@ -9,6 +9,7 @@ export type AuthState = {
     get: <T>(query: string, endpoint?: 'discord' | 'backend') => Promise<T>;
     post: <T>(query: string, body?: Object) => Promise<T>;
     patch: <T>(query: string, body?: Object) => Promise<T>;
+    destroy: <T>(query: string, body?: Object) => Promise<T>;
 }
 
 const AuthContext = React.createContext({} as AuthState);
@@ -93,6 +94,35 @@ export const AuthProvider: React.FC<{
         .then((data: T) => data)
     }, [token]);
 
+    const destroy = useCallback(async function<T>(query: string, body?: Object, endpoint: 'discord' | 'backend'='discord') {
+        // If body is provided, create a form data
+        const formData = new FormData();
+        Object.entries(body || {}).forEach(([key, value]) => {
+            if(Array.isArray(value)) {
+                if(value[0] instanceof File) {
+                    value.forEach(v => formData.append(key, v));
+                } else {
+                    formData.append(key, JSON.stringify(value));
+                }
+                return;
+            }
+            formData.append(key, value);
+        })
+
+        return fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}${query}`, {
+            method: 'DELETE',
+            body: formData,
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(async res => {
+            if(!res.ok) throw new Error((await res.json()).message);
+            return res.json();
+        })
+        .then((data: T) => data)
+    }, [token]);
+
     useEffect(() => {
         const token = localStorage.getItem('access_token');
         if(!token) return setLoading(false);
@@ -136,7 +166,8 @@ export const AuthProvider: React.FC<{
         loading,
         get,
         post,
-        patch
+        patch,
+        destroy
     }
     return(
         <AuthContext.Provider value={value}>
