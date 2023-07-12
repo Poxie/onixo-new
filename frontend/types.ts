@@ -14,6 +14,7 @@ export type Guild = {
     splash?: string;
     invited: boolean;
     premium: boolean;
+    premium_ends_at?: number;
 }
 export type Role = {
     id: string;

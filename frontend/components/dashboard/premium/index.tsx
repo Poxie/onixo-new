@@ -13,6 +13,8 @@ import { useGuildId } from '@/hooks/useGuildId';
 import { useAppSelector } from '@/redux/store';
 import { selectGuildById } from '@/redux/dashboard/selectors';
 import { GuildIcon } from '@/components/guild-icon';
+import { CancelSubscriptionModal } from '@/modals/cancel-subscription';
+import { getRelativeTime } from '@/utils';
 
 export const Premium: NextPageWithLayout = () => {
     const guildId = useGuildId();
@@ -36,6 +38,8 @@ export const Premium: NextPageWithLayout = () => {
     useEffect(() => {
         (window as any).Chargebee?.registerAgain();
     }, []);
+
+    const cancelSubscription = () => setModal(<CancelSubscriptionModal />);
 
     return(
         <>
@@ -66,11 +70,21 @@ export const Premium: NextPageWithLayout = () => {
                         {guild.name} has premium enabled.
                     </span>
                 </div>
-                <button 
-                    className={styles['cancel-button']}
-                >
-                    Cancel subscription
-                </button>
+                {!guild.premium_ends_at && (
+                    <button 
+                        className={styles['cancel-button']}
+                        onClick={cancelSubscription}
+                    >
+                        Cancel subscription
+                    </button>
+                )}
+                {guild.premium_ends_at && (
+                    <span className={styles['ends-at']}>
+                        Ends on
+                        {' '}
+                        {getRelativeTime(guild.premium_ends_at).readableDate.split(' ')[0]}
+                    </span>
+                )}
             </div>
         )}
         </>
