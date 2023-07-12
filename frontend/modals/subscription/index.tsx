@@ -7,6 +7,8 @@ import { AnimatePresence, Variants, motion } from 'framer-motion';
 import { useAppSelector } from '@/redux/store';
 import { selectGuildById } from '@/redux/dashboard/selectors';
 import { useRouter } from 'next/router';
+import Button from '@/components/button';
+import { useModal } from '@/contexts/modal';
 
 const TEXT_ANIMATION_DURATION = 3;
 export const SubscriptionModal: React.FC<{
@@ -15,6 +17,7 @@ export const SubscriptionModal: React.FC<{
     onSubscriptionConfimed: () => void;
 }> = ({ guildId, hostedPageId, onSubscriptionConfimed }) => {
     const router = useRouter();
+    const { close } = useModal();
     const { socket } = useWebsocket();
 
     const guild = useAppSelector(state => selectGuildById(state, guildId));
@@ -115,7 +118,7 @@ export const SubscriptionModal: React.FC<{
             </AnimatePresence>
         </motion.div>
         <span className={styles['info']}>
-            If you for some reason are not redirected, please reach out through our
+            If your premium for some reason is not activated, please reach out through our
             {' '}
             <a 
                 href={process.env.NEXT_PUBLIC_SUPPORT_SERVER}
@@ -125,6 +128,15 @@ export const SubscriptionModal: React.FC<{
             </a>
             .
         </span>
+        {!loading && (
+            <Button 
+                type={'tertiary'}
+                className={styles['close-button']}
+                onClick={close}
+            >
+                Close
+            </Button>
+        )}
         </>
     )
 }
