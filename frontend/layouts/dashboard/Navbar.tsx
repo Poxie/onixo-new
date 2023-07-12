@@ -8,6 +8,8 @@ import { useRef } from 'react';
 import { useNavbarMenu } from '@/hooks/useNavbarMenu';
 import Button from '@/components/button';
 import { useGuildId } from '@/hooks/useGuildId';
+import { useAppSelector } from '@/redux/store';
+import { selectGuildById } from '@/redux/dashboard/selectors';
 
 export const Navbar = () => {
     const guildId = useGuildId();
@@ -15,6 +17,8 @@ export const Navbar = () => {
 
     const ref = useRef<HTMLButtonElement>(null);
     const { show: showMenu } = useNavbarMenu(ref);
+
+    const guild = useAppSelector(state => selectGuildById(state, guildId));
     
     return(
         <div className={styles['navbar']}>
@@ -26,12 +30,14 @@ export const Navbar = () => {
             </Link>
             {user && (
                 <div className={styles['options']}>
-                    <Button 
-                        className={styles['button']}
-                        href={`/dashboard/${guildId}/premium`}
-                    >
-                        Get Premium
-                    </Button>
+                    {!guild?.premium && (
+                        <Button 
+                            className={styles['button']}
+                            href={`/dashboard/${guildId}/premium`}
+                        >
+                            Get Premium
+                        </Button>
+                    )}
                     <button 
                         className={styles['navbar-user']}
                         onClick={showMenu}
