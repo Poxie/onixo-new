@@ -3,14 +3,25 @@ import { ModalFooter } from "../ModalFooter"
 import { ModalHeader } from "../ModalHeader"
 import { useAuth } from "@/contexts/auth";
 import { useGuildId } from "@/hooks/useGuildId";
+import { useState } from "react";
 
 export const CancelSubscriptionModal = () => {
     const guildId = useGuildId();
     const { destroy } = useAuth();
     const { close } = useModal();
 
-    const cancelSubscription = async () => {
-        const res = await destroy(`/guilds/${guildId}/subscriptions`);
+    const [loading, setLoading] = useState(false);
+
+    const cancelSubscription = () => {
+        setLoading(true);
+
+        destroy<{ premium_ends_at: number }>(`/guilds/${guildId}/subscriptions`)
+            .then(({ premium_ends_at }) => {
+                close();
+            })
+            .finally(() => {
+                setLoading(false);
+            })
     }
     
     return(
@@ -25,6 +36,8 @@ export const CancelSubscriptionModal = () => {
             onConfirm={cancelSubscription}
             cancelLabel={'Close'}
             confirmLabel={'Confirm Cancellation'}
+            confirmLoadingLabel={'Canceling...'}
+            confirmLoading={loading}
         />
         </>
     )
