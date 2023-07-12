@@ -55,7 +55,7 @@ def cancel_subscription(guild_id: int):
     premium_ends_at = result.subscription.current_term_end
 
     settings = database['settings']
-    settings.update_one({ '_id': guild_id, 'canceled': 0 }, {
+    settings.update_one({ '_id': guild_id }, {
         '$set': {
             'premium_ends_at': premium_ends_at
         }
