@@ -2,7 +2,6 @@ import { CheckmarkIcon } from '@/assets/icons/CheckmarkIcon';
 import styles from './Premium.module.scss';
 import plans from '@/assets/json/PremiumPlans.json';
 import Button from '../button';
-import { useRouter } from 'next/router';
 import { useGuildId } from '@/hooks/useGuildId';
 import { useAuth } from '@/contexts/auth';
 import { HostedPage } from '@/types';
@@ -10,7 +9,6 @@ import { HostedPage } from '@/types';
 export const PremiumPlan: React.FC<typeof plans[0]> = ({ id, type, header, description, price, priceDescription, sale, isPopular, perks }) => {
     const { post } = useAuth();
     const guildId = useGuildId();
-    const pathname = useRouter().pathname;
 
     const fetchCheckoutUrl = async () => {
         const chargebeeInstance = (window as any).Chargebee.getInstance();
@@ -60,7 +58,7 @@ export const PremiumPlan: React.FC<typeof plans[0]> = ({ id, type, header, descr
                     </div>
                 ))}
             </div>
-            {pathname.includes('guildId') ? (
+            {guildId ? (
                 <Button 
                     className={styles['button']}
                     type={'tertiary'}
