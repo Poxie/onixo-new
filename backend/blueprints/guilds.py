@@ -1,7 +1,7 @@
 import os, requests, json, base64
 from database import database
 from operator import itemgetter
-from utils.constants import GET_TOP_ROLE, ALLOWED_ANTILINK_SITES, ALLOWED_LOGGING_ACTIONS, ALLOWED_MOD_SETTINGS_PROPERTIES, SEND_EMBED, ALLOWED_WELCOME_PROPERTIES, ALLOWED_GOODBYE_PROPERTIES, AUTO_ROLE_PROPERTIES, GET_INFRACTIONS, ALLOWED_INFRACTION_PROPERTIES
+from utils.constants import GET_TOP_ROLE, GET_ROLES, ALLOWED_ANTILINK_SITES, ALLOWED_LOGGING_ACTIONS, ALLOWED_MOD_SETTINGS_PROPERTIES, SEND_EMBED, ALLOWED_WELCOME_PROPERTIES, ALLOWED_GOODBYE_PROPERTIES, AUTO_ROLE_PROPERTIES, GET_INFRACTIONS, ALLOWED_INFRACTION_PROPERTIES
 from flask import Blueprint, request, jsonify, abort
 from utils.auth import get_access_token, check_admin
 from utils.websockets import send_message
@@ -61,9 +61,12 @@ def get_guild_channels(guild_id: int, user_id: int):
 @guilds.get('/guilds/<int:guild_id>/roles')
 @check_admin
 def get_guild_roles(guild_id: int, user_id: int):
-    headers = {'Authorization': f'Bot {os.getenv("BOT_TOKEN")}'}
-    r = requests.get(f'{API_ENDPOINT}/guilds/{guild_id}/roles', headers=headers)
-    roles = r.json()
+    roles = send_message(
+        type=GET_ROLES, 
+        payload=(dict(
+            guild_id=guild_id
+        ))
+    )
 
     # Checking what is the highest role for the bot
     highest_role = send_message(GET_TOP_ROLE, { 'guild_id': guild_id })
