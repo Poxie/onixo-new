@@ -13,7 +13,7 @@ export const SelectedRole = forwardRef<HTMLButtonElement, Props>(({ id, guildId,
 
     return(
         <button
-            style={{ '--dot-color': role?.color ? `#${role.color.toString(16)}` : 'var(--text-primary)' } as CSSProperties}
+            style={{ '--dot-color': role?.color ? role.color : 'var(--text-primary)' } as CSSProperties}
             onClick={onClick} 
             ref={ref}
         >

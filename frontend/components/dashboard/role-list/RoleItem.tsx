@@ -12,7 +12,7 @@ export const RoleItem: React.FC<Role & {
         <li>
             <button 
                 onClick={e => onClick(id, e)}
-                style={{ '--dot-color': role?.color ? `#${role.color.toString(16)}` : 'var(--text-primary)' } as CSSProperties}
+                style={{ '--dot-color': role?.color ? role.color : 'var(--text-primary)' } as CSSProperties}
             >
                 {role?.name}
             </button>
