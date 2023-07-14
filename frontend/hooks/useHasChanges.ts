@@ -1,5 +1,6 @@
 import { useAuth } from "@/contexts/auth";
 import { useConfirmation } from "@/contexts/confirmation"
+import { useToast } from "@/contexts/toast";
 import { prependActivity } from "@/redux/dashboard/actions";
 import { selectGuildChannels, selectGuildRoles } from "@/redux/dashboard/selectors";
 import { AppDispatch, useAppDispatch, useAppSelector } from "@/redux/store";
@@ -35,6 +36,7 @@ type Props<T> = {
 export const useHasChanges = <T>({ id, guildId, endpoint, onConfirm, dispatchAction, updateAction, selector }: Props<T>) => {
     const { addChanges, removeChanges, setIsLoading, reset } = useConfirmation();
     const { get, patch, token, user } = useAuth();
+    const { setToast } = useToast();
     const dispatch = useAppDispatch();
 
     const roles = useAppSelector(state => selectGuildRoles(state, guildId));
@@ -96,6 +98,12 @@ export const useHasChanges = <T>({ id, guildId, endpoint, onConfirm, dispatchAct
                 prevSettings.current = structuredClone(tempSettings.current);
                 if(onConfirm) onConfirm(data);
                 reset();
+            })
+            .catch(() => {
+                setToast({
+                    text: 'Something went wrong.',
+                    type: 'danger'
+                })
             })
     }, [patch, prevSettings, tempSettings, endpoint]);
     const revertChanges = useCallback(() => {
