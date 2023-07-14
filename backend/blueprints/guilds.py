@@ -1,7 +1,7 @@
 import os, requests, json, base64
 from database import database
 from operator import itemgetter
-from utils.constants import GET_TOP_ROLE, GET_ROLES, ALLOWED_ANTILINK_SITES, ALLOWED_LOGGING_ACTIONS, ALLOWED_MOD_SETTINGS_PROPERTIES, SEND_EMBED, ALLOWED_WELCOME_PROPERTIES, ALLOWED_GOODBYE_PROPERTIES, AUTO_ROLE_PROPERTIES, GET_INFRACTIONS, ALLOWED_INFRACTION_PROPERTIES
+from utils.constants import GET_TOP_ROLE, GET_ROLES, GET_CHANNELS, ALLOWED_ANTILINK_SITES, ALLOWED_LOGGING_ACTIONS, ALLOWED_MOD_SETTINGS_PROPERTIES, SEND_EMBED, ALLOWED_WELCOME_PROPERTIES, ALLOWED_GOODBYE_PROPERTIES, AUTO_ROLE_PROPERTIES, GET_INFRACTIONS, ALLOWED_INFRACTION_PROPERTIES
 from flask import Blueprint, request, jsonify, abort
 from utils.auth import get_access_token, check_admin
 from utils.websockets import send_message
@@ -50,9 +50,12 @@ def get_bot_guilds():
 @guilds.get('/guilds/<int:guild_id>/channels')
 @check_admin
 def get_guild_channels(guild_id: int, user_id: int):
-    headers = {'Authorization': f'Bot {os.getenv("BOT_TOKEN")}'}
-    r = requests.get(f'{API_ENDPOINT}/guilds/{guild_id}/channels', headers=headers)
-    channels = r.json()
+    channels = send_message(
+        type=GET_CHANNELS, 
+        payload=(dict(
+            guild_id=guild_id
+        ))
+    )
 
     text_channels = [channel for channel in channels if channel['type'] == 0]
 
