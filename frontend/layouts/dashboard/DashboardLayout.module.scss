@@ -267,9 +267,6 @@
     }
 }
 @media (max-width: 500px) {
-    .navbar {
-        position: unset !important;
-    }
     .sidebar {
         --sidebar-height: 100px;
         height: var(--sidebar-height);
