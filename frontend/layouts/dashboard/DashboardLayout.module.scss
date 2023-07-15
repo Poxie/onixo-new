@@ -13,6 +13,10 @@
     width: 80px;
     position: relative;
     display: block;
+
+    svg {
+        display: block;
+    }
 }
 .options {
     display: flex;
@@ -267,6 +271,7 @@
         position: unset !important;
     }
     .sidebar {
+        --sidebar-height: 100px;
         height: var(--sidebar-height);
         top: calc(100dvh - var(--sidebar-height));
         padding: var(--spacing-quinary);
@@ -291,11 +296,6 @@
                 opacity: 1 !important;
             }
         }
-        &>ul {
-            display: flex;
-            padding: 0 !important;
-            gap: var(--spacing-quinary);
-        }
     }
     .dd-selected {
         display: none;
@@ -319,13 +319,73 @@
     .dropdown {
         padding-bottom: var(--spacing-quinary);
     }
-    .tabs {
+    .groups {
         display: flex;
-        gap: var(--spacing-quinary);
-        padding-top: var(--spacing-quinary);
+        flex-direction: column;
+        padding: 0 var(--spacing-quaternary);
 
-        &:before {
-            display: none;
+        .tabs {
+            &:before {
+                display: block !important;
+                content: attr(data-group-title) !important;
+            }
+        }
+        .tab {
+            --tab-width: 100% !important;
+
+            span {
+                opacity: 1 !important;
+            }
+        }
+    }
+
+    .navbar-main {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-quinary);
+
+        button svg {
+            width: 28px;
+        }
+        .navbar-icon {
+            width: 70px;
+        }
+    }
+    .sidebar-collapse {
+        padding-top: 0;
+        position: fixed;
+        z-index: 1;
+        left: -100%;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        transition: left .3s;
+        background-color: var(--background-tertiary);
+
+        &.open {
+            left: 0;
+        }
+    }
+    .mobile-header {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid var(--background-quaternary);
+        margin-bottom: var(--spacing-quaternary) !important;
+        padding: var(--spacing-tertiary) !important;
+        gap: var(--spacing-quinary);
+
+        a svg {
+            width: 70px;
+            display: block;
+        }
+    }
+    .ham-button {
+        cursor: pointer;
+        
+        svg {
+            width: 28px;
+            display: block;
         }
     }
 }

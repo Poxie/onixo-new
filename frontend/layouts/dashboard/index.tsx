@@ -1,5 +1,5 @@
 import styles from './DashboardLayout.module.scss';
-import { ReactElement, useEffect } from "react"
+import { ReactElement, useEffect, useState } from "react"
 import { Sidebar } from './Sidebar';
 import { Navbar } from './Navbar';
 import { useGuildId } from '@/hooks/useGuildId';
@@ -18,7 +18,9 @@ export const DashboardLayout: React.FC<{
     const { get, token } = useAuth();
     
     const dispatch = useAppDispatch();
-    const fetched = useAppSelector(state => selectChannelsFetched(state, guildId))
+    const fetched = useAppSelector(state => selectChannelsFetched(state, guildId));
+
+    const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
     // Fetching guild roles/channels on mount
     useEffect(() => {
@@ -45,9 +47,14 @@ export const DashboardLayout: React.FC<{
         </Head>
 
         <div className={styles['dashboard']}>
-            <Navbar />
+            <Navbar 
+                setOpen={setMobileSidebarOpen}
+            />
             <div className={styles['main']}>
-                <Sidebar />
+                <Sidebar 
+                    open={mobileSidebarOpen}
+                    setOpen={setMobileSidebarOpen}
+                />
                 <main className={styles['dash-content']}>
                     {children}
                 </main>

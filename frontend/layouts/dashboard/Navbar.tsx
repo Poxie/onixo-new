@@ -10,8 +10,13 @@ import Button from '@/components/button';
 import { useGuildId } from '@/hooks/useGuildId';
 import { useAppSelector } from '@/redux/store';
 import { selectGuildById } from '@/redux/dashboard/selectors';
+import { useScreenSizes } from '@/hooks/useScreenSizes';
+import { HamIcon } from '@/assets/icons/HamIcon';
 
-export const Navbar = () => {
+export const Navbar: React.FC<{
+    setOpen: (state: boolean) => void;
+}> = ({ setOpen }) => {
+    const screenSize = useScreenSizes();
     const guildId = useGuildId();
     const { user } = useAuth();
 
@@ -22,12 +27,22 @@ export const Navbar = () => {
     
     return(
         <div className={styles['navbar']}>
-            <Link 
-                className={styles['navbar-icon']}
-                href={'/'}
-            >
-                <OnixoBannerIcon />
-            </Link>
+            <div className={styles['navbar-main']}>
+                {screenSize === 'phone' && (
+                    <button 
+                        className={styles['ham-button']}
+                        onClick={() => setOpen(true)}
+                    >
+                        <HamIcon />
+                    </button>
+                )}
+                <Link 
+                    className={styles['navbar-icon']}
+                    href={'/'}
+                >
+                    <OnixoBannerIcon />
+                </Link>
+            </div>
             {user && (
                 <div className={styles['options']}>
                     {!guild?.premium && (
