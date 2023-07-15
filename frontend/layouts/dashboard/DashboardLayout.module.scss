@@ -267,6 +267,9 @@
     }
 }
 @media (max-width: 500px) {
+    .navbar {
+        position: unset !important;
+    }
     .sidebar {
         --sidebar-height: 100px;
         height: var(--sidebar-height);
@@ -351,7 +354,7 @@
     .sidebar-collapse {
         padding-top: 0;
         position: fixed;
-        z-index: 1;
+        z-index: 14;
         left: -100%;
         top: 0;
         width: 100%;
