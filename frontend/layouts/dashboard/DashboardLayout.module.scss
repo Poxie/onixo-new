@@ -56,8 +56,9 @@
     height: calc(100vh - var(--navbar-height));
     width: var(--sidebar-width);
     padding: var(--spacing-tertiary);
-    position: sticky;
     top: var(--navbar-height);
+    position: sticky;
+    z-index: 1414;
 
     &>* {
         padding: var(--spacing-tertiary) 0;
@@ -225,7 +226,6 @@
         --tab-width: 40px;
     }
     .sidebar {
-        z-index: 14;
         position: fixed;
         transition: width .3s;
         white-space: nowrap;
@@ -268,7 +268,7 @@
 }
 @media (max-width: 500px) {
     .navbar {
-        position: unset !important;
+        box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 2px 0px;
     }
     .sidebar {
         --sidebar-height: 100px;
