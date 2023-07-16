@@ -77,7 +77,7 @@ def get_guild_roles(guild_id: int, user_id: int):
     # Preventing roles of highest role or above to be displayed
     filtered_roles = []
     for role in roles:
-        if role['position'] < highest_role['position'] and not role['managed']:
+        if role['position'] < highest_role['position'] and not role['managed'] and role['name'] != '@everyone':
             filtered_roles.append(role)
 
     # Sorting based on position
