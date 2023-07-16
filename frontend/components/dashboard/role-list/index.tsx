@@ -1,6 +1,5 @@
 import styles from './RoleList.module.scss'
 import { useGuildId } from "@/hooks/useGuildId"
-import { selectGuildRoles } from "@/redux/dashboard/selectors";
 import { useAppSelector } from "@/redux/store";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { ArrowIcon } from '@/assets/icons/ArrowIcon';
@@ -8,6 +7,7 @@ import { useModuleSection } from '../module-section';
 import { RoleItem } from './RoleItem';
 import { SelectedRole } from './SeletedRole';
 import { Input } from '@/components/input';
+import { selectGuildRoles } from '@/redux/slices/dashboard';
 
 export const RoleList: React.FC<{
     onChange: (itemIds: string[]) => void;

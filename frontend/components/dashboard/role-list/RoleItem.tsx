@@ -1,4 +1,4 @@
-import { selectRoleById } from "@/redux/dashboard/selectors";
+import { selectRoleById } from "@/redux/slices/dashboard";
 import { useAppSelector } from "@/redux/store";
 import { Role } from "@/types";
 import { CSSProperties } from "react";

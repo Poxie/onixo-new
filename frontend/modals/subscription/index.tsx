@@ -5,10 +5,10 @@ import { useEffect, useRef, useState } from 'react';
 import { CheckmarkSpinner } from '@/components/checkmark-spinner';
 import { AnimatePresence, Variants, motion } from 'framer-motion';
 import { useAppSelector } from '@/redux/store';
-import { selectGuildById } from '@/redux/dashboard/selectors';
 import { useRouter } from 'next/router';
 import Button from '@/components/button';
 import { useModal } from '@/contexts/modal';
+import { selectGuildById } from '@/redux/slices/dashboard';
 
 const TEXT_ANIMATION_DURATION = 3;
 export const SubscriptionModal: React.FC<{

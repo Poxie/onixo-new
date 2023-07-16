@@ -3,15 +3,14 @@ import { ModuleSubheader } from '../../module-subheader';
 import styles from './ModSettings.module.scss';
 import { SettingsItem } from './SettingsItem';
 import { useGuildId } from '@/hooks/useGuildId';
-import { selectGuildModSettings, selectModSettingsFetched } from '@/redux/dashboard/selectors';
 import { ReduxModSettings } from '@/types';
-import { setModSettings, updateModSetting } from '@/redux/dashboard/actions';
 import { DashAuthLayout } from '@/layouts/dash-auth';
 import { DashboardLayout } from '@/layouts/dashboard';
 import { ModerationLayout } from '@/layouts/moderation';
 import { NextPageWithLayout } from '@/pages/_app';
 import { useHasChanges } from '@/hooks/useHasChanges';
 import { useAppSelector } from '@/redux/store';
+import { selectGuildModSettings, setModSettings, updateModSetting } from '@/redux/slices/dashboard';
 
 export const ModSettings: NextPageWithLayout = () => {
     const guildId = useGuildId();

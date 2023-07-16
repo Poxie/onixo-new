@@ -4,7 +4,7 @@ import { Embed as EmbedType } from '@/types';
 import { useAuth } from '@/contexts/auth';
 import { useGuildId } from '@/hooks/useGuildId';
 import { useAppSelector } from '@/redux/store';
-import { selectGuildById } from '@/redux/dashboard/selectors';
+import { selectGuildById } from '@/redux/slices/dashboard';
 
 export const Embed: React.FC<Partial<EmbedType>> = ({ color, thumbnail, image, fields, author, footer, url, title, description }) => {
     const { user } = useAuth();

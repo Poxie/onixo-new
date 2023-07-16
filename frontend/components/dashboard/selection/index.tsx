@@ -2,12 +2,12 @@ import styles from './Selection.module.scss';
 import { GuildItem } from './GuildItem';
 import { GuildItemSkeleton } from './GuildItemSkeleton';
 import { useAppSelector } from '@/redux/store';
-import { selectGuildIds } from '@/redux/dashboard/selectors';
 import { NextPageWithLayout } from '@/pages/_app';
 import { DashAuthLayout } from '@/layouts/dash-auth';
 import Head from 'next/head';
 import { useAuth } from '@/contexts/auth';
 import { getLoginLink } from '@/utils/getLinks';
+import { selectGuildIds } from '@/redux/slices/dashboard';
 
 const PLACEHOLDER_COUNT = 8;
 export const Selection: NextPageWithLayout = () => {

@@ -1,8 +1,7 @@
 import { useAuth } from "@/contexts/auth";
 import { useConfirmation } from "@/contexts/confirmation"
 import { useToast } from "@/contexts/toast";
-import { prependActivity } from "@/redux/dashboard/actions";
-import { selectGuildChannels, selectGuildRoles } from "@/redux/dashboard/selectors";
+import { prependActivity, selectGuildChannels, selectGuildRoles } from "@/redux/slices/dashboard";
 import { AppDispatch, useAppDispatch, useAppSelector } from "@/redux/store";
 import { Activity } from "@/types";
 import { getUserAvatar } from "@/utils/getImages";
@@ -28,8 +27,15 @@ type Props<T> = {
     id: string;
     guildId: string;
     endpoint: string;
-    dispatchAction: (guildId: string, settings: T) => AnyAction;
-    updateAction: (guildId: string, property: keyof T, value: any) => AnyAction;
+    dispatchAction: ({ guildId, settings }: { 
+        guildId: string, 
+        settings: T 
+    }) => AnyAction;
+    updateAction: ({ guildId, property, value }: {
+        guildId: string;
+        property: keyof T;
+        value: any;
+    }) => AnyAction;
     selector: any;
     onConfirm?: (data: T) => void;
 }
@@ -53,7 +59,7 @@ export const useHasChanges = <T>({ id, guildId, endpoint, onConfirm, dispatchAct
             .then(data => {
                 prevSettings.current = structuredClone(data);
                 tempSettings.current = structuredClone(data);
-                dispatch(dispatchAction(guildId, data));
+                dispatch(dispatchAction({ guildId, settings: data }));
             })
     }, [get, token, endpoint, guildId, settings]);
 
@@ -77,7 +83,7 @@ export const useHasChanges = <T>({ id, guildId, endpoint, onConfirm, dispatchAct
                         }
                         return {
                             property: key,
-                            new_value: prevSettings.current[key as keyof T],
+                            new_value: tempSettings.current[key as keyof T],
                             previous_value: prevSettings.current[key as keyof T],
                         } as Activity['changes'][0];
                     })
@@ -93,7 +99,7 @@ export const useHasChanges = <T>({ id, guildId, endpoint, onConfirm, dispatchAct
                     action_id: ['action-logs', 'event-logs'].includes(id) ? 'logging' : id as Activity['action_id'],
                     changes: getChanges()
                 }
-                dispatch(prependActivity(guildId, activity));
+                dispatch(prependActivity({ guildId, activity }));
 
                 prevSettings.current = structuredClone(tempSettings.current);
                 if(onConfirm) onConfirm(data);
@@ -110,7 +116,7 @@ export const useHasChanges = <T>({ id, guildId, endpoint, onConfirm, dispatchAct
         if(!tempSettings.current || !prevSettings.current) return
 
         tempSettings.current = structuredClone(prevSettings.current);
-        dispatch(dispatchAction(guildId, structuredClone(prevSettings.current)));
+        dispatch(dispatchAction({ guildId, settings: structuredClone(prevSettings.current) }));
         reset();
     }, [prevSettings, tempSettings, guildId]);
 
@@ -118,7 +124,7 @@ export const useHasChanges = <T>({ id, guildId, endpoint, onConfirm, dispatchAct
         if(!tempSettings?.current || !prevSettings?.current) return
 
         tempSettings.current[property] = value;
-        dispatch(updateAction(guildId, property, value));
+        dispatch(updateAction({ guildId, property, value }));
 
         // Checking if changes have been made
         const properties = getPropertiesToUpdate(tempSettings, prevSettings);

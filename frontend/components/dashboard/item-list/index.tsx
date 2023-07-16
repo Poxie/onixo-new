@@ -1,6 +1,5 @@
 import styles from './ItemList.module.scss'
 import { useGuildId } from "@/hooks/useGuildId"
-import { selectGuildChannels } from "@/redux/dashboard/selectors";
 import { useAppSelector } from "@/redux/store";
 import { ListItem } from "./ListItem";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
@@ -8,6 +7,7 @@ import { SelectedItem } from './SelectedItem';
 import { ArrowIcon } from '@/assets/icons/ArrowIcon';
 import { useModuleSection } from '../module-section';
 import { Input } from '@/components/input';
+import { selectGuildChannels } from '@/redux/slices/dashboard';
 
 export const ItemList: React.FC<{
     onChange?: (itemId: string | null) => void;

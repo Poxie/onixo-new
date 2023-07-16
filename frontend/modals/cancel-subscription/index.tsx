@@ -4,8 +4,8 @@ import { ModalHeader } from "../ModalHeader"
 import { useAuth } from "@/contexts/auth";
 import { useGuildId } from "@/hooks/useGuildId";
 import { useState } from "react";
-import { updateGuild } from "@/redux/dashboard/actions";
 import { useAppDispatch } from "@/redux/store";
+import { updateGuild } from "@/redux/slices/dashboard";
 
 export const CancelSubscriptionModal = () => {
     const guildId = useGuildId();
@@ -21,7 +21,7 @@ export const CancelSubscriptionModal = () => {
 
         destroy<{ premium_ends_at: number }>(`/guilds/${guildId}/subscriptions`)
             .then(({ premium_ends_at }) => {
-                dispatch(updateGuild(guildId, 'premium_ends_at', premium_ends_at));
+                dispatch(updateGuild({ guildId, property: 'premium_ends_at', value: premium_ends_at }));
                 close();
             })
             .finally(() => {

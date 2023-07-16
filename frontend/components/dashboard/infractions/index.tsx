@@ -10,9 +10,8 @@ import { Infraction as InfractionType } from "@/types";
 import { Infraction } from './Infraction';
 import { Input } from '@/components/input';
 import { useAppDispatch, useAppSelector } from '@/redux/store';
-import { selectInfractions } from '@/redux/dashboard/selectors';
-import { setInfractions } from '@/redux/dashboard/actions';
 import { Dropdown } from '@/components/dropdown';
+import { selectInfractions, setInfractions } from '@/redux/slices/dashboard';
 
 const ACTION_FILTERS = [
     { text: 'Ban', id: 'ban' },
@@ -39,7 +38,7 @@ export const Infractions: NextPageWithLayout = () => {
 
         get<InfractionType[]>(`/guilds/${guildId}/infractions`, 'backend')
             .then(infractions => {
-                dispatch(setInfractions(guildId, infractions));
+                dispatch(setInfractions({ guildId, infractions }));
             });
     }, [token, get, guildId, infractions?.length]);
     

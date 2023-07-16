@@ -13,7 +13,6 @@ import { useAuth } from '@/contexts/auth';
 import { useGuildId } from '@/hooks/useGuildId';
 import Image from 'next/image';
 import { useAppSelector } from '@/redux/store';
-import { selectChannelById } from '@/redux/dashboard/selectors';
 import { Checkbox } from '@/components/checkbox';
 import { Embed as EmbedType } from '@/types';
 import { BinIcon } from '@/assets/icons/BinIcon';
@@ -22,6 +21,7 @@ import { BrushIcon } from '@/assets/icons/BrushIcon';
 import { getCurrentTime } from '@/utils';
 import { MessagePreview } from '../message-preview';
 import { useToast } from '@/contexts/toast';
+import { selectChannelById } from '@/redux/slices/dashboard';
 
 const getEmptyField = () => ({
     name: '',

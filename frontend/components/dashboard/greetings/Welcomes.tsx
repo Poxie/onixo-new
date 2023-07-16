@@ -5,13 +5,12 @@ import { ModuleSection } from "../module-section"
 import { ModuleSubheader } from "../module-subheader"
 import { MessagePreview } from "../message-preview"
 import { ReduxWelcomeSettings } from "@/types"
-import { setWelcomeSettings, updateWelcomeSetting } from "@/redux/dashboard/actions"
 import { useGuildId } from "@/hooks/useGuildId"
 import { useAppSelector } from "@/redux/store"
-import { selectChannelById, selectGuildById, selectWelcomeSettings } from "@/redux/dashboard/selectors"
 import { RoleList } from '../role-list';
 import { useHasChanges } from '@/hooks/useHasChanges';
 import { useAuth } from '@/contexts/auth';
+import { selectChannelById, selectWelcomeSettings, setWelcomeSettings, updateWelcomeSetting } from '@/redux/slices/dashboard';
 
 export const Welcomes = () => {
     const guildId = useGuildId();

@@ -1,6 +1,5 @@
 import { useAuth } from "@/contexts/auth";
-import { setGuilds } from "@/redux/dashboard/actions";
-import { selectGuildIds, selectGuilds } from "@/redux/dashboard/selectors";
+import { selectGuildIds, setGuilds } from "@/redux/slices/dashboard";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { Guild } from "@/types";
 import { useRouter } from "next/router";

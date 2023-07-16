@@ -1,5 +1,5 @@
 import { CloseIcon } from "@/assets/icons/CloseIcon";
-import { selectRoleById } from "@/redux/dashboard/selectors";
+import { selectRoleById } from "@/redux/slices/dashboard";
 import { useAppSelector } from "@/redux/store";
 import { CSSProperties, forwardRef } from "react";
 

@@ -11,8 +11,7 @@ import { HandIcon } from '@/assets/icons/HandIcon';
 import { HammerIcon } from '@/assets/icons/HammerIcon';
 import { useInfiniteScrolling } from '@/hooks/useInfiniteScrolling';
 import { useAppDispatch, useAppSelector } from '@/redux/store';
-import { selectActivity } from '@/redux/dashboard/selectors';
-import { addActivity } from '@/redux/dashboard/actions';
+import { addActivity, selectActivity } from '@/redux/slices/dashboard';
 
 const getLogType = (property: keyof ReduxLogs['logChannels']) => (
     property === 'all_logs_channel' ? 'general log channel' : `${property.split('_')[0]} log channel`
@@ -98,7 +97,7 @@ export const OverviewActivity = () => {
     const ref = useRef<HTMLUListElement>(null);
 
     const onRequestFinished = (activity: Activity[]) => (
-        dispatch(addActivity(guildId, activity))
+        dispatch(addActivity({ guildId, activity }))
     )
     const { loading } = useInfiniteScrolling<Activity[]>(
         `/guilds/${guildId}/activity?start_at=${activity?.length || 0}`, 

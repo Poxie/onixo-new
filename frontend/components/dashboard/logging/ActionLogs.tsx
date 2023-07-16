@@ -4,15 +4,14 @@ import { ModuleSubsection } from '../module-subsection';
 import { ItemList } from '../item-list';
 import { useGuildId } from '@/hooks/useGuildId';
 import { useAppSelector } from '@/redux/store';
-import { setActionLogs, updateActionLog } from '@/redux/dashboard/actions';
 import { ReduxLogs } from '@/types';
-import { selectLogs } from '@/redux/dashboard/selectors';
 import { NextPageWithLayout } from '@/pages/_app';
 import { DashAuthLayout } from '@/layouts/dash-auth';
 import { DashboardLayout } from '@/layouts/dashboard';
 import { ModerationLayout } from '@/layouts/moderation';
 import { useHasChanges } from '@/hooks/useHasChanges';
 import { LogItem } from './LogItem';
+import { selectLogs, setActionLogs, updateActionLog } from '@/redux/slices/dashboard';
 
 type Action = 'all' | 'ban' | 'kick' | 'mute' | 'warn';
 const SPECIFIC_LOG_CHANNELS = ['ban', 'kick', 'mute', 'warn'].map(type => `${type}_log_channel` as keyof Omit<ReduxLogs['logChannels'], 'all_logs_channel'>);

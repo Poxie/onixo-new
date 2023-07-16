@@ -11,11 +11,10 @@ import { useRouter } from 'next/router';
 import { SubscriptionModal } from '@/modals/subscription';
 import { useGuildId } from '@/hooks/useGuildId';
 import { useAppDispatch, useAppSelector } from '@/redux/store';
-import { selectGuildById } from '@/redux/dashboard/selectors';
 import { GuildIcon } from '@/components/guild-icon';
 import { CancelSubscriptionModal } from '@/modals/cancel-subscription';
 import { getRelativeTime } from '@/utils';
-import { updateGuild } from '@/redux/dashboard/actions';
+import { selectGuildById, updateGuild } from '@/redux/slices/dashboard';
 
 export const Premium: NextPageWithLayout = () => {
     const guildId = useGuildId();
@@ -29,7 +28,7 @@ export const Premium: NextPageWithLayout = () => {
         if(!hostedPageId || !guildId) return;
 
         const onSubscriptionConfimed = () => {
-            dispatch(updateGuild(guildId, 'premium', true));
+            dispatch(updateGuild({ guildId, property: 'premium', value: true }));
         }
 
         setModal(

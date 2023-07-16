@@ -3,8 +3,7 @@ import monitorReducerEnhancer from './enhancers/monitorReducer';
 import { $CombinedState, AnyAction, combineReducers, configureStore as _configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { createWrapper, HYDRATE } from 'next-redux-wrapper';
-import { dashboardReducer } from './dashboard/reducer';
-import { DashboardState } from './dashboard/types';
+import dashboardReducer, { DashboardState } from './slices/dashboard';
 
 const combinedReducers = combineReducers({
     dashboard: dashboardReducer

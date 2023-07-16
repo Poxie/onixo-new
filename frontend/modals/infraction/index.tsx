@@ -1,7 +1,6 @@
 import styles from './InfractionModal.module.scss';
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { ModalHeader } from "../ModalHeader"
-import { selectInfractionById } from "@/redux/dashboard/selectors";
 import { ModuleSubheader } from "@/components/dashboard/module-subheader";
 import { Input } from "@/components/input";
 import { ModalFooter } from '../ModalFooter';
@@ -10,7 +9,7 @@ import { Infraction } from '@/components/dashboard/infractions/Infraction';
 import { useState } from 'react';
 import { useAuth } from '@/contexts/auth';
 import { useToast } from '@/contexts/toast';
-import { updateInfraction } from '@/redux/dashboard/actions';
+import { selectInfractionById, updateInfraction } from '@/redux/slices/dashboard';
 
 export const InfractionModal: React.FC<{
     infractionId: string;
@@ -49,7 +48,7 @@ export const InfractionModal: React.FC<{
         patch(`/guilds/${guildId}/infractions/${infraction.case_id}`, propertiesToUpdate)
             .then(() => {
                 setToast({ text: 'Successfully updated infraction.', type: 'success' });
-                dispatch(updateInfraction(guildId, tempInfraction));
+                dispatch(updateInfraction({ guildId, infraction: tempInfraction }));
             })
             .catch(() => {
                 setToast({ text: 'Something went wrong while updating infraction.', type: 'danger' });

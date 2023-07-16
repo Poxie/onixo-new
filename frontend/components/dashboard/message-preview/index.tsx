@@ -5,10 +5,10 @@ import { replaceVariables } from '@/utils/variables';
 import { useAuth } from '@/contexts/auth';
 import { useGuildId } from '@/hooks/useGuildId';
 import { useAppSelector } from '@/redux/store';
-import { selectGuildById } from '@/redux/dashboard/selectors';
 import { Embed as EmbedType, Guild, User } from '@/types';
 import { getCurrentTime } from '@/utils';
 import { Embed } from '@/components/embed';
+import { selectGuildById } from '@/redux/slices/dashboard';
 
 export const MessagePreview: React.FC<{
     channelName: string;

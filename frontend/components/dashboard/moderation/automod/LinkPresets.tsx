@@ -2,12 +2,11 @@ import { useGuildId } from '@/hooks/useGuildId';
 import { LinkPresetItem } from './LinkPresetItem';
 import styles from './Automod.module.scss';
 import { useAppDispatch, useAppSelector } from '@/redux/store';
-import { selectAntilinkById } from '@/redux/dashboard/selectors';
 import { useMemo } from 'react';
 import { LinkPresetItemSkeleton } from './LinkPresetItemSkeleton';
-import { setAntiLink, updateAntilink } from '@/redux/dashboard/actions';
 import { ReduxAntiLink } from '@/types';
 import { useHasChanges } from '@/hooks/useHasChanges';
+import { selectAntilinkById, setAntiLink, updateAntiLink } from '@/redux/slices/dashboard';
 
 const ID_TO_TEXT: {[key: string]: any} = {
     'discord': 'Discord',
@@ -28,7 +27,7 @@ export const LinkPresets = () => {
         guildId,
         id: 'moderation',
         dispatchAction: setAntiLink,
-        updateAction: updateAntilink,
+        updateAction: updateAntiLink,
         selector: selectAntilinkById,
         endpoint: `/guilds/${guildId}/anti-link`,
     })

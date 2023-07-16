@@ -9,9 +9,9 @@ import { useNavbarMenu } from '@/hooks/useNavbarMenu';
 import Button from '@/components/button';
 import { useGuildId } from '@/hooks/useGuildId';
 import { useAppSelector } from '@/redux/store';
-import { selectGuildById } from '@/redux/dashboard/selectors';
 import { useScreenSizes } from '@/hooks/useScreenSizes';
 import { HamIcon } from '@/assets/icons/HamIcon';
+import { selectGuildById } from '@/redux/slices/dashboard';
 
 export const Navbar: React.FC<{
     setOpen: (state: boolean) => void;

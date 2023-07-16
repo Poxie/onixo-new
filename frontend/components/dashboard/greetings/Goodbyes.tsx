@@ -7,9 +7,8 @@ import { MessagePreview } from '../message-preview';
 import { ReduxGoodbyeSettings } from '@/types';
 import { useGuildId } from '@/hooks/useGuildId';
 import { useAppSelector } from '@/redux/store';
-import { selectChannelById, selectGoodbyeSettings } from '@/redux/dashboard/selectors';
-import { setGoodbyeSettings, updateGoodbyeSetting } from '@/redux/dashboard/actions';
 import { useHasChanges } from '@/hooks/useHasChanges';
+import { selectChannelById, selectGoodbyeSettings, setGoodbyeSettings, updateGoodbyeSetting } from '@/redux/slices/dashboard';
 
 export const Goodbyes = () => {
     const guildId = useGuildId();

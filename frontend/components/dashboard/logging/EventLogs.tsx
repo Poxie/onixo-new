@@ -2,12 +2,11 @@ import styles from './Logging.module.scss';
 import { ReduxLogs } from "@/types";
 import { ModuleSection } from "../module-section"
 import { useHasChanges } from "@/hooks/useHasChanges";
-import { setActionLogs, updateActionLog } from "@/redux/dashboard/actions";
-import { selectLogs } from "@/redux/dashboard/selectors";
 import { useGuildId } from "@/hooks/useGuildId";
 import { ModuleSubsection } from "../module-subsection";
 import { useAppSelector } from '@/redux/store';
 import { LogItem } from './LogItem';
+import { selectLogs, setActionLogs, updateActionLog } from '@/redux/slices/dashboard';
 
 type Action = 'message' | 'channel' | 'user' | 'server' | 'voice';
 const LOG_CHANNELS = ['message', 'channel', 'user', 'server', 'voice'].map(type => `${type}_log_channel` as keyof Omit<ReduxLogs['logChannels'], 'all_logs_channel'>);

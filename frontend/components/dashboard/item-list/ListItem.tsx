@@ -1,4 +1,4 @@
-import { selectChannelById } from "@/redux/dashboard/selectors";
+import { selectChannelById } from "@/redux/slices/dashboard";
 import { useAppSelector } from "@/redux/store";
 import { Channel } from "@/types";
 

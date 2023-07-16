@@ -3,9 +3,9 @@ import styles from './Selection.module.scss';
 import { getGuildIcon } from '@/utils/getImages';
 import Button from '@/components/button';
 import { useAppSelector } from '@/redux/store';
-import { selectGuildById } from '@/redux/dashboard/selectors';
 import { getInviteLink } from '@/utils/getLinks';
 import { useRouter } from 'next/router';
+import { selectGuildById } from '@/redux/slices/dashboard';
 
 export const GuildItem: React.FC<{
     guildId: string;

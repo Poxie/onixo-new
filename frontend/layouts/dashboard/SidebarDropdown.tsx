@@ -1,6 +1,5 @@
 import { GuildIcon } from '@/components/guild-icon';
 import styles from './DashboardLayout.module.scss';
-import { selectGuildById, selectGuilds } from "@/redux/dashboard/selectors";
 import { useAppSelector } from "@/redux/store";
 import Link from 'next/link';
 import { useRouter } from "next/router";
@@ -9,6 +8,7 @@ import { getInviteLink } from '@/utils/getLinks';
 import { ArrowIcon } from '@/assets/icons/ArrowIcon';
 import { SidebarDropdownSkeleton } from './SidebarDropdownSkeleton';
 import { useScreenSizes } from '@/hooks/useScreenSizes';
+import { selectGuildById, selectGuilds } from '@/redux/slices/dashboard';
 
 const ITEMS_VISIBLE_DEFAULT_THRESHOLD = 500;
 export const SidebarDropdown = () => {

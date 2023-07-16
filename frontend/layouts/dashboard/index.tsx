@@ -5,11 +5,10 @@ import { Navbar } from './Navbar';
 import { useGuildId } from '@/hooks/useGuildId';
 import { useAuth } from '@/contexts/auth';
 import { Channel, Role } from '@/types';
-import { setGuildChannels, setGuildRoles } from '@/redux/dashboard/actions';
 import { useAppDispatch, useAppSelector } from '@/redux/store';
-import { selectChannelsFetched } from '@/redux/dashboard/selectors';
 import Head from 'next/head';
 import { request } from 'http';
+import { selectChannelsFetched, setGuildChannels, setGuildRoles } from '@/redux/slices/dashboard';
 
 export const DashboardLayout: React.FC<{
     children: ReactElement | ReactElement[];
@@ -33,8 +32,8 @@ export const DashboardLayout: React.FC<{
 
         Promise.all(requests)
             .then(([channels, roles]) => {
-                dispatch(setGuildChannels(guildId, channels as Channel[]));
-                dispatch(setGuildRoles(guildId, (roles as Role[]).filter(role => role.name !== '@everyone')));
+                dispatch(setGuildChannels({ guildId, channels: channels as Channel[] }));
+                dispatch(setGuildRoles({ guildId, roles: roles as Role[] }));
             })
     }, [get, guildId, fetched]);
     

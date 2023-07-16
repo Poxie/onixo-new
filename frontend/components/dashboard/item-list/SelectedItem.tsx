@@ -1,5 +1,5 @@
 import { CloseIcon } from "@/assets/icons/CloseIcon";
-import { selectChannelById } from "@/redux/dashboard/selectors";
+import { selectChannelById } from "@/redux/slices/dashboard";
 import { useAppSelector } from "@/redux/store";
 import { forwardRef } from "react";
 
