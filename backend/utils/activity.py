@@ -44,7 +44,7 @@ def get_activity(guild_id: int, start_at: int, limit: int):
 
     hydrated_activity = []
     for act in activity:
-        del act['_id']
+        act['_id'] = str(act['_id'])
         act['guild_id'] = str(act['guild_id'])
 
         user = send_message(GET_USER, json.dumps({

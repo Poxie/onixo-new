@@ -72,6 +72,7 @@ export type ActivityChange = {
     property: string;
 }
 export type Activity = {
+    _id: string;
     guild_id: string;
     timestamp: number;
     action_id: 'welcome' | 'goodbye' | 'logging' | 'moderation' | 'anti-link' | 'action-logs' | 'event-logs';

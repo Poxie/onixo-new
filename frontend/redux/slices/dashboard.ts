@@ -214,6 +214,10 @@ const dashboardSlice = createSlice({
             }
 
             const act = state.activity.find(act => act.guildId === guildId);
+
+            // Preventing react strict mode from pushing this twice in development
+            if(act?.activity.find(a => a._id === activity[0]._id)) return;
+
             act?.activity.push(...activity);
         },
         prependActivity(state, action: PayloadAction<{

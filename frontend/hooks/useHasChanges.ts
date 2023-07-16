@@ -89,6 +89,7 @@ export const useHasChanges = <T>({ id, guildId, endpoint, onConfirm, dispatchAct
                     })
                 }
                 const activity: Activity = {
+                    _id: Math.random().toString(),
                     user: {
                         ...user,
                         avatar: getUserAvatar(user.id, user.avatar)
