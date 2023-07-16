@@ -198,7 +198,11 @@ def update_action_logs(guild_id: int, user_id: int):
 
             # If we are being ratelimited
             if 'retry_after' in data:
-                abort(429, {'retry_after': data['retry_after']})
+                return {'retry_after': data['retry_after'], 'message': 'Rate limited. Try again later.'}, 429
+
+            # If unauthorized
+            if 'message' in data and 'Missing Permissions' in data['message']:
+                return {'message': 'Permissions missing to create webhook for channel.'}, 401
 
             webhook_id = data['id']
             webhook_token = data['token']
