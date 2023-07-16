@@ -106,11 +106,12 @@ export const useHasChanges = <T>({ id, guildId, endpoint, onConfirm, dispatchAct
                 if(onConfirm) onConfirm(data);
                 reset();
             })
-            .catch(() => {
+            .catch(error => {
                 setToast({
-                    text: 'Something went wrong.',
+                    text: error.message || 'Something went wrong.',
                     type: 'danger'
-                })
+                });
+                setIsLoading(false);
             })
     }, [patch, prevSettings, tempSettings, endpoint]);
     const revertChanges = useCallback(() => {
