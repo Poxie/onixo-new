@@ -25,8 +25,8 @@ const reducer = (state: ReturnType<typeof combinedReducers>, action: AnyAction) 
 }
 
 function configureStore() {
-    const middlewares = [loggerMiddleware];
-    const enhancers = [monitorReducerEnhancer];
+    const middlewares = process.env.NODE_ENV !== 'production' ? [loggerMiddleware] : [];
+    const enhancers = process.env.NODE_ENV !== 'production' ? [monitorReducerEnhancer] : [];
 
     const store = _configureStore({
         reducer: reducer as any,
