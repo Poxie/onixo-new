@@ -12,13 +12,29 @@ export const PremiumPlan: React.FC<typeof plans[0]> = ({ id, type, header, descr
     const guildId = useGuildId();
 
     const fetchCheckoutUrl = async () => {
-        const chargebeeInstance = (window as any).Chargebee.getInstance();
-        chargebeeInstance.openCheckout({
-            hostedPage: async function() {
-                const page = await post<HostedPage>(`/guilds/${guildId}/subscriptions/url`, { plan_id: id })
-                return page;
+        // Attempt to open checkout modal
+        try {
+            const chargebeeInstance = (window as any).Chargebee.getInstance();
+            
+            chargebeeInstance.openCheckout({
+                hostedPage: async function() {
+                    const page = await post<HostedPage>(`/guilds/${guildId}/subscriptions/url`, { plan_id: id })
+                    return page;
+                }
+            })
+        } catch(error: any) {
+            // If instance is not yet initialized, initialize it and attempt again
+            if(error.message.includes('Instance not created')) {
+                (window as any).Chargebee?.init({
+                    site: process.env.NEXT_PUBLIC_CHARGEBEE_SITE,
+                    domain: process.env.NODE_ENV === 'production' ? process.env.NEXT_PUBLIC_FRONTEND_ORIGIN : undefined,
+                    iframeOnly: true
+                });
+                fetchCheckoutUrl();
+                return;
             }
-        })
+            console.error(error);
+        }
     }
 
     const className = [

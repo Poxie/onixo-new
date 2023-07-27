@@ -40,21 +40,12 @@ export const Premium: NextPageWithLayout = () => {
         );
     }, [hostedPageId, guildId]);
 
-    // Making sure to register chargebee again due to react rendering
-    useEffect(() => {
-        (window as any).Chargebee?.init({
-            site: process.env.NEXT_PUBLIC_CHARGEBEE_SITE,
-            domain: process.env.NODE_ENV === 'production' ? process.env.NEXT_PUBLIC_FRONTEND_ORIGIN : undefined,
-            iframeOnly: true
-        })
-    }, []);
-
     const cancelSubscription = () => setModal(<CancelSubscriptionModal />);
 
     return(
         <>
         <Head>
-            <script src="https://js.chargebee.com/v2/chargebee.js"></script>
+            <script src="https://js.chargebee.com/v2/chargebee.js" defer></script>
         </Head>
         {!guild?.premium && (
             <>
