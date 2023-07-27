@@ -42,7 +42,11 @@ export const Premium: NextPageWithLayout = () => {
 
     // Making sure to register chargebee again due to react rendering
     useEffect(() => {
-        (window as any).Chargebee?.registerAgain();
+        (window as any).Chargebee?.init({
+            site: process.env.NEXT_PUBLIC_CHARGEBEE_SITE,
+            domain: process.env.NODE_ENV === 'production' ? process.env.NEXT_PUBLIC_FRONTEND_ORIGIN : undefined,
+            iframeOnly: true
+        })
     }, []);
 
     const cancelSubscription = () => setModal(<CancelSubscriptionModal />);
@@ -50,7 +54,7 @@ export const Premium: NextPageWithLayout = () => {
     return(
         <>
         <Head>
-            <script src="https://js.chargebee.com/v2/chargebee.js" data-cb-site={process.env.NEXT_PUBLIC_CHARGEBEE_SITE} defer></script>
+            <script src="https://js.chargebee.com/v2/chargebee.js"></script>
         </Head>
         {!guild?.premium && (
             <>

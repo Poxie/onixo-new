@@ -5,6 +5,7 @@ import Button from '../button';
 import { useGuildId } from '@/hooks/useGuildId';
 import { useAuth } from '@/contexts/auth';
 import { HostedPage } from '@/types';
+import { useEffect } from 'react';
 
 export const PremiumPlan: React.FC<typeof plans[0]> = ({ id, type, header, description, price, priceDescription, sale, isPopular, perks }) => {
     const { post } = useAuth();
